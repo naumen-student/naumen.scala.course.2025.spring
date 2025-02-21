@@ -1,0 +1,3 @@
+https://scastie.scala-lang.org/R9hG8XJuSlGWe2xMCeY13Q.js
+
+<script src="https://scastie.scala-lang.org/R9hG8XJuSlGWe2xMCeY13Q.js"></script>
