@@ -1,0 +1,38 @@
+C:\Users\10\.jdks\openjdk-23.0.1\bin\java.exe "-javaagent:E:\IntelliJ IDEA 2024.3.1\lib\idea_rt.jar=51491:E:\IntelliJ IDEA 2024.3.1\bin" -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath C:\Users\10\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.13.16.jar;C:\Users\10\.ivy2\cache\org.scala-lang\scala-reflect\jars\scala-reflect-2.13.16.jar;C:\Users\10\.ivy2\cache\org.scala-lang\scala-compiler\jars\scala-compiler-2.13.16.jar;C:\Users\10\.ivy2\cache\io.github.java-diff-utils\java-diff-utils\jars\java-diff-utils-4.15.jar;C:\Users\10\.ivy2\cache\org.jline\jline\jars\jline-3.27.1-jdk8.jar;C:\Users\10\AppData\Roaming\JetBrains\IntelliJIdea2024.3\plugins\Scala\lib\runners.jar scala.tools.nsc.MainGenericRunner -usejavacp -Xnojline
+Welcome to Scala 2.13.16 (OpenJDK 64-Bit Server VM, Java 23.0.1).
+Type in expressions for evaluation. Or try :help.
+
+scala> val name = "Lev Chernyugov"
+ val reversedName = name.reverse
+
+ def printGreeting(greeting: String, name: String): Unit = {
+   println(s"$greeting Scala! This is $name")
+ }
+
+ printGreeting("Hello", name)
+ printGreeting("Hola", name)
+ printGreeting("Guten tag", name)
+
+ printGreeting("Hello", reversedName)
+ printGreeting("Hola", reversedName)
+ printGreeting("Guten tag", reversedName)
+val name: String = Lev Chernyugov
+
+scala> val reversedName: String = voguynrehC veL
+
+scala>
+scala>      |      | def printGreeting(greeting: String, name: String): Unit
+
+scala>
+scala> Hello Scala! This is Lev Chernyugov
+
+scala> Hola Scala! This is Lev Chernyugov
+
+scala> Guten tag Scala! This is Lev Chernyugov
+
+scala>
+scala> Hello Scala! This is voguynrehC veL
+
+scala> Hola Scala! This is voguynrehC veL
+
+scala> Guten tag Scala! This is voguynrehC veL
