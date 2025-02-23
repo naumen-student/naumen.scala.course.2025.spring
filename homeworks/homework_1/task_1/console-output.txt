@@ -1,0 +1,21 @@
+C:\Users\Анастасия>scala
+Welcome to Scala 2.12.10 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_441).
+Type in expressions for evaluation. Or try :help.
+
+scala>val a = "Hello Scala! This is Anastasiya Bobina"
+a: String = Hello Scala! This is Anastasiya Bobina
+
+scala> println("Hello Scala! This is Anastasiya Bobina")
+Hello Scala! This is Anastasiya Bobina
+
+scala> val result = a.replace("Hello", "Guten tag")
+result: String = Guten tag Scala! This is Anastasiya Bobina
+
+scala> val name = "Anastasiya Bobina"
+name: String = Anastasiya Bobina
+
+scala> println("Hello Scala! This is " + name.reverse)
+Hello Scala! This is aniboB ayisatsanA
+
+scala> println("Guten tag! This is " + name.reverse)
+Guten tag! This is aniboB ayisatsanA
