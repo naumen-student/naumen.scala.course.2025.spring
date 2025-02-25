@@ -1,0 +1,28 @@
+C:\Users\User>scala
+Welcome to Scala 2.12.10 (OpenJDK 64-Bit Server VM, Java 11.0.12).
+Type in expressions for evaluation. Or try :help.
+
+scala> val name = "Anna"
+val name: String = Anna
+
+scala> val str = "Hello Scala! This is " + name
+val str: String = Hello Scala! This is Anna
+
+scala> println(str)
+Hello Scala! This is Anna
+
+scala> val list = List("Привет", "Hi", "Bonjour")
+val list: List[String] = List(Привет, Hi, Bonjour)
+
+scala> list.foreach { i => println(s"$i Scala! This is $name")}
+Привет Scala! This is Anna
+Hi Scala! This is Anna
+Bonjour Scala! This is Anna
+
+scala> var reversed_name = name.reverse
+var reversed_name: String = annA
+
+scala> list.foreach { i => println(s"$i Scala! This is $reversed_name")}
+Привет Scala! This is annA
+Hi Scala! This is annA
+Bonjour Scala! This is annA
