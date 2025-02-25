@@ -1,0 +1,45 @@
+C:\Users\Nyase>scala
+Welcome to Scala 3.6.3 (17.0.14, Java OpenJDK 64-Bit Server VM).
+Type in expressions for evaluation. Or try :help.
+
+scala> val name = "Nikita Yasenev"
+val name: String = Nikita Yasenev
+
+scala> val greeting = s"Hello Scala! This is $name"
+val greeting: String = Hello Scala! This is Nikita Yasenev
+
+scala> println(greeting)
+Hello Scala! This is Nikita Yasenev
+
+scala> val greetings = List ("Hola", "Guten tag", "Bonjour", "Ciao", "Ni hao", "Konnichiwa")
+val greetings: List[String] = List(Hola, Guten tag, Bonjour, Ciao, Ni hao, Konnichiwa)
+
+scala> val ForeignGreetings = greetings.map(g => s"$g Scala! This is $name")
+val ForeignGreetings: List[String] = List(Hola Scala! This is Nikita Yasenev, Guten tag Scala! This is Nikita Yasenev, Bonjour Scala! This is Nikita Yasenev, Ciao Scala! This is Nikita Yasenev, Ni hao Scala! This is Nikita Yasenev, Konnichiwa Scala! This is Nikita Yasenev)
+
+scala> ForeignGreetings.foreach(println)
+Hola Scala! This is Nikita Yasenev
+Guten tag Scala! This is Nikita Yasenev
+Bonjour Scala! This is Nikita Yasenev
+Ciao Scala! This is Nikita Yasenev
+Ni hao Scala! This is Nikita Yasenev
+Konnichiwa Scala! This is Nikita Yasenev
+
+scala> val reversedName = name.reverse
+val reversedName: String = venesaY atikiN
+
+g: String
+
+scala> val reversedGreetings = greetings.map(g => s"$g Scala! This is $reversedName
+")
+val reversedGreetings: List[String] = List(Hola Scala! This is venesaY atikiN, Guten tag Scala! This is venesaY atikiN, Bonjour Scala! This is venesaY atikiN, Ciao Scala! This is venesaY atikiN, Ni hao Scala! This is venesaY atikiN, Konnichiwa Scala! This is venesaY atikiN)
+
+scala> reversedGreetings.foreach(println)
+Hola Scala! This is venesaY atikiN
+Guten tag Scala! This is venesaY atikiN
+Bonjour Scala! This is venesaY atikiN
+Ciao Scala! This is venesaY atikiN
+Ni hao Scala! This is venesaY atikiN
+Konnichiwa Scala! This is venesaY atikiN
+
+scala>
