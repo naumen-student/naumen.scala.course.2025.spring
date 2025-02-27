@@ -1,0 +1,41 @@
+violavizner@MacBook-Pro-Viola ~ % scala
+Welcome to Scala 3.6.3 (21.0.6, Java Java HotSpot(TM) 64-Bit Server VM).
+Type in expressions for evaluation. Or try :help.
+
+scala> var name = "Violetta Vizner"
+var name: String = Violetta Vizner
+
+scala> var greeting = "Hello, Scala! This is "
+var greeting: String = "Hello, Scala! This is "
+
+scala> def fullGreeting : String = greeting + name
+def fullGreeting: String
+
+scala> println (fullGreeting)
+Hello, Scala! This is Violetta Vizner
+
+scala> greeting = "Hi, Scala! This is "
+greeting: String = "Hi, Scala! This is "
+
+scala> println (fullGreeting)
+Hi, Scala! This is Violetta Vizner
+
+scala> greeting = "Privet, Scala! This is "
+greeting: String = "Privet, Scala! This is "
+
+scala> println (fullGreeting)
+Privet, Scala! This is Violetta Vizner
+
+scala> name = "renziV atteloiV"
+name: String = renziV atteloiV
+
+scala> println (fullGreeting)
+Privet, Scala! This is renziV atteloiV
+
+scala> greeting = "Hi, Scala! This is "
+greeting: String = "Hi, Scala! This is "
+
+scala> println (fullGreeting)
+Hi, Scala! This is renziV atteloiV
+
+scala>
