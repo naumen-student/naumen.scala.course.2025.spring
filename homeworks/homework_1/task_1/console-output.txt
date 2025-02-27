@@ -1,0 +1,43 @@
+➜  naumen_scala scala
+Welcome to Scala 2.13.16 (Java HotSpot(TM) 64-Bit Server VM, Java 23.0.1).
+Type in expressions for evaluation. Or try :help.
+
+scala> def hello(greeting: String, name: String): Unit = {
+     |  println(greeting + " Scala! This is " + name)
+     | }
+def hello(greeting: String, name: String): Unit
+
+scala> val name = "Driuk Ivan"
+val name: String = Driuk Ivan
+
+scala> var englishGreeting = "Hello"
+var englishGreeting: String = Hello
+
+scala> var italianGreeting = "Ciao"
+var italianGreeting: String = Ciao
+
+scala> var frenchGreeting = "Bonjour"
+var frenchGreeting: String = Bonjour
+
+scala> hello(englishGreeting, name)
+Hello Scala! This is Driuk Ivan
+
+scala> hello(italianGreeting, name)
+Ciao Scala! This is Driuk Ivan
+
+scala> hello(frenchGreeting, name)
+Bonjour Scala! This is Driuk Ivan
+
+scala> val reverseName = name.reverse
+val reverseName: String = navI kuirD
+
+scala> hello(englishGreeting, reverseName)
+Hello Scala! This is navI kuirD
+
+scala> hello(italianGreeting, reverseName)
+Ciao Scala! This is navI kuirD
+
+scala> hello(frenchGreeting, reverseName)
+Bonjour Scala! This is navI kuirD
+
+scala>
