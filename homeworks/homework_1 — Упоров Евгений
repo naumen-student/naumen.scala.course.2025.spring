@@ -1,1 +1,57 @@
+Microsoft Windows [Version 10.0.19045.5487]
+(c) Microsoft Corporation. All rights reserved.
 
+C:\Users\Shur78>scala
+Welcome to Scala 3.6.3 (17.0.14, Java OpenJDK 64-Bit Server VM).
+Type in expressions for evaluation. Or try :help.
+
+scala> val name = "Uporov Eugene"
+name: String = Uporov Eugene
+
+scala> val greeting = "Hello"
+greeting: String = Hello
+
+scala> val message = s"$greeting Scala! This is $name"
+message: String = Hello Scala! This is Uporov Eugene
+
+scala> println(message)
+Hello Scala! This is Uporov Eugene
+
+scala> val newGreeting1 = "Hola"
+newGreeting1: String = Hola
+
+scala> val newMessage1 = s"$newGreeting1 Scala! This is $name"
+newMessage1: String = Hola Scala! This is Uporov Eugene
+
+scala> println(newMessage1)
+Hola Scala! This is Uporov Eugene
+
+scala> val newGreeting2 = "Guten Tag"
+newGreeting2: String = Guten Tag
+
+scala> val newMessage2 = s"$newGreeting2 Scala! This is $name"
+newMessage2: String = Guten Tag Scala! This is Uporov Eugene
+
+scala> println(newMessage2)
+Guten Tag Scala! This is Uporov Eugene
+
+scala> val reversedName = name.reverse
+reversedName: String = voropU eneguE
+
+scala> val reversedMessage1 = s"$newGreeting1 Scala! This is $reversedName"
+reversedMessage1: String = Hola Scala! This is voropU eneguE
+
+scala> println(reversedMessage1)
+Hola Scala! This is voropU eneguE
+
+scala> val reversedMessage2 = s"$newGreeting2 Scala! This is $reversedName"
+reversedMessage2: String = Guten Tag Scala! This is voropU eneguE
+
+scala> println(reversedMessage2)
+Guten Tag Scala! This is voropU eneguE
+
+scala> val reversedMessage = s"$greeting Scala! This is $reversedName"
+reversedMessage: String = Hello Scala! This is voropU eneguE
+
+scala> println(reversedMessage)
+Hello Scala! This is voropU eneguE
