@@ -1,0 +1,7 @@
+[0m[[0m[0mdebug[0m] [0m[0mnot up to date. inChanged = true, force = false[0m
+[0m[[0m[0mdebug[0m] [0m[0mUpdating ProjectRef(uri("file:/C:/Users/ASUS/source/repos/naumen.scala.course.2025.spring/homeworks/homework_1/task_3/hello-world/project/"), "hello-world-build")...[0m
+[0m[[0m[0minfo[0m] [0m[0mUpdating hello-world-build[0m
+[0m[[0m[0minfo[0m] [0m[0mResolved hello-world-build dependencies[0m
+[0m[[0m[0minfo[0m] [0m[0mFetching artifacts of hello-world-build[0m
+[0m[[0m[0minfo[0m] [0m[0mFetched artifacts of hello-world-build[0m
+[0m[[0m[0mdebug[0m] [0m[0mDone updating ProjectRef(uri("file:/C:/Users/ASUS/source/repos/naumen.scala.course.2025.spring/homeworks/homework_1/task_3/hello-world/project/"), "hello-world-build")[0m

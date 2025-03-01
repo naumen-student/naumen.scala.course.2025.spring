@@ -1,0 +1,8 @@
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(stop, Some(292fd192-4250-49ec-b982-73a04ce5e8e9), Some(CommandSource(console0)))[0m
+[0m[[0m[31merror[0m] [0m[0mNot a valid command: stop (similar: set, last, shutdown)[0m
+[0m[[0m[31merror[0m] [0m[0mNot a valid project ID: stop[0m
+[0m[[0m[31merror[0m] [0m[0mExpected ':'[0m
+[0m[[0m[31merror[0m] [0m[0mNot a valid key: stop (similar: bgStop, test, history)[0m
+[0m[[0m[31merror[0m] [0m[0mstop[0m
+[0m[[0m[31merror[0m] [0m[0m    ^[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(shell, None, None)[0m

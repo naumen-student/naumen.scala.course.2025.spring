@@ -1,0 +1,62 @@
+C:\Users\ASUS>scala
+Welcome to Scala 2.12.10 (OpenJDK 64-Bit Server VM, Java 11.0.12).
+Type in expressions for evaluation. Or try :help.
+
+scala> val a = "Hello Scala! This is Kseniya Smolyakova"
+a: String = Hello Scala! This is Kseniya Smolyakova
+
+scala> println (a)
+Hello Scala! This is Kseniya Smolyakova
+
+scala> val name = "Kseniya Smolyakova"
+name: String = Kseniya Smolyakova
+
+scala> println(s"Hello Scala! This is $name")
+Hello Scala! This is Kseniya Smolyakova
+
+scala> val greeting = "Hello Scala! This is "
+greeting: String = "Hello Scala! This is "
+                    
+scala> val greeting_eng = greeting + name
+greeting_eng: String = Hello Scala! This is Kseniya Smolyakova
+
+scala> val greeting_ger = "Guten tag Scala! This is "
+greeting_ger: String = "Guten tag Scala! This is "
+
+scala> val full_greeting_ger = greeting_ger + name
+full_greeting_ger: String = Guten tag Scala! This is Kseniya Smolyakova
+
+scala> val greeting_french = "Salut Scala! This is "
+greeting_french: String = "Salut Scala! This is "
+
+scala> val full_greeting_french = greeting_french + name
+full_greeting_french: String = Salut Scala! This is Kseniya Smolyakova
+
+scala> val greeting_spanish = "Holla Scala! This is "
+greeting_spanish: String = "Holla Scala! This is "
+
+scala> val full_greeting_spanish = greeting_spanish + name
+full_greeting_spanish: String = Holla Scala! This is Kseniya Smolyakova
+
+scala> val list = List("Hello", "Guten Tag", "Salut", "Hola")
+list: List[String] = List(Hello, Guten Tag, Salut, Hola)
+
+scala> val message = " Scala! this is Kseniya Smolyakova"
+message: String = " Scala! this is Kseniya Smolyakova"
+
+scala> list.foreach(item => println(item + message))
+Hello Scala! this is Kseniya Smolyakova
+Guten Tag Scala! this is Kseniya Smolyakova
+Salut Scala! this is Kseniya Smolyakova
+Hola Scala! this is Kseniya Smolyakova
+
+scala> val reverse_name = name.reverse
+reverse_name: String = avokaylomS ayinesK
+
+scala> list.foreach(item => println (item + " Scala! This is " + reverse_name))
+Hello Scala! This is avokaylomS ayinesK
+Guten Tag Scala! This is avokaylomS ayinesK
+Salut Scala! This is avokaylomS ayinesK
+Hola Scala! This is avokaylomS ayinesK
+
+scala>
