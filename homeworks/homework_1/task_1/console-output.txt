@@ -1,0 +1,33 @@
+PS C:\Users\Jaba> scala
+Welcome to Scala 2.12.10 (Java HotSpot(TM) 64-Bit Server VM, Java 20.0.2).
+Type in expressions for evaluation. Or try :help.
+
+scala> :paste
+// Entering paste mode (ctrl-D to finish)
+
+val name = "Ilya Glukhov"
+
+ def PrintGreet(greet: String, name: String): Unit = {
+   println(s"$greet Scala! This is $name")
+ }
+
+ PrintGreet("Hello", name)
+ PrintGreet("Hola", name)
+ PrintGreet("Guten tag", name)
+
+val reversedName = name.reverse
+
+ PrintGreet("Hello", reversedName)
+ PrintGreet("Hola", reversedName)
+ PrintGreet("Guten tag", reversedName)
+
+// Exiting paste mode, now interpreting.
+
+Hello Scala! This is Ilya Glukhov
+Hola Scala! This is Ilya Glukhov
+Guten tag Scala! This is Ilya Glukhov
+Hello Scala! This is vohkulG aylI
+Hola Scala! This is vohkulG aylI
+Guten tag Scala! This is vohkulG aylI
+
+scala>
