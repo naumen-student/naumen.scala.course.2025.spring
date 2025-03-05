@@ -1,0 +1,35 @@
+C:\Users\Даниил>scala
+Welcome to Scala 2.12.10 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_351).
+Type in expressions for evaluation. Or try :help.
+
+scala> var s = "Hello Scala! This is Daniil Veretennikov"
+s: String = Hello Scala! This is Daniil Veretennikov
+
+scala> println (s)
+Hello Scala! This is Daniil Veretennikov
+
+scala> val s = "Hola Scala! This is Daniil Veretennikov"
+s: String = Hola Scala! This is Daniil Veretennikov
+
+scala> println (s)
+Hola Scala! This is Daniil Veretennikov
+
+scala> val s = "Guten tag Scala! This is Daniil Veretennikov"
+s: String = Guten tag Scala! This is Daniil Veretennikov
+
+scala> println (s)
+Guten tag Scala! This is Daniil Veretennikov
+
+scala> val s = "Hello Scala! This is kovinnetereV liinaD"
+s: String = Hello Scala! This is kovinnetereV liinaD
+
+scala> println (s)
+Hello Scala! This is kovinnetereV liinaD
+
+scala> println ("Hola Scala! This is kovinnetereV liinaD")
+Hola Scala! This is kovinnetereV liinaD
+
+scala> println ("Guten tag Scala! This is kovinnetereV liinaD")
+Guten tag Scala! This is kovinnetereV liinaD
+
+scala>
