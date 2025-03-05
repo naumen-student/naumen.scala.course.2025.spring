@@ -33,7 +33,6 @@ object Exercises {
 	    factors(number, 2).distinct
     }
 
-
     /*ЗАДАНИЕ III*/
     /*Дано: класс двумерного вектора, а также функции вычисления модуля вектора (abs), вычисления скалярного произведения
     векторов (scalar) и косинуса угла между векторами (cosBetween).
@@ -53,7 +52,6 @@ object Exercises {
     
     def sumCosines(leftVec0: Vector2D, leftVec1: Vector2D, rightVec0: Vector2D, rightVec1: Vector2D): Double =
         sumByFunc(leftVec0, leftVec1, cosBetween, rightVec0, rightVec1)
-
 
     /*ЗАДАНИЕ IV*/
     /*Дано: коллекция металлических шариков balls, где каждый элемент представлен в виде (Name: String -> (radius: Int, density: Double).
