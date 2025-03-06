@@ -1,0 +1,57 @@
+C:\Users\User\Project\Abrosimova>scala
+
+Downloading JVM temurin:17
+Welcome to Scala 3.6.3 (17.0.14, Java OpenJDK 64-Bit Server VM).
+Type in expressions for evaluation. Or try :help.
+scala> val a = "Hello Scala! This is Marina Abrosimova"
+val a: String = Hello Scala! This is Marina Abrosimova
+
+scala> println(a)
+Hello Scala! This is Marina Abrosimova
+
+scala> val my_name = "Marina Abrosimova"
+val my_name: String = Marina Abrosimova
+
+scala> val message = "Hello Scala! This is "
+val message: String = "Hello Scala! This is "
+
+scala> val full_message = message + my_name
+val full_message: String = Hello Scala! This is Marina Abrosimova
+
+scala> println(full_message)
+Hello Scala! This is Marina Abrosimova
+
+scala> val french_message = "Salut Scala! This is "
+val french_message: String = "Salut Scala! This is "
+
+scala> val full_message = french_message + my_name
+val full_message: String = Salut Scala! This is Marina Abrosimova
+
+scala> println(full_message)
+Salut Scala! This is Marina Abrosimova
+
+scala> println(french_message + my_name)
+Salut Scala! This is Marina Abrosimova
+
+scala> val list = List("Hola", "Nazdar", "Salut")
+val list: List[String] = List(Hola, Nazdar, Salut)
+
+scala> def messages(list: List[String]): Unit = list.foreach(item => println(item + " Scala! This is Marina Abrosimova")
+)
+def messages(list: List[String]): Unit
+
+scala> messages(list)
+Hola Scala! This is Marina Abrosimova
+Nazdar Scala! This is Marina Abrosimova
+Salut Scala! This is Marina Abrosimova
+
+scala> val reverse_name = my_name.reverse
+val reverse_name: String = avomisorbA aniraM
+
+scala> def messages(list: List[String]): Unit = list.foreach(item => println(item + " Scala! This is " + reverse_name))
+def messages(list: List[String]): Unit
+
+scala> messages(list)
+Hola Scala! This is avomisorbA aniraM
+Nazdar Scala! This is avomisorbA aniraM
+Salut Scala! This is avomisorbA aniraM
