@@ -17,6 +17,7 @@ object Test extends TestSuite {
 
         'test_primeFactor - {
             assert(Exercises.primeFactor(97) == Seq(97))
+            assert(Exercises.primeFactor(79) == Seq(79))
             assert(Exercises.primeFactor(80) == Seq(2, 5))
             assert(Exercises.primeFactor(98) == Seq(2, 7))
         }
