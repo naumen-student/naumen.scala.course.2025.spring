@@ -1,0 +1,27 @@
+nikita@MacBook scala % scala
+Welcome to Scala 3.6.3 (23.0.2, Java OpenJDK 64-Bit Server VM).
+Type in expressions for evaluation. Or try :help.
+
+scala> val text = " Scala! This is "
+val text: String = " Scala! This is "
+
+scala> val name = "Kolbin Nikita"
+val name: String = Kolbin Nikita
+
+scala> println("Hello " + text + name)
+Hello  Scala! This is Kolbin Nikita
+
+scala> println("Hola" + text + name)
+Hola Scala! This is Kolbin Nikita
+
+scala> println("Guten tag" + text + name)
+Guten tag Scala! This is Kolbin Nikita
+
+scala> println("Hello" + text + name.reverse)
+Hello Scala! This is atikiN nibloK
+
+scala> println("Hola" + text + name.reverse)
+Hola Scala! This is atikiN nibloK
+
+scala> println("Guten tag" + text + name.reverse)
+Guten tag Scala! This is atikiN nibloK
