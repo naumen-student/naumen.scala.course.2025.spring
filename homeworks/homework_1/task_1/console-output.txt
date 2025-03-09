@@ -1,0 +1,23 @@
+PS D:\hello-world> scala
+Welcome to Scala 2.12.10 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_401).
+Type in expressions for evaluation. Or try :help.
+
+scala> println("Hello, Scala! This is Daniil Golovinov")
+Hello, Scala! This is Daniil Golovinov
+
+scala> println("Hola, Scala! This is Daniil Golovinov")
+Hola, Scala! This is Daniil Golovinov
+
+scala> println("Guten tag, Scala! This is Daniil Golovinov")
+Guten tag, Scala! This is Daniil Golovinov
+
+scala> println("Hello, Scala! This is vonivoloG liinaD")
+Hello, Scala! This is vonivoloG liinaD
+
+scala> println("Hola, Scala! This is vonivoloG liinaD")
+Hola, Scala! This is vonivoloG liinaD
+
+scala> println("Guten tag, Scala! This is vonivoloG liinaD")
+Guten tag, Scala! This is vonivoloG liinaD
+
+scala>

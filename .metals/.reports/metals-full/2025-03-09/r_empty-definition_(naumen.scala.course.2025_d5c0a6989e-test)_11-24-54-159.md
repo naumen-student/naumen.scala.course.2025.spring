@@ -1,3 +1,14 @@
+error id: `<none>`.
+file:///C:/Users/Daniil/Desktop/naumen.scala.course.2025.spring/homeworks/homework_2/src/test/scala/Test.scala
+empty definition using pc, found symbol in pc: `<none>`.
+semanticdb not found
+|empty definition using fallback
+non-local guesses:
+	 -
+
+Document text:
+
+```scala
 import utest._
 import Exercises._
 
@@ -48,3 +59,9 @@ object Test extends TestSuite {
     }
   }
 }
+
+```
+
+#### Short summary: 
+
+empty definition using pc, found symbol in pc: `<none>`.
