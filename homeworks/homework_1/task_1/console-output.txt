@@ -1,0 +1,38 @@
+scala> val name = "Dima Belousov"
+name: String = Dima Belousov
+
+scala> val greeting = "Hello"
+greeting: String = Hello
+
+scala> val message = s"$greeting Scala! This is $name"
+message: String = Hello Scala! This is Dima Belousov
+
+scala> println(message)
+Hello Scala! This is Dima Belousov
+
+scala> val greetings = List("Hola", "Guten tag")
+greetings: List[String] = List(Hola, Guten tag)
+
+scala> greetings.foreach { newGreeting =>
+     |   val newMessage = s"$newGreeting Scala! This is $name"
+     |   println(newMessage)
+     | }
+Hola Scala! This is Dima Belousov
+Guten tag Scala! This is Dima Belousov
+
+scala> val reversedName = name.reverse
+reversedName: String = vosuoleB amiD
+
+scala> println(s"$greeting Scala! This is $reversedName")
+Hello Scala! This is vosuoleB amiD
+
+scala>
+
+scala> greetings.foreach { newGreeting =>
+     |   val newMessage = s"$newGreeting Scala! This is $reversedName"
+     |   println(newMessage)
+     | }
+Hola Scala! This is vosuoleB amiD
+Guten tag Scala! This is vosuoleB amiD
+
+scala>
