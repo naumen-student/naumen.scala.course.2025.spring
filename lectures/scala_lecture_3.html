@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Базовые концепции Scala</title>
+
+    <meta name="description" content="Базовая Scala. Часть 2.">
+    <meta name="author" content="">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/white.css" id="theme">
+    <link rel="stylesheet" href="css/hljs/vs.css" id="highlight-theme">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+<body>
+<div class="reveal lecture2">
+    <div class="footer">
+        <span class="corp-name"><b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspNAUMEN</b></span>
+    </div>
+    <div class="slides">
+        <section>
+            <h2>Scala basic II</h2>
+            <h3><span class="corp-name">от конструкторов типов до коллекций</span></h3>
+            <p>Соломеин Илья</p>
+        </section>
+    </div>
+    <div class="slides">
+        <section>
+            <h2>Type constructors</h2>
+            <p>Классический пример того, почему нам нужны параметры типов:</p>
+            <div class="code-block">
+                <pre><code class="scala">
+case class IntBox(value: Int)
+
+case class StringBox(value: String)
+
+case class BooleanBox(value: Boolean)
+
+val intBox = IntBox(1)
+val stringBox = StringBox("Hello")
+val booleanBox = BooleanBox(true)
+
+case class Cat(name: String)
+
+val catBox = ???
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Type constructors</h2>
+            <p></p>
+            <div class="code-block">
+                <pre><code class="scala">
+// здесь T - это параметр типа
+case class Box[T](value: T)
+
+val intBox1 = Box[Int](1)
+val intBox2 = Box(2)
+
+val stringBox = Box("Hello")
+val booleanBox = Box(true)
+
+case class Cat(name: String)
+
+val catBox = Box[Cat](Cat("Boris"))
+
+// Для типов можно использовать несколько параметров
+case class Box2[A, B](first: A, second: B)
+
+val box2: Box2[Int, Boolean] = Box2(12, false)
+
+// Box и Box2 не являются типами
+val justBox = Box    // error: class Box takes type parameters
+                </code></pre>
+            </div>
+            <p>Box и Box2 являются конструкторами типов.</p>
+            <p>К примеру, в Box необходимо передать тип, чтобы сконструировать конкретный тип.</p>
+        </section>
+        <section>
+            <h2>Type constructors</h2>
+            <p>Конкретный тип: *</p>
+            <div class="code-block">
+                <pre><code class="scala">
+Int
+String
+Box[Int]
+Box[Box[String]]
+List[Double]
+Box2[Double, String]
+Map[String, Int]
+                </code></pre>
+            </div>
+            <p>Конструктор типа с одним параметром: * -> *</p>
+            <div class="code-block">
+                <pre><code class="scala">
+Box
+List
+Option
+Box2[Int, *]
+Map[*, Double]
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Type constructors</h2>
+            <p>Конструктор типа с двумя параметрами: * -> * -> *</p>
+            <div class="code-block">
+                <pre><code class="scala">
+Box2
+Map
+Either
+                </code></pre>
+            </div>
+            <p>Здесь <span class="corp-name">* -> * -> *</span> можно воспринимать, как некоторую функцию от n параметров, которая принимает</p>
+            <p>тип и возвращает функцию от (n - 1)-го параметра, пока не получится конкретный тип.</p>
+        </section>
+        <section>
+            <h2>Higher Kinds</h2>
+            <p><span class="naumen">(* -> *) -> * </span></p>
+            <p>Конструктор типа, который принимает в качестве аргумента другой конструктор типа.</p>
+            <p>Чтобы разрешить подобное поведение к компиляютору добавляется специальный флаг:</p>
+            <p><span class="corp-name">-language:higherKinds</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+case class HigherKindedBox[T[_]](
+    value: T[Int]
+)
+
+case class HigherKindedBox2[T[_], A](
+    value: T[A]
+)
+
+val boxWithIntList = HigherKindedBox2[List, Int](value = List(1, 2, 3))
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Higher Kinds</h2>
+            <p>Как игнорировать параметр типа</p>
+            <div class="code-block">
+                <pre><code class="scala">
+case class Box2[A, B](first: A, second: B)
+
+def getFirst[T](box: Box2[T, _]): T = box.first
+
+val first: String = getFirst(Box2("Hello", 42))
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Higher Kinds</h2>
+            <p>Рассмотрим следующий пример:</p>
+            <div class="code-block">
+                <pre><code class="scala">
+case class HigherKindedBox[T[_]](value: T[Int])
+
+// List - конструктор типа от одного параметра, потому никакой проблемы тут нет
+val ok = HigherKindedBox(List(1, 2, 3))
+
+// Map - конструктор типа от двух параметров, а T[_] требует конструктор с одним параметром
+val error = HigherKindedBox(Map(1 -> "a", 2 -> "b")
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Частичная унификация (Partial unification)</h2>
+            <p>Что мы можем сделать, чтобы Map хоть в каком-то формате уместить в HigherKindedBox:</p>
+            <div class="code-block">
+                <pre><code class="scala">
+case class HigherKindedBox[T[_]](value: T[Int])
+
+// Можем заранее определить новый тип, который будет являться алиасом для типа Map,
+// у которого один из параметров типа уже заполнен
+type SingleMap[A] = Map[Int, A]
+
+val ok = HigherKindedBox[SingleMap[String]](Map(1 -> "a", 2 -> "b"))
+
+// Или можем прямо по месту использования сделать так:
+val ok2 = HigherKindedBox[Map[Int, *]](Map(1 -> "a", 2 -> "b"))
+                </code></pre>
+            </div>
+            <p>Здесь Map[Int, *] - это частично унифицированный конструктор типа.</p>
+            <p>Чтобы такое поведение стало доступным к компилятору нужно добавить флаг:</p>
+            <p><span class="corp-name">-Ypartial-unification</span> </p>
+        </section>
+        <section>
+            <h2>Параметрический полиморфизм</h2>
+            <p>Мы можем параметризовать параметры функций</p>
+            <div class="code-block">
+                <pre><code class="scala">
+def toBox2[A, B](
+  first: Box[A],
+  second: Box[B]
+): Box2[A, B] = Box2(first.value, second.value)
+
+// Можем в определённых местах указывать конкретные типы
+def toBox2[A](
+  first: Box[A],
+  second: Box[Int]
+): Box2[A, Int] = Box2(first.value, second.value)
+
+// повторимся про возможность игнорировать определённые типы
+def getFirst[T](box: Box2[T, _]): T = box.first
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Ограничения на типы</h2>
+            <p><span class="corp-name">UPPER BOUNDS</span> </p>
+            <div class="code-block">
+                <pre><code class="scala">
+trait Animal {
+  def name: String
+}
+case class Cat(name: String) extends Animal
+case class Dog(name: String) extends Animal
+
+val cats = NotEmptyList.of(Cat("Барсик"), Cat("Кеша"))
+val dogs = NotEmptyList.of(Dog("Шарик"), Dog("Барбос"))
+
+def shortestName(animals: NotEmptyList[Animal]): Animal =
+    animals.sortBy(_.name.length).head
+
+def sayMeow(cat: Cat): String = s"${cat.name} says meow."
+
+sayMeow(shortestName(cats)) // error: type mismatch; found: Animal, required: Cat
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Ограничения на типы</h2>
+            <p><span class="corp-name">UPPER BOUNDS</span> </p>
+            <div class="code-block">
+                <pre><code class="scala">
+trait Animal {
+  def name: String
+}
+case class Cat(name: String) extends Animal
+case class Dog(name: String) extends Animal
+
+val cats = NotEmptyList.of(Cat("Барсик"), Cat("Кеша"))
+val dogs = NotEmptyList.of(Dog("Шарик"), Dog("Барбос"))
+
+def shortestName[T <: Animal](
+    animals: NotEmptyList[T]
+    ): T = animals.sortBy(_.name.length).head
+
+def sayMeow(cat: Cat): String = s"${cat.name} says meow."
+
+sayMeow(shortestName(cats)) // ok
+                </code></pre>
+            </div>
+            <p>Запись <span class="corp-name">A <: B</span> означает, что тип А является самим типом B или его потомком.</p>
+        </section>
+        <section>
+            <h2>Ограничения на типы</h2>
+            <p><span class="corp-name">LOWER BOUNDS</span> </p>
+            <div class="code-block">
+                <pre><code class="scala">
+
+trait Animal {
+  def name: String
+}
+case class Cat(name: String) extends Animal
+case class Dog(name: String) extends Animal
+
+val cats = NotEmptyList.of(Cat("Барсик"), Cat("Кеша"))
+
+def sayMeow(cat: Cat): String = s"${cat.name} says meow."
+
+def addToCats(
+    cats: List[Cat],
+    other: List[Animal]
+): List[Animal] = cats ++ other
+
+addToCats(cats, cats).map { cat => sayMeow(cat) } // error: type mismatch
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Ограничения на типы</h2>
+            <p><span class="corp-name">LOWER BOUNDS</span> </p>
+            <div class="code-block">
+                <pre><code class="scala">
+
+trait Animal {
+  def name: String
+}
+case class Cat(name: String) extends Animal
+case class Dog(name: String) extends Animal
+
+val cats = NotEmptyList.of(Cat("Барсик"), Cat("Кеша"))
+
+def sayMeow(cat: Cat): String = s"${cat.name} says meow."
+
+def addToCats[T >: Cat](
+    cats: List[Cat],
+    other: List[T]
+): List[T] = cats ++ other
+
+addToCats(cats, cats).map { cat => sayMeow(cat) } // ok
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>implicits</h2>
+            <p>Пока отвлечёмся на от ограничений на типы и поговорим про ключевое слово <span class="corp-name">implicit</span>.</p>
+            <p>Для значений, функций, классов, помеченных implicit, существует отдельный implicit scope, из которого</p>
+            <p>компилятор пытается находить необходимые ему данные.</p>
+            <div class="code-block">
+                <pre><code class="scala">
+// неявная передача параметра в функцию
+implicit val implicitInt = 5
+
+def implicitSum(x: Int)(implicit y: Int): Int = x + y
+
+println(implicitSup(5)) // 10
+
+// implicit conversion
+
+case class User(name: String, age: Int)
+
+implicit def userToInt(user: User): Int = user.age
+
+println(5 + User("Max", 5")) // 10
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>implicits</h2>
+            <p>Про области видимости неявных значений, функций, классов.</p>
+            <p>Сначала производим поиск в локальной области видимости, включая импортированные implicits.</p>
+            <p>Потом происходит поиск в объекте-компаньоне типа.</p>
+            <p>В последний очередь поиск происходит в объекте-компаньоне супертипа, если было наследование.</p>
+            <div class="code-block">
+                <pre><code class="scala">
+trait ToJson[A] {
+    def toJson(value: A): Json
+}
+
+case class User(name: String, age: Int)
+object User {
+    implicit val userToJson: ToJson[User] = new ToJson[User] {
+        def toJson(value: User): Json = ???
+    }
+}
+
+def printJson[T](value: T)(implicit toJson: ToJson[T]): Unit = println(toJson.toJson(value).toString)
+
+printJson(User("Alex", 18))
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Ограничения на типы</h2>
+            <p><span class="corp-name">CONTEXT BOUNDS</span> </p>
+            <div class="code-block">
+                <pre><code class="scala">
+def printJson[T](value: T)(implicit toJson: ToJson[T]): Unit = println(toJson.toJson(value).toString)
+\\ эквивалентны
+def printJsonWithContextBound[T : ToJson](value: T): Unit = println(implicitly[ToJson[T]].toJson(value).toString)
+
+
+\\ несколько ограничений одновременно
+def func[T >: Cat <: Animal with CanMove : Decoder : Encoder] = ???
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Вариантность</h2>
+            <p><span class="corp-name">Инвариантность (Invariance)</span> </p>
+            <div class="code-block">
+                <pre><code class="scala">
+case class Box[A](value: A)
+
+def getName(box: Box[Animal]): String =  box.value.name
+
+val box = Box(Cat("Kuzya"))
+
+getName(box)
+// error: type mismatch;
+// found   : Box[Cat]
+// required: Box[Animal]
+                </code></pre>
+            </div>
+            <p>Cat <: Animal, но Box <span class="corp-name">инвариантен</span> по типу T.</p>
+            <p>Инвариантность: A =:= B => F[A] =:= F[B]</p>
+            <p>Box[Animal] =:= Box[Animal]</p>
+            <p>Box[Cat] =:= Box[Cat]</p>
+            <p>Box[Cat] <: Box[Animal] - неверно!</p>
+        </section>
+        <section>
+            <h2>Вариантность</h2>
+            <p><span class="corp-name">Ковариантность (Covariance)</span> </p>
+            <p>Ковариантность: A <: B => F[A] <: F[B]</p>
+            <p>Box[Cat] <: Box[Animal]</p>
+
+            <div class="code-block">
+                <pre><code class="scala">
+case class Box[+A](value: A)
+
+def getName(box: Box[Animal]): String =  box.value.name
+
+val box = Box(Cat("Kuzya")) // ok
+                </code></pre>
+            </div>
+            <p>Почему не использовать ковариантность всегда?</p>
+        </section>
+        <section>
+            <h2>Вариантность</h2>
+            <p><span class="corp-name">Ковариантность (Covariance)</span> </p>
+            <div class="code-block">
+                <pre><code class="scala">
+trait Box[+A] {
+    val value: A
+    def contains(a: A): Boolean
+}
+// Потенциальная опасность получить RunTimeError
+
+trait Animal
+case class Cat(name: String) extends Animal
+case class Dog(age: Int) extends Animal
+
+val catBox = new Box[Cat] {
+    override val value: Cat = Cat("Sinus")
+    override def contains(a: Cat): Boolean = value.name == a.name
+}
+val animalBox: Box[Animal] = catBox
+animalBox.contains(Dog(12)) // error
+                </code></pre>
+            </div>
+            <p>К счастью, компилятор не даст нам сделать эту ошибку. Во время компиляции будет ошибка:</p>
+            <p>Covariant type A occurs in contravariant position in type A of value a</p>
+        </section>
+        <section>
+            <h2>Вариантность</h2>
+            <p><span class="corp-name">Ковариантность (Covariance)</span> </p>
+            <div class="code-block">
+                <pre><code class="scala">
+trait Box[+A] {
+    val value: A
+    def contains[B >: A](a: B): Boolean
+}
+
+val catBox = new Box[Cat] {
+    override val value: Cat = Cat("Sinus")
+    override def contains(a: Cat): Boolean = value.name == a.name // compile error
+}
+
+val catBox = new Box[Cat] {
+    override val value: Cat = Cat("Sinus")
+    override def contains[B >: Cat](a: B): Boolean = ???
+}
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Вариантность</h2>
+            <p><span class="corp-name">Контрвариантность (Contravariance)</span> </p>
+            <p>Ковариантность: B <: A => F[A] <: F[B]</p>
+            <p>Printer[Animal] <: Printer[Cat]</p>
+            <div class="code-block">
+                <pre><code class="scala">trait Printer[-T] {
+  def print(value: T): String
+}
+
+val catPrinter = new Printer[Cat] {
+  override def print(cat: Cat): String =
+    cat.name + " is a cat!"
+}
+
+val animalPrinter = new Printer[Animal] {
+  override def print(animal: Animal): String =
+    animal match {
+      case Cat(name) => name + " is a cat!"
+      case Dog(name) => name + " is a dog!"
+    }
+}                </code></pre>
+            </div>
+            <p><span class="corp-name">Printer[Cat]</span> - может печатать <span class="corp-name">только котов</span></p>
+            <p><span class="corp-name">Printer[Animal]</span> - может печатать <span class="corp-name">любых животных</span></p>
+        </section>
+        <section>
+            <h2>Стандартные коллекции</h2>
+
+            <p>Option</p>
+            <p>Множества (Set)</p>
+            <p>Отображения (Map)</p>
+            <p>Последовательности (Seq)</p>
+
+            <p>По умолчанию используются неизменяемые (иммутабельные) коллекции.</p>
+            <div class="code-block">
+                <pre><code class="scala">
+val list = List(1, 2, 3)
+//list += 4  // value += is not a member of List[Int]
+//list(0) = 4000  // value update is not a member of List[Int]
+
+val mutList = collection.mutable.MutableList(1, 2, 3)
+// MutableList(1000, 2, 3, 4)
+mutList += 4
+mutList(0) = 1000
+
+val array = Array(1, 2, 3) // Array(1000, 2, 3)
+//array += 4  // value += is not a member of Array[Int]
+array(0) = 1000
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Стандартные коллекции</h3>
+            <p>Неизменяемые</p>
+            <img src="img/lecture_3/immutable.svg" width="1121" height="800"/>
+        </section>
+        <section>
+            <h3>Стандартные коллекции</h3>
+            <p>Изменяемые</p>
+            <img src="img/lecture_3/mutable.svg" width="1121" height="800"/>
+        </section>
+        <section>
+            <h2>Стандартные коллекции</h2>
+            <p><span class="corp-name">Array</span></p>
+            <img src="img/lecture_3/one-dimension-array-in-java.png">
+            <div class="code-block">
+                <pre><code class="scala">
+val arr1 = new Array[Int](5)
+//arr1: Array[Int] = Array(0, 0, 0, 0, 0)
+
+val arr2 = Array(5, 4, 3, 2, 1)
+//arr2: Array[Int] = Array(5, 4, 3, 2, 1)
+
+val item = arr2(0)
+//item: Int = 5
+
+arr2.update(0, 9)
+val item2 = arr2(0)
+//item: Int = 9
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции</h2>
+            <p><span class="corp-name">List</span></p>
+            <p>Списки в scala однородны и ковариантны (List[+A]).</p>
+            <img src="img/lecture_3/linked-list.png">
+        </section>
+        <section>
+            <h2>Стандартные коллекции</h2>
+            <p><span class="corp-name">List</span></p>
+            <p>Создание списков</p>
+            <div class="code-block">
+                <pre><code class="scala">
+val list0 = List() // list0: List[Nothing] = List()
+
+val list1 = List(1, 2, 3) // list1: List[Int] = List(1, 2, 3)
+
+val list2 = List.range(1, 5) // list2: List[Int] = List(1, 2, 3, 4)
+
+val list2a = List.range(1, 5, 2) // list2a: List[Int] = List(1, 3)
+
+val list3 = List.fill(5)("t") // list3: List[String] = List("t", "t", "t", "t", "t")
+
+val list4 = List.tabulate(5)(n => n / 2.0) // list4: List[Double] = List(0.0, 0.5, 1.0, 1.5, 2.0)
+
+//Nil - пустой список
+
+val list5 = Nil // d: Nil.type = List()
+
+val list6 = 3 :: 2 :: 1 :: Nil // list: List[Int] = List(3, 2, 1)
+
+val list6a = 4 :: list6 //  List(4, 3, 2, 1)
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции</h2>
+            <p><span class="corp-name">List</span></p>
+            <p>Как извлечь элементы List</p>
+            <div class="code-block">
+                <pre><code class="scala">
+val list = List(1, 2, 3, 4, 5)
+
+// индексация списка с помощью круглых скобок (O(n))
+val e1 = List(3) // 4
+
+// шаблоны
+val List(a, b, c) = List(1, 2, 3)
+
+val x :: y :: z = List(1, 2, 3) // z == List(3)
+
+val m :: n :: k = list // k == List(3, 4, 5)
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции</h2>
+            <p><span class="corp-name">List</span></p>
+            <p>Как извлечь элементы List</p>
+            <div class="code-block">
+                <pre><code class="scala">
+// pattern-matching
+List(1,2,3) match {
+    case x => "one"
+    case x :: y => "two"
+    case x :: y :: z => "three"
+} // res0: String = one
+
+
+List(1,2,3,4,5) match {
+    case x :: y :: z => "three"
+    case x :: y => "two"
+    case x => "one"
+} // res1: String = "three"
+
+List(1,2,3) match {
+    case x :: Nil => "one"
+    case x :: y :: Nil => "two"
+    case x :: y :: z :: Nil => "three"
+}
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции</h2>
+            <p><span class="corp-name">List</span></p>
+            <p>Как добавить элементы</p>
+            <div class="code-block">
+                <pre><code class="scala">3 :: List(1,2)
+// res3: List[Int] = List(3, 1, 2)
+
+//List(1, 2) :: 3 // value :: is not a member of Int
+
+List(1, 2) :+ 3 // вставка в конец List - плохая идея
+// res4: List[Int] = List(1, 2, 3)
+
+3 +: List(1, 2) // +: - может использовать для любых коллекций
+// res5: List[Int] = List(3, 1, 2)
+
+// Операция только для листов
+val `2list1` = List(1, 2) ::: List(3, 4, 5)
+//`2list1`: List[Int] = List(1, 2, 3, 4, 5)
+
+val `2list2`= List() ::: List(1, 2, 3)
+//`2list2`: List[Int] = List(1, 2, 3)
+
+// Операция для любых коллекций
+List(1, 2, 3) ++ List(4, 5)
+// res5: List[Int] = List(1, 2, 3, 4, 5)
+List(1,2) ++ Some(3)
+// res8: List[Int] = List(1, 2, 3)
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы первого порядка</h2>
+            <p><span class="corp-name">length, indices</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+val len1 = List(1, 2, 3).length
+//len1: Int = 3
+
+val len2 = List().length
+//len2: Int = 0
+
+val len3 = Nil.length
+//len3: Int = 0
+
+val idx1 = List(1, 2, 3).indices
+//idx1: Range = Range(0, 1, 2)
+
+val idx2 = Nil.indices
+//idx2: Range = Range()
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы первого порядка</h2>
+            <p><span class="corp-name">head, tail, isEmpty </span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+val head = List(1, 2, 3).head
+//head: Int = 1
+
+List(1, 2, 3).headOption
+// res5: Option[Int] = Some(1)
+
+val tail = List(1, 2, 3, 4, 5).tail
+//tail: List[Int] = List(2, 3, 4, 5)
+
+val isEmpty = List(1, 2, 3, 4, 5).isEmpty
+//isEmpty: Boolean = false
+
+val isEmptyNil = Nil.isEmpty
+//isEmptyNil: Boolean = true
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы первого порядка</h2>
+            <p><span class="corp-name">last, init, reverse</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+val abcde = List('a', 'b', 'c', 'd', 'e')
+//abcde: List[Char] = List('a', 'b', 'c', 'd', 'e')
+
+val last1 = abcde.last
+//last1: Char = 'e'
+
+val init1 = abcde.init
+//init1: List[Char] = List('a', 'b', 'c', 'd')
+
+List().init
+//java.lang.UnsupportedOperationException: init of empty list
+//  scala.collection.immutable.Nil$.init(List.scala:596)
+//  ...
+
+List().last
+//java.util.NoSuchElementException: last of empty list
+//  scala.collection.immutable.Nil$.last(List.scala:595)
+//  ...
+
+val edcba = List("e", "d", "c", "b", "a")
+//edcba: List[String] = List("e", "d", "c", "b", "a")
+
+val reverse1 = edcba.reverse
+//reverse1: List[String] = List("a", "b", "c", "d", "e")
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы первого порядка</h2>
+            <p><span class="corp-name">contains, distinct</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+List(1, 2, 3).contains(3)
+// Boolean = true
+
+List(1, 2, 3).contains(0)
+// Boolean = false
+
+List(1, 2, 2, 3, 3, 3).distinct
+// res2: List[Int] = List(1, 2, 3)
+
+case class Cat(name: String)
+
+List(Cat("Sam"), Cat("Nyan"), Cat("Nyan")).distinct
+// List(Cat("Sam"), Cat("Nyan"))
+
+class SimpleCat(name: String)
+List(new SimpleCat("Nyan") :: new SimpleCat("Nyan")).distinct.length
+// 2
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы первого порядка</h2>
+            <p><span class="corp-name">drop, take, splitAt</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+val abcde = List('a', 'b', 'c', 'd', 'e')
+
+val teke1 = abcde.take(2)
+//teke1: List[Char] = List('a', 'b')
+
+val drop1 = abcde.drop(2)
+//drop1: List[Char] = List('c', 'd', 'e')
+
+val splitat1 = abcde.splitAt(2)
+//(List('a', 'b'), List('c', 'd', 'e'))
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы первого порядка</h2>
+            <p><span class="corp-name">flatten</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+List(List(1, 2), List(3), List(), List(4,5)).flatten
+//List[Int] = List(1, 2, 3, 4, 5)
+
+val flatten2 = List(1, 2, 3).flatten
+//No implicit view available from Int => IterableOnce[B]
+//val flatten2 = List(1, 2, 3).flatten
+
+List(List(List(), List(1)), List(List(2))).flatten
+//List[List[Int]] = List(List(), List(1), List(2))
+
+List(Some(1), Some(2), None).flatten
+// : List[Int] = List(1, 2)
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы первого порядка</h2>
+            <p><span class="corp-name">zip, unzip</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+val abcde = List('a', 'b', 'c', 'd', 'e')
+
+val zip1 = abcde.indices.zip(abcde)
+//  Vector((0, 'a'), (1, 'b'), (2, 'c'), (3, 'd'), (4, 'e'))
+
+val zip2 = abcde.zip(List(1, 2, 3))
+// List(('a', 1), ('b', 2), ('c', 3))
+
+val zipIdx = abcde.zipWithIndex
+// List(('a', 0), ('b', 1), ('c', 2), ('d', 3), ('e', 4))
+
+val unzip = zip2.unzip
+// (List('a', 'b', 'c'), List(1, 2, 3))
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы первого порядка</h2>
+            <p><span class="corp-name">toString, mkString</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+val abcde = List('a', 'b', 'c', 'd', 'e')
+val abcStr = abcde.toString
+//abcStr: String = "List(a, b, c, d, e)"
+
+val list = List(1, 2, 3, 4, 5)
+val lstStr = list.toString
+//lstStr: String = "List(1, 2, 3, 4, 5)"
+
+val str1 = abcde.mkString("[", ",", "]")
+//str1: String = "[a,b,c,d,e]"
+
+val str3 = abcde.mkString(",")
+//str3: String = "a,b,c,d,e"
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы высшего порядка</h2>
+            <p><span class="corp-name">map, foreach</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+List(1,2,3).map(_ * 2).map(_.toString())
+// res0: List[String] = List("2", "4", "6")
+
+List(1,2,3).foreach(_.toString()) // ()
+
+List(1,2,3).foreach(println)
+// 1
+// 2
+// 3
+                </code></pre>
+            </div>
+            <p>Ключевое отличие в том, что <span class="corp-name">map</span> возвращает значение, а <span class="corp-name">foreache</span> делает какой-то сайд-эффект.</p>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы высшего порядка</h2>
+            <p><span class="corp-name">flatMap</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+val listOpt = List(1,2,3).map(Some(_))
+// listOpt: List[Some[Int]] = List(Some(1), Some(2), Some(3))
+listOpt.flatten
+// res3: List[Int] = List(1, 2, 3)
+
+List(1,2,3).flatMap(Some(_))
+// res4: List[Int] = List(1, 2, 3)
+                </code></pre>
+            </div>
+            <p><span class="corp-name">flatMap</span> - это последовательно применённый map, flatten</p>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы высшего порядка</h2>
+            <p><span class="corp-name">map, flatmap</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+val li = 3 :: 2 :: 1 :: Nil
+val filterOpt: Int => Option[Int] = x => if (x % 2 == 0) Some(x) else None
+
+for {
+    item <- li
+    itemPlus = item + 1
+    itemAfterOpt <- filterOpt(itemPlus)
+} yield itemAfterOpt
+// List(4, 2)
+
+li
+    .map { item => val itemPlus = item + 1; (item, itemPlus) }
+    .flatMap { case (item, itemPlus) =>
+        filterOpt(itemPlus)
+            .map(itemAfterOpt => itemAfterOpt)
+    }
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы высшего порядка</h2>
+            <p><span class="corp-name">filter, partition, find, groupBy</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+val filter1 = List(1, 2, 3, 4, 5).filter(_ % 2 == 0)
+//filter1: List[Int] = List(2, 4)
+
+val filter2 = List(1, 2, 3, 4, 5).filter(_ < 0)
+/filter2: List[Int] = List()
+
+val partition1 = List(1, 2, 3, 4, 5).partition(_ % 2 == 0)
+//(List[Int], List[Int]) = (List(2, 4), List(1, 3, 5))
+
+val partition2 = List(1, 2, 3, 4, 5).partition(_ < 0)
+//(List[Int], List[Int]) = (List(), List(1, 2, 3, 4, 5))
+
+val find1 = List(1, 2, 3, 4, 5).find(_ % 2 == 0)
+//find1: Option[Int] = Some(2)
+
+val find2 = List(1, 2, 3, 4, 5).find(_ <= 0)
+//find2: Option[Int] = None
+
+List(Cat("Sam"), Cat("Nyan"), Cat("Nyan")).groupBy(_.name)
+//HashMap(
+//     "Sam" -> List(Cat("Sam")),
+//     "Nyan" -> List(Cat("Nyan"), Cat("Nyan")
+//)
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы высшего порядка</h2>
+            <p><span class="corp-name">distinctBy</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+List(Cat("Sam"), Cat("Nyan"), Cat("Nyan")).groupBy(_.name)
+//HashMap(
+//     "Sam" -> List(Cat("Sam")),
+//     "Nyan" -> List(Cat("Nyan"), Cat("Nyan")
+//)
+
+List(Cat("Sam"), Cat("Nyan"), Cat("Nyan"))
+  .groupBy(_.name)
+  .flatMap(_._2.headOption)
+// List(Cat(name = "Sam"), Cat(name = "Nyan"))
+
+List(Cat("Sam"), Cat("Nyan"), Cat("Nyan")).distinctBy(_.name)
+// List(Cat(name = "Sam"), Cat(name = "Nyan"))
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы высшего порядка</h2>
+            <p><span class="corp-name">takeWhile, dropWhile, span, forAll, exist</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+val takeWhile1 = List(1, 2, 3, -4, 5).takeWhile(_ > 0)
+//takeWhile1: List[Int] = List(1, 2, 3)
+
+val dropWhile1 = List("banana", "pear", "apple", "orange")
+        .dropWhile(_.startsWith("b"))
+//dropWhile2: List[String] = List("pear", "apple", "orange")
+
+val lst = List(1, 2, 3, -4, 5)
+val span1 = lst.span(_ > 0)
+//span1: (List[Int], List[Int]) = (List(1, 2, 3), List(-4, 5))
+
+val span2 = (lst.takeWhile(_ > 0), lst.dropWhile(_ > 0)  )
+//span2: (List[Int], List[Int]) = (List(1, 2, 3), List(-4, 5))
+
+val forall1 = List(1, 2, 3).forall( _ > 0)
+//forall1: Boolean = true
+
+val forall2 = List(1, 2,-3).forall( _ > 0)
+//forall2: Boolean = false
+
+val exists1 = List(1, 2,-3).exists( _ < 0)
+//exists1: Boolean = true
+
+val exists2 = List(1, 2, 3).exists( _ < 0)
+//exists2: Boolean = false
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы высшего порядка</h2>
+            <p><span class="corp-name">foldLeft, foldRight, fold</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+val num = List(1, 2, 3)
+val foldLeft1 = num.foldLeft(0)(_ + _)
+//foldLeft1: Int = 6
+
+val foldLeft2 = num.foldLeft(-6)(_ + _)
+//foldLeft2: Int = 0
+
+val foldRight1 = num.foldRight(0)(_ + _)
+//foldRight1: Int = 6
+
+val foldRight2 = num.foldRight(-6)(_ + _)
+//foldRight2: Int = 0
+
+List(1,2,3).foldLeft("0")((res, num) => res + num.toString)
+// 0123
+
+List(1,2,3).foldRight("0")((num, res) => res + num.toString)
+// 0321
+
+List(1,2,3).fold("")(_ + _.toString())
+// 123
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы высшего порядка</h2>
+            <p><span class="corp-name">foldLeft, foldRight</span></p>
+            <img src="img/lecture_3/fold.png" height="700"/>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы высшего порядка</h2>
+            <p><span class="corp-name">reduceLeft, reduceRight, reduce</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+val num = List(1, 2, 3)
+val reduceLeft1 = lst.reduceLeft(_ + _)
+//reduceLeft1: Int = 6
+
+val reduceLeft2 = num.reduceLeft(_ min _)
+//reduceLeft2: Int = 1
+
+val reduceRight1 = num.reduceRight(_ + _)
+//reduceRight1: Int = 6
+
+val reduceRight2 = num.reduceRight(_ max _)
+//reduceRight2: Int = 3
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы высшего порядка</h2>
+            <p><span class="corp-name">fold VS reduce</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+val emptyLst = List.empty[String]
+
+val foldLeftEmpty = emptyLst.foldLeft("i")(_ + _)
+//foldLeftEmpty: String = "i"
+
+List.empty[Int].reduceLeft(_ + _)
+//UnsupportedOperationException: empty.reduceLeft
+
+List.empty[Int].reduceLeftOption(_ + _)
+// : Option[Int] = None
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: Методы высшего порядка</h2>
+            <p><span class="corp-name">sorted, sortWith</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+val a = List(10, 5, 8, 1, 7).sorted
+//sort4: List[Int] = List(1, 5, 7, 8, 10)
+
+case class Cat (name: String, age: Int)
+
+val s = List(Cat("Мурзик", 2), Cat("Murka", 1)).sorted
+//  error: No implicit Ordering defined for Cat.
+
+List(4, 1, 5, 2, 3).sortWith(_ > _)
+// res9: List[Int] = List(5, 4, 3, 2, 1)
+
+case class Cat(name: String, age: Int)
+
+val s = List(Cat("Мурзик", 2), Cat("Murka", 1))
+// s: List[Cat] = List(Cat("Мурзик", 2), Cat("Murka", 1))
+
+s.sortWith(_.name < _.name)
+// res10: List[Cat] = List(Cat("Murka", 1), Cat("Мурзик", 2))
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции: представления (views)</h2>
+            <p>Представление - это <span class="corp-name">базовая коллекция</span>, для которой все трансформеры выполняются <span class="corp-name">ленивым</span> образом.</p>
+            <div class="code-block">
+                <pre><code class="scala">
+List(1, 2, 3)
+    .map(_ * 2) // List(2, 4, 6)
+    .map(_ + 3) // List(5, 7, 9)
+
+List(1, 2, 3)
+    .view
+    .map(_ * 2)
+    .map(_ + 3)
+    .toList // List(5, 7, 9)
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции</h2>
+            <p><span class="corp-name">Map</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+// Как создать отображение
+val map1 = Map()
+
+val map2 = Map(("Alex", 32), ("Sid", 22), ("Max", 44))
+
+val map3 = Map(
+    "Alex" -> 32,
+    "Sid" -> 22,
+    "Max" -> 44,
+)
+
+val age: Int = map3("Max")
+// возможен NoSuchElementException
+
+val age2: Option[Int] = map3.get("Dan")
+
+val age3: Int = map3.getOrElse("Dan", 0)
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции</h2>
+            <p><span class="corp-name">Map</span></p>
+            <p><span class="corp-name">keys, values, map</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+val ageMap = Map("Alex" -> 32, "Sid" -> 22, "Max" -> 44)
+
+val keys: Iterable[String] = ageMap.keys
+
+val values: Iterable[Int] = ageMap.values
+
+val mapWithMap1 = ageMap.map { keyAndValue =>
+    keyAndValue match {
+        case (key, value) => key + value.toString
+    }
+}
+
+val mapWithMap2 = ageMap.map {
+    case (key, value) => key + value
+}
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции</h2>
+            <p><span class="corp-name">Option</span></p>
+            <p>Располагается в пакете <i>scala</i>, а не вместе с коллекциями: <span class="corp-name"><i>scala.Option</i></span></p>
+            <p>Может содержать ноль (<span class="corp-name">None</span>) или один (<span class="corp-name">Some</span>) элемент.</p>
+            <div class="code-block">
+                <pre><code class="scala">// Как Option выглядит внутри
+sealed abstract class Option[+A] extends IterableOnce[A] with Product with Serializable { ... }
+
+final case class Some[+A](value: A) extends Option[A] {  def get: A = value  }
+
+case object None extends Option[Nothing] {  def get: Nothing = throw new NoSuchElementException("None.get")  }
+
+// Как использовать
+val option1: Option[Int] = Option(1)
+val option2: Option[Int] = Option.empty[Int]
+
+val some: Option[Int] = Some(1)
+val none: Option[Int] = None
+
+val pipeline = some
+    .map(_ + 1)
+    .filter(_ % 2 == 1)
+    .orElse(None)
+    .getOrElse(-1)
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции</h2>
+            <p><span class="corp-name">Try</span></p>
+            <p><span class="corp-name">Try</span> позволяет обрабатывать возможные исключения</p>
+            <div class="code-block">
+                <pre><code class="scala">
+import scala.util.{Failure, Success, Try}
+
+val result = Try(12 / 0) match {
+        case Failure(exception: ArithmeticException) => -1
+        case Failure(exception) => -1
+        case Success(value) => value
+    }
+
+// На Try можно делать map и flatMap
+val try1 = Try(12).map(_ + 1).flatMap(v => Try(v / 0))
+
+// преобразование к другим типам
+val toOption: Option[Int] = try1.toOption
+val toEither: Either[Throwable, Int] = try1.toEither
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h2>Стандартные коллекции</h2>
+            <p><span class="corp-name">Either</span></p>
+            <p><span class="corp-name">Either</span> содержит либо значение <span class="corp-name">(Right)</span>, либо ошибку <span class="corp-name">(Left)</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+val either: Either[Throwable, Int] = Either.cond(10 > 22, right = 1, left = new ArithmeticException)
+
+val right: Right[Nothing, String] = Right("some value")
+val left: Left[String, Nothing] = Left("some error")
+
+val pipeline: Either[String, String] = right.map(_ + " 2").flatMap(_ => left)
+
+val toOption = either.toOption
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Полезные ссылки</h3>
+            <a href="https://docs.scala-lang.org/tour/tour-of-scala.html">Scala docs</a>
+        </section>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+        // Full list of configuration options available at:
+        // https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize({
+            controls: false,
+            progress: true,
+            history: true,
+            center: true,
+            slideNumber: true,
+
+            transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+            // Optional reveal.js plugins
+            dependencies: [
+                {
+                    src: 'lib/js/classList.js', condition: function () {
+                        return !document.body.classList;
+                    }
+                },
+                {
+                    src: 'plugin/markdown/marked.js', condition: function () {
+                        return !!document.querySelector('[data-markdown]');
+                    }
+                },
+                {
+                    src: 'plugin/markdown/markdown.js', condition: function () {
+                        return !!document.querySelector('[data-markdown]');
+                    }
+                },
+                {
+                    src: 'plugin/highlight/highlight.js', async: true, condition: function () {
+                        return !!document.querySelector('pre code');
+                    }, callback: function () {
+                        hljs.initHighlightingOnLoad();
+                    }
+                },
+                {src: 'plugin/zoom-js/zoom.js', async: true},
+                {src: 'plugin/notes/notes.js', async: true}
+            ]
+        });
+
+        window.addEventListener("mousedown", handleClick, false);
+        window.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+        }, false);
+
+        function handleClick(e) {
+            e.preventDefault();
+            if (e.button === 0) Reveal.next();
+            if (e.button === 2) Reveal.prev();
+        }
+    </script>
+</div>
+</body>
+</html>

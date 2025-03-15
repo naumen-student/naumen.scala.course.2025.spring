@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Базовые концепции Scala</title>
+
+    <meta name="description" content="Базовая Scala. Часть 1.">
+    <meta name="author" content="">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/white.css" id="theme">
+    <link rel="stylesheet" href="css/hljs/vs.css" id="highlight-theme">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+<body>
+<div class="reveal lecture2">
+    <div class="footer">
+            <span class="corp-name"><b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspNAUMEN</b>
+    </div>
+    <div class="slides">
+        <section>
+            <h2>Scala basic I</h2>
+            <h3><span class="corp-name">от переменных до ООП</span></h3>
+            <p>Дмитрий Быков</p>
+        </section>
+    </div>
+    <div class="slides">
+        <section>
+            <h2>Пара общих слов о Scala</h2>
+            <p>Scala — <span class="corp-name">мультипарадигменный</span> язык программирования
+            (сочетает <span class="corp-name">ФП</span> и <span class="corp-name">ООП</span>)</p>
+            <p>Scala — <span class="corp-name">строго типизированный</span> язык программирования</p>
+            <p>Scala работает на <span class="corp-name">JVM</span></p>
+        </section>
+        <section>
+            <h2>Hello, world!</h2>
+            <p>Точкой входа в программу считается функция <span class="corp-name">main</span> расположенная в любом объекте.</p>
+            <p>У программы может быть <span class="corp-name">множество точек входа</span>.</p>
+            <div class="code-block">
+                <pre><code>
+object Test {
+    def main(args: Array[String]): Unit = {
+        println("Hello, world!")
+    }
+}
+                </code></pre>
+            </div>
+            <p>При наследовании от App, <span class="corp-name">тело объекта</span> считается телом <span class="corp-name">функции main</span>.</p>
+            <div class="code-block">
+                <pre><code>
+object Test extends App {
+    println("Hello, world!")
+}
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Выражения, значения и переменные</h3>
+            Выражение - это <span class="corp-name">вычислимое утверждение</span>:
+            <div class="code-block">
+                    <pre><code class="scala">42 + 42</code></pre>
+            </div>
+            Результат выражения можно положить в <span class="corp-name">изменяемую переменную</span>:
+            <div class="code-block">
+                <pre><code class="scala">var myVar = 42 + 42
+myVar = 10 // Ok</code></pre>
+            </div>
+            <p>Или в <span class="corp-name">неизменяемое значение</span>:</p>
+            <div class="code-block">
+                <pre><code class="scala">val myVal = 42 + 42
+myVal = 10 // Error</code></pre>
+            </div>
+            <h4>В Scala принято использовать <span class="corp-name">неизменяемые значения</span></h4>
+        </section>
+        <section>
+            <h1>Базовые типы</h1>
+        </section>
+        <section>
+            <h3>Базовые типы</h3>
+            <div class="code-block">
+                <pre><code class="scala">val bool: Boolean = true
+val int: Int = 42
+val char: Char = 'a'
+val byte: Byte = 127            // signed
+val short: Short = 255          // signed
+val long: Long = 32
+val float: Float = 2
+val double: Double = 13.0
+val string: String = "Scala"    // String не базовый тип
+val unit: Unit = ()</code></pre>
+            </div>
+            <p>Для значений можно, но <span class="corp-name">не обязательно</span>, явно указывать тип</p>
+            <div class="code-block">
+                <pre><code class="scala">val a: Int = 42
+val b = 42</code></pre>
+            </div>
+            <p>Для задания типов могут использоваться специальные литералы:</p>
+            <div class="code-block">
+                <pre><code class="scala">val hex: Int = 0xff
+val long = 42L
+val float = 42F
+val double = 42D</code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Операторы</h3>
+            <div class="code-block">
+                <pre><code class="scala">
++    -     *     /    %                                         // арифметические операторы
+==   !=    >     <    >=                                        // операторы сравнения
+&&   ||    !                                                    // логические операторы
+&    |     ^     ~    <<    >>    >>>                           // битовые операторы
+=    +=    -=    *=    /=    %=    <<=    >>=    &=    ^=    |= // операторы присвоения
+()   []    ,     ;                                              // прочие
+                </code></pre>
+            </div>
+            <p>Приоритет операторов (от высшего к низшему):</p>
+            <img src="img/lecture_2/operators.png"/>
+        </section>
+        <section>
+            <h3>lazy. Ленивые значения</h3>
+            <p>Ключевое слово <span class="corp-name">lazy</span> говорит о том, что значение будет вычислено</p>
+            <p>только <span class="corp-name">при первом обращении к значению</span></p>
+            <div class="code-block">
+                <pre><code class="scala">
+def strWithLog(str: String): String = {
+    println(s"Calculated $str")
+    str
+}
+
+lazy val itWillNotShow = strWithLog("lazy")
+
+val itWillShow = strWithLog("not lazy")
+// сейчас в консоль вывелось Calculated not lazy
+
+itWillNotShow + itWillShow
+// после этой команды в консоль выводиться Calculated lazy
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h1>Управляющие конструкции</h1>
+        </section>
+        <section>
+            <h3>Управляющие конструкции</h3>
+            <b class="corp-name">if/else</b>
+            <div class="code-block">
+                <pre><code class="scala">
+if (false) {
+    println("yes")
+} else if (false) {
+    println("yes yes")
+} else {
+    println("no")
+}
+
+// в случае, когда в теле if/else всего одна команда, фигурные скобки можно не писать
+if (true) println("yes")
+
+if (true)
+    println("yes")
+else
+    println("no")
+                </code></pre>
+            </div>
+            <p>if/else - это <span class="corp-name">вычисляемое выражение</span>, следовательно его результат можно присвоить значению</p>
+            <div class="code-block">
+                <pre><code class="scala">
+val value = if (false) "true" else "false"
+                </code></pre>
+        </section>
+        <section>
+            <h3>Управляющие конструкции</h3>
+            <b class="corp-name">pattern-matching</b>
+            <div class="code-block">
+                <pre><code class="scala">
+val nameNumber = 2
+
+val name = nameNumber match {
+    case 1 => "Alex"
+    case 2 => "Max"
+    case 3 => "Fred"
+    case _ => "Unknown"
+} // out: Max
+
+// проверка регулярных выражений
+val SeriesReg = "([0-9]{4})".r
+
+val series = "1234" match {
+    case SeriesReg(series) => series
+    case _ => "No"
+} // out: 1234
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Управляющие конструкции</h3>
+            <b class="corp-name">pattern-matching</b>
+            <div class="code-block">
+                <pre><code class="scala">
+
+// извлечение данных из структуры
+case class User(id: String, name: String, age: Int)
+
+val userString = User("1234", "Fred", 21) match {
+    case User(_, name, age) => s"$name is $age years old"
+} // out: Fred is 21 years old
+
+val li = List(1, 2, 3, 4) match {
+    case head :: tail  => s"first element is $head; others is $tail"
+    case Nil => "empty list"
+} // out: first element is 1; others is List(2, 3, 4)
+
+// использование "гардов" (guards)
+val str = 14 match {
+    case x if x % 2 == 0 => "Even"
+    case _ => "Odd"
+} // out: Even
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Управляющие конструкции</h3>
+            <b class="corp-name">pattern-matching</b>
+            <div class="code-block">
+                <pre><code>
+// проверка принадлежности к типу
+sealed trait Animal
+case class Cat(name: String, age: Int) extends Animal
+case class Dog(name: String) extends Animal
+case class Bird(name: String, flyHeight: Double) extends Animal
+
+val animal: Animal = Dog("Rex")
+
+animal match {
+    case Cat(name, age) => println(s"Cat with name = $name and age = $age")
+    case Dog(name) => println(s"Dog with name = $name")
+    case Bird(name, flyHeight) => println(s"Bird with name = $name and flyHeight = $flyHeight")
+}
+
+animal match {
+    case _: Cat => println("Just cat")
+    case _: Dog => println("Just dog")
+    case _: Bird => println("Just bird")
+}
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Управляющие конструкции</h3>
+            <b class="corp-name">while/do-while</b>
+            <div class="code-block">
+                <pre><code class="scala">
+// while
+var i = 0
+while (i < 5) {
+    print(s"$i; ")
+    i += 1
+}
+
+// do-while
+var j = 0
+do {
+    println(s"$j; ")
+    j += 1
+} while (j < 5)
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Управляющие конструкции</h3>
+            <b class="corp-name">for</b>
+            <div class="code-block">
+                <pre><code class="scala">
+val li = List("a", "b", "c")
+val ma = Map(("Max", 18), ("Alex", 24))
+
+// перебор элементов коллекции
+for (elem <- li) println(elem)
+for ((name, age) <- ma) println(s"$name is $age years old")
+
+// генератор последовательностей
+for (i <- 1 to 3) println(i)        // от 1 до 3 включительно
+for (i <- 1 until  3) println(i)    // от 1 до 3, исключая 3
+
+for (i <- Range.inclusive(1, 3)) println(i)           // от 1 до 3 включительно
+for (i <- Range(1, 3)) println(i)                     // от 1 до 3, исключая 3
+for (i <- Range(1, 10, 3)) print(s"$i ")              // Range с шагом ; out: 1 4 7
+
+for {
+    i <- 1 to 3
+    k <- 1 until 3
+} print(s"$i : $k | ")   // out: 1 : 1 | 1 : 2 | 2 : 1 | 2 : 2 | 3 : 1 | 3 : 2 |
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Управляющие конструкции</h3>
+            <b class="corp-name">for</b>
+            <div class="code-block">
+                <pre><code class="scala">
+// for - это тоже выражение. Во всех случаях выше for возвращает Unit.
+// Чтобы for начал возвращать значения необходимо использовать ключевое слово yield
+
+val unit: Unit      = for (i <- List(1, 2)) i + 2          // out: Unit
+val list: List[Int] = for (i <- List(1, 2)) yield i + 2    // out: List(3, 4)
+
+// конструкция for-yield называется for-comprehension
+
+val users = Map(
+    "Max" -> 13,
+    "Alex" -> 21,
+    "Fred" -> 41
+)
+// использование "гардов" (guards)
+val filtered = for {
+    (name, age) <- users
+    if age >= 18
+    str = s"$name, you are too old"
+} yield str
+println(filtered) // out: List(Alex, you are too old, Fred, you are too old)
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h1>Функции</h1>
+        </section>
+        <section>
+            <h3>Функции</h3>
+            <b class="corp-name">Функции-значения</b>
+            <div class="code-block">
+                <pre><code class="scala">
+// анонимная функция
+(x: Int) => x.toString
+
+// функцию можно присвоить значению
+val myFunction = (x: Int) => {
+    val x1 = x + 1
+    val x2 = x1 + 1
+    x2 + 1          // последнее вычисляемое выражение в функции является возвращаемым значением функции
+}
+println(myFunction(3))  // out: 6
+
+// множество параметров
+val myBigFunction = (x: Int, y: Int, name: String) => s"$name ${x + y}"
+println(myBigFunction(3, 3, "Max"))   // out: Max 6
+
+// если задать тип значению, то у параметров тип можно не указывать
+val myTypedFunction: (Int, String) => String =
+    (x, y) => s"$y $x"
+val myTypedFunction2: Function2[Int, String, String] =
+    (x, y) => s"$y $x"
+
+// тип (Int, String) => String - это синтаксический сахар для типа Function2[Int, String, String]
+// максимум функция может быть от 22х параметров
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Функции</h3>
+            <b class="corp-name">Функции-методы</b>
+            <div class="code-block">
+                <pre><code class="scala">
+def doubleSum(x: Int, y: Int): Int = {
+    val z = x + y
+    z * 2
+}
+
+def plus(x: Int, y: Int): Int = x + y
+
+// для методов можно задать значения по умолчанию
+def method(x: Int = 20, y: Int = 20): Int = x + y
+println(method())        // out: 40
+println(method(30))      // out: 50
+println(method(30, 30))  // out: 60
+
+// передача в функцию именованных параметров
+def wordFrom(w1: String = "one",
+             w2: String = "two",
+             w3: String = "three",
+             w4: String = "four") = s"$w1 $w2 $w3 $w4"
+
+println(wordFrom(w2 = "2", w4 = "4"))
+// out: "one 2 three 4"
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Функции</h3>
+            <b class="corp-name">Функции высшего порядка</b>
+            <div class="code-block">
+                <pre><code class="scala">
+// функция, принимающая другую функцию в качестве параметра - функция высшего порядка
+def sumWithExtractor(extractor: String => Int, key: String, x: Int): Int =
+    extractor(key) + x
+
+val ext: String => Int = str => str.length
+def ext2(s: String): Int = s.length
+
+println(sumWithExtractor(ext, "000", 1))  // out: 4
+println(sumWithExtractor(ext2, "000", 1))  // out: 4
+
+// функция так же может возвращать другую функцию
+def functionMethod(s: String): Int => Int =
+    x => s.length + x
+
+println(functionMethod("000")(1))  // out: 4
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Функции</h3>
+            <b class="corp-name">Множественные списки параметров и каррирование</b>
+            <div class="code-block">
+                <pre><code class="scala">
+// функция с двумя списками параметров
+def method(x: Int, s: String = "some")(y: Int, s2: String): String = (x + y).toString + s + s2
+
+// каррированные функции
+val a = method _                // (Int, String) => (Int, String) => String
+val b = method(1, "a") _        // (Int, String) => String
+val c = method(1, "a")(12, _)   // String => String
+
+println(a(1, "a")(12, "b"))  // out: 13ab
+println(b(12, "b"))          // out: 13ab
+println(c("b"))              // out: 13ab
+
+// зачем ещё могут быть нужны функции с множественным списком аргументов
+def syntax(i: Int)(func: String => String): String = func((i + 1).toString)
+
+val res = syntax(10) { x =>
+    s"| $x |"
+}
+
+println(res)  // out: | 11 |
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Функции</h3>
+            <b class="corp-name">call-by-name / call-by-value</b>
+            <div class="code-block">
+                <pre><code class="scala">
+// возвращаемся к теме ленивых вычислений
+// обратите внимание на типы byValue и byName
+def callByValue(byValue: String, flag: Boolean): String = if (flag) byValue else "No"
+def callByName(byName: => String, flag: Boolean): String = if (flag) byName else "No"
+
+def calculation(s: String): String = {
+    println(s"Calculating $s")
+    s
+}
+
+callByValue(calculation("byValue true"), true)    // out: Calculating byValue true
+callByValue(calculation("byValue false"), false)  // out: Calculating byValue false
+callByName(calculation("byName true"), true)      // out: Calculating byName true
+callByName(calculation("byName false"), false)    // ...
+
+// call by name функция-значение
+val callByName: (=> String, Boolean) => String = (byName, flag) => if (flag) byName else "No"
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Функции и методы</h3>
+            <b class="corp-name">Рекурсия</b>
+            <div class="code-block">
+                <pre><code class="scala">
+def fibOld(n: Int): List[Int] = {
+    var res = List.empty[Int]
+    var i = n
+    while (i >= 1) {
+        res match {
+            case Nil => res = List(1)
+            case _ :: Nil => res = List(1, 1)
+            case first :: second :: _ => res = first + second :: res
+        }
+        i -= 1
+    }
+    res
+}
+
+// функции помеченные аннотацией tailrec обязаны быть функциями с хвостовой рекурсией
+@tailrec
+def fib(n: Int, acc: List[Int]): List[Int] =
+    if (n < 1) acc
+    else acc match {
+        case Nil => fib(n - 1, List(1))
+        case _ :: Nil => fib(n - 1, List(1, 1))
+        case first :: second :: _ => fib(n - 1, first + second :: acc)
+    }
+
+println(fibOld(10))    // out: List(55, 34, 21, 13, 8, 5, 3, 2, 1, 1)
+println(fib(10, Nil))  // out: List(55, 34, 21, 13, 8, 5, 3, 2, 1, 1)
+                </code></pre>
+            </div>
+        </section>
+        <section><h1>Иерархия типов</h1></section>
+        <section>
+            <h3>Система типов</h3>
+            <img src="img/lecture_2/types.png"  width="1121" height="700"/>
+        </section>
+        <section>
+            <h3>Преобразование типов</h3>
+            <img src="img/lecture_2/numeric-types.png"/>
+            <p>Для <span class="corp-name">явного преобразования</span> типов используется специальные функции, объявленные на самих типах:</p>
+            <div class="code-block">
+                <pre><code class="scala">val short = 42.toShort
+val int = "42".toInt</code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Система типов</h3>
+            <b class="corp-name">Any</b>
+            <p>Any - <span class="corp-name">надтип всех типов</span> в языке. Supertype</p>
+            <div class="code-block">
+                <pre><code class="scala">
+// компилятор выведет тип Any как общий тип между Int и String
+val any: Any =
+    if (true)
+        12
+    else
+        "string"
+
+// каждый значение в языке может быть приведено к Any
+val any0: Any = 12
+val any1: Any = "String"
+val any2: Any = 12.0
+val any3: Any = Right(Some(Left(Some(None)))) // изначально это тип Either[Option[Either[Option[Option[]]]]]
+val any4: Any = (x: Int) => x.toString
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Система типов</h3>
+            <b class="corp-name">AnyVal</b>
+            <p>AnyVal - <span class="corp-name">тип оберток над значениями</span></p>
+            <p>Компилятор с такими типами обходится по особенному - стремится оптимизировать так, чтобы <span class="corp-name">обертка не создавала реальный объект в памяти</span></p>
+            Использование:
+            <p>примитивы - Int, Long, Double, и т.д.</p>
+            <p>Обертки позволяют добавить методы или дополнительные типы</p>
+            <div class="code-block">
+                <pre><code class="scala">
+// Помогает работать с примитивными типами как с чем-то осмысленным
+case class Age(val value: Int) extends AnyVal
+def isOlderThen18(age: Age): Boolean = age.value >= 18
+
+// добавление операций
+class Meter(val value: Double) extends AnyVal {
+    def +(m: Meter): Meter = new Meter(value + m.value)
+}
+new Meter(3.4) + new Meter(4.3) // после компиляции здесь просто будут операции над Double
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Система типов</h3>
+            <b class="corp-name">Unit</b>
+            <p>Тип с единственным значением "()"</p>
+            <p>Используется в местах где в C#/Java стоял бы <span class="corp-name">"void"</span></p>
+            <p>Обычно <span class="corp-name">связано с сайд-эффектами</span> (печать в консоль, запись в <br>базу, мутацию какого-то внешнего объекта, и т.д.)</p>
+            <p>Значения "()" <span class="corp-name">не существует во время исполнения</span> (абстракция на уровне компилятора)</p>
+            <div class="code-block">
+                <pre><code class="scala">
+def getUnit: Unit = ()
+val unit: Unit = getUnit
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Система типов</h3>
+            <b class="corp-name">AnyRef</b>
+            <p>AnyRef - <span class="corp-name">надтип для всех <b>ссылочных типов</b></span>.</p>
+            <p>В jvm - соответствует java.lang.Object, т.е. объектам в heap</p>
+            <p>Использование:</p>
+            <p>В практике почти не используется, но нужен для полноты системы типов</p>
+        </section>
+        <section>
+            <h3>Система типов</h3>
+            <p>Null</p>
+            <p>Null - <span class="corp-name">подтип для всех подтипов AnyRef</span>.</p>
+            <p>Т.е. для любого X <: AnyRef справедливо Null <: X.</p>
+            <p>Это делается автоматически на уровне компилятора.</p>
+            <p>Литерал <span style="color: orangered">null</span> имеет этот тип.</p>
+            <p>На место любого ссылочного типа можно подставить <span class="corp-name">null</span>.</p>
+            <p>Также это позволяет работать системе вывода типов при проставлении <span class="corp-name">null</span>.</p>
+            <div class="code-block">
+                <pre><code class="scala">
+val myNull: Null = <span style="color: blue">null</span>
+
+val string: String = if (randomBoolean) {
+    "Hello world" // String
+} else {
+    <span style="color: blue">null</span> // Null
+}
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Система типов</h3>
+            <b class="corp-name">Nothing</b>
+            <p>Nothing - <span class="corp-name">подтип всех типов</span>, также называемый bottom type.</p>
+            <p>Т.е. для любого X справедливо Nothing <: X.</p>
+            <p>В Scala <span class="corp-name">нет значений с типом Nothing</span>.</p>
+            <p>Нужен для полноты системы типов.</p>
+            <p>Выражение в результате которого выбрасывается exception имеет тип Nothing.</p>
+            <div class="code-block">
+                <pre><code class="scala">
+val int: Int = if (randomBoolean) {
+    42 // Int
+} else {
+    ??? // Nothing (??? - функция, которая при вызове кидает NotImplementedException)
+}
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Система типов</h3>
+            <img src="img/lecture_2/types.png"  width="1121" height="700"/>
+        </section>
+        <section>
+            <h1>ООП</h1>
+        </section>
+        <section>
+            <h3>ООП</h3>
+            <b class="corp-name">Классы</b>
+            <p>Класс описывает с помощью ключевого слова <span class="corp-name">class</span>.
+            Для классов <span class="corp-name">всегда определён конструктор</span> по умолчанию, который
+            сохраняет параметры, указанные после имени класса, в <span class="corp-name">приватные поля класса</span>.<br/>
+            Чтобы поле стало публичным, перед именем параметра необходимо указать val или var. </p>
+            <div class="code-block">
+                <pre><code class="scala">
+class Person(name: String, val age: Int) {
+    // внутри класс можно определять приватные и публичные поля
+    val address = "some address"
+    private val workingHours = 21
+    // приватные и публичные функции
+    def sayHelloTo(to: String): String = s"Hello, $to"
+    private def thingAbout(thought: String): Unit = println(s"$name think about $thought")
+
+    // функции, вызываемые в теле класса, будут вызываться при каждой инициализации
+    println("Create Fred")
+}
+
+val fred = new Person("Fred", 21)
+// println(fred.name) ошибка, так как name - приватное поле класса
+println(fred.age)
+fred.sayHelloTo("Max")
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>ООП</h3>
+            <b class="corp-name">Вспомогательные конструкторы</b>
+            <p>Для каждого класса можно <span class="corp-name">(но не стоит)</span> объявлять вспомогательные конструкторы <span class="corp-name">(auxiliary constructors)</span>.</p>
+            <div class="code-block">
+                <pre><code class="scala">
+class Person(private var firstName: String, private var secondName: String) {
+    // для конструктора не указывается тип и не ставится знак =
+    def this(fullName: String) {
+        // обязательно в самой первой команде использовать конструктор по умолчанию
+        this("", "")
+        this.firstName = fullName.split(" ").head
+        this.secondName = fullName.split(" ").last
+    }
+
+    def printName: Unit = println(s"$firstName $secondName")
+}
+val fred = new Person("Fred Black")
+fred.printName // out: Fred Black
+
+// конструктор по умолчанию можно сделать приватным
+class AnotherPerson private (firstName: String, secondName: String) {}
+val error = new AnotherPerson("Name", "SecondName")
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>ООП</h3>
+            <b class="corp-name">case class</b>
+            <div class="code-block">
+                <pre><code class="scala">
+// параметры, передаваемые для создания, в отличии от случая с обычным классом
+// автоматически являются публичными
+case class Person(fistName: String, secondName: String) {
+    def sayName(): Unit = println(s"$fistName $secondName")
+}
+
+// при инициализации можно опустить ключевое слово new
+val fred = Person("Fred", "Black")
+println(fred.fistName) // поле доступно, в отличии от класса
+fred.sayName() // out: Fred Black
+
+// есть возможность копировать с использованием именованных аргументов
+val notFred = fred.copy(fistName = "Max")
+notFred.sayName() // out: Max Black
+
+val fullName = notFred match {
+    // для кейс классов автоматически работает pattern-matching
+    // для просто классов пришлось бы дополнительно писать код
+    case Person(fistName, secondName) => s"$fistName $secondName"
+}
+
+// кейс классы сравниваются по значениям, а не по ссылке
+println(Person("Max", "Black") == Person("Max", "Black")) // out: true
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>ООП</h3>
+            <b class="corp-name">object</b>
+            <p>В scala <span class="corp-name">нет ключевого слова static</span>.</p>
+            <p>Каждый объект гарантированно создаётся всего лишь <span class="corp-name">один раз</span>.</p>
+            <div class="code-block">
+                <pre><code class="scala">
+object MyObject {
+    // объекты конструируются при первом вызове метода из объекта
+    // или при первом присваивании объекта
+    println("MyObject constructed")
+    def getTime: Long = java.time.Instant.now().toEpochMilli
+}
+
+val time = MyObject.getTime // out: MyObject constructed
+val time2 = MyObject.getTime // в консоль ничего дополнительно не выведется
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>ООП</h3>
+            <b class="corp-name">companion object</b>
+            <div class="code-block">
+                <pre><code class="scala">class Circle(val r: Double) {
+    import Circle._
+    // класс имеет доступ к приватным полям объекта-компаньона
+    def area: Double = calculateArea(r)
+}
+// объект-компаньон должен называться именем класса и лежат в одном файле с ним
+object Circle {
+    private def calculateArea(r: Double) = 3.14 * r * r
+
+    // с помощью apply class можно создать, как и case class
+    // однако, apply может возвращать любой тип
+    def apply(r: Double): Circle = new Circle(r)
+    def apply(): Double = 3.14
+
+    // unapply добавлять сделать pattern-matching по классу
+    def unapply(c: Circle): Option[Double] = Some(c.r)
+}
+
+val circle0 = new Circle(12)    // всё ещё можно создать через new
+val circle = Circle(12)         // но можно воспользоваться функцией apply
+println(Circle()) // out: 3.14
+
+circle match {
+    case Circle(r) => r
+}
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>ООП</h3>
+            <b class="corp-name">trait</b>
+            <div class="code-block">
+                <pre><code class="scala">
+// train схож с interface в Java/C#
+trait Math {
+    // private def и val должны быть определены
+    private val PI: Double = 3.14
+    // может содержать только объявление без определения
+    def radius: Double
+    // но можно для функций и значений задать определение по умолчанию
+    def area: Double = PI * radius * radius
+}
+
+// можно создать анонимный экземпляр трейта
+val math = new Math {
+    override def radius: Double = 2
+}
+println(math.area) // out: 12.56
+
+// с помощью extends можно наследовать trait
+case class Circle(radius: Double) extends Math
+val circle = Circle(2)
+println(circle.area) // out: 12.56
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>ООП</h3>
+            <b class="corp-name">abstract class</b>
+            <div class="code-block">
+                <pre><code class="scala">
+// абстрактный класс похож на трейт, за парой исключений
+// для абстрактного класса можно определить конструктор
+abstract class Abstract(val radius: Double, name: String) {
+    private val PI: Double = 3.14
+    def area: Double = PI * radius * radius
+}
+
+class Circle(radius: Double) extends Abstract(radius, "Circle")
+
+val circle = new Circle(2)
+println(circle.area)    // out: 12.56
+println(circle.radius)  // out: 2.0
+// println(circle.name) ошибка
+
+// ещё одно отличие от trait в том, что мы не может наследоваться
+// сразу от двух абстрактных классов
+abstract class Foo
+abstract class Bar
+// class FooBar extends Foo with Bar - ошибка
+
+trait Foo2
+trait Bar2
+// ошибки нет
+class FooBar2 extends Foo2 with Bar2
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>ООП</h3>
+            <b class="corp-name">Наследование</b>
+            <p>В Scala наследование сущностей определяют ключевые слова:
+                <span style="color: orangered">extends</span> и <span style="color: orangered">with</span>.</p>
+            <p><span style="color: orangered">with</span> может быть использовано <span style="color: orangered">только после
+                extends</span> и определяет</p>
+            <p><span style="color: orangered">исключительно наследование от trait</span>.</p>
+            <p>В Scala <span style="color: orangered">частично допускается</span> множественное наследование:</p>
+            <p>сущность может быть наследована <span style="color: orangered">от одного класса и множества трейтов</span></p>
+
+            <div class="code-block">
+                <pre><code class="scala">
+trait Foo
+trait Bar
+trait FooBar
+
+class A extends Foo with Bar with FooBar
+
+trait Foo2
+trait Bar2
+class B extends A with Foo2 with Bar2
+
+// class C extends A with B ошибка
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>ООП</h3>
+            <b class="corp-name">Наследование</b>
+            <p><span style="color: orangered">override</span> и <span style="color: orangered">super</span></p>
+
+            <div class="code-block">
+                <pre><code class="scala">
+trait Foo {
+    def foo: Double
+}
+
+class ClassFoo extends Foo {
+    def foo: Double = 3.14
+}
+
+class ClassFooExtender extends ClassFoo {
+    // для перегрузки в наследнике используется ключевое слово override
+    // для доступ к полям и методам базовой сущности используется ключевое слово super
+    override def foo: Double = super.foo + 3.14
+}
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>ООП</h3>
+            <b class="corp-name">sealed</b>
+            <p>Ключевое слово <span style="color: orangered">sealed</span> пред trait и abstract class <span style="color: orangered">обязывает</span> </p>
+            <p><span style="color: orangered">описывать всех наследников внутри файла, где объявлена наследуемая сущность</span></p>
+
+            <div class="code-block">
+                <pre><code class="scala">
+sealed trait Figure
+case class Point(x: Double, y: Double) extends Figure
+case class Line(x: Point, y: Point) extends Figure
+case class Vector(start: Point, end: Point) extends Figure
+case class Circle(radius: Double) extends Figure
+case class Square(topLeft: Point, width: Double, height: Double) extends Figure
+
+val someFigure: Figure = Circle(12)
+someFigure match {
+    case Point(x, y) => ???
+    case Line(x, y) => ???
+    case Vector(start, end) => ???
+    case Circle(radius) => ???
+    case Square(topLeft, width, height) => ???
+}
+                </code></pre>
+            </div>
+        </section>
+        <section>
+            <h3>Полезные ссылки</h3>
+            <a href="https://docs.scala-lang.org/tour/tour-of-scala.html">Scala docs</a>
+        </section>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+        // Full list of configuration options available at:
+        // https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize({
+            controls: false,
+            progress: true,
+            history: true,
+            center: true,
+            slideNumber: true,
+
+            transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+            // Optional reveal.js plugins
+            dependencies: [
+                {
+                    src: 'lib/js/classList.js', condition: function () {
+                        return !document.body.classList;
+                    }
+                },
+                {
+                    src: 'plugin/markdown/marked.js', condition: function () {
+                        return !!document.querySelector('[data-markdown]');
+                    }
+                },
+                {
+                    src: 'plugin/markdown/markdown.js', condition: function () {
+                        return !!document.querySelector('[data-markdown]');
+                    }
+                },
+                {
+                    src: 'plugin/highlight/highlight.js', async: true, condition: function () {
+                        return !!document.querySelector('pre code');
+                    }, callback: function () {
+                        hljs.initHighlightingOnLoad();
+                    }
+                },
+                {src: 'plugin/zoom-js/zoom.js', async: true},
+                {src: 'plugin/notes/notes.js', async: true}
+            ]
+        });
+
+        window.addEventListener("mousedown", handleClick, false);
+        window.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+        }, false);
+
+        function handleClick(e) {
+            e.preventDefault();
+            if (e.button === 0) Reveal.next();
+            if (e.button === 2) Reveal.prev();
+        }
+    </script>
+</div>
+</body>
+</html>
