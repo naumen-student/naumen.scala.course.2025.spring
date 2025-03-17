@@ -1,40 +1,40 @@
 import utest._
 
 object Test extends TestSuite {
-    val tests = Tests {
-        'test_createTable - {
+    val tests: Tests = Tests {
+        test("test_createTable") {
             val table = new Table(3, 3)
             for (i <- 0 until 9) {
-                assert(table.getCell(i / 3, i % 3).map(_.toString) == Some("empty"))
+                assert(table.getCell(i / 3, i % 3).map(_.toString).contains("empty"))
             }
-            assert(table.getCell(0, -1).map(_.toString) == None)
-            assert(table.getCell(-1, 0).map(_.toString) == None)
-            assert(table.getCell(9, 8).map(_.toString) == None)
-            assert(table.getCell(8, 9).map(_.toString) == None)
+            assert(table.getCell(0, -1).map(_.toString).isEmpty)
+            assert(table.getCell(-1, 0).map(_.toString).isEmpty)
+            assert(table.getCell(9, 8).map(_.toString).isEmpty)
+            assert(table.getCell(8, 9).map(_.toString).isEmpty)
         }
-        'test_numberCell - {
+        test("test_numberCell") {
             val table = new Table(2, 2)
             val cellInt00 = new NumberCell(5)
             val cellInt11 = new NumberCell(2147483647)
             table.setCell(0, 0, cellInt00)
             table.setCell(1, 1, cellInt11)
-            assert(table.getCell(0, 0).map(_.toString) == Some("5"))
-            assert(table.getCell(0, 1).map(_.toString) == Some("empty"))
-            assert(table.getCell(1, 0).map(_.toString) == Some("empty"))
-            assert(table.getCell(1, 1).map(_.toString) == Some("2147483647"))
+            assert(table.getCell(0, 0).map(_.toString).contains("5"))
+            assert(table.getCell(0, 1).map(_.toString).contains("empty"))
+            assert(table.getCell(1, 0).map(_.toString).contains("empty"))
+            assert(table.getCell(1, 1).map(_.toString).contains("2147483647"))
         }
-        'test_stringCell - {
+        test("test_stringCell") {
             val table = new Table(2, 2)
             val cellStr01 = new StringCell("01")
             val cellStr10 = new StringCell("10")
             table.setCell(0, 1, cellStr01)
             table.setCell(1, 0, cellStr10)
-            assert(table.getCell(0, 0).map(_.toString) == Some("empty"))
-            assert(table.getCell(0, 1).map(_.toString) == Some("01"))
-            assert(table.getCell(1, 0).map(_.toString) == Some("10"))
-            assert(table.getCell(1, 1).map(_.toString) == Some("empty"))
+            assert(table.getCell(0, 0).map(_.toString).contains("empty"))
+            assert(table.getCell(0, 1).map(_.toString).contains("01"))
+            assert(table.getCell(1, 0).map(_.toString).contains("10"))
+            assert(table.getCell(1, 1).map(_.toString).contains("empty"))
         }
-        'test_referenceCell - {
+        test("test_referenceCell") {
             val table = new Table(3, 3)
             /*ix = 0*/
             val cellStr00 = new StringCell("00")
@@ -72,6 +72,20 @@ object Test extends TestSuite {
                     case _ => assert(false)
                 }
             }
+        }
+
+        test("test_referenceCellAdvanced") {
+            val table = new Table(1, 4)
+            val cell00 = new ReferenceCell(0, 1, table)
+            table.setCell(0, 0, cell00)
+            val cell01 = new ReferenceCell(0, 2, table)
+            table.setCell(0, 1, cell01)
+            val cell02 = new ReferenceCell(0, 3, table)
+            table.setCell(0, 2, cell02)
+            val cell03 = new ReferenceCell(0, 1, table)
+            table.setCell(0, 3, cell03)
+
+            assert(table.getCell(0, 0).map(_.toString).contains("cyclic"))
         }
     }
 }
