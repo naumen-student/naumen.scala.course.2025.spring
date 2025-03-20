@@ -1,0 +1,15 @@
+PS C:\Users\Я> scala
+Welcome to Scala 2.12.10 (Java HotSpot(TM) 64-Bit Server VM, Java 17.0.12).
+Type in expressions for evaluation. Or try :help.
+
+scala> println ("Hello Scala! This is Tenkacheva Daria Andreevna")
+Hello Scala! This is Tenkacheva Daria Andreevna
+
+scala> println ("Hola Scala! This is Tenkacheva Daria Andreevna")
+Hola Scala! This is Tenkacheva Daria Andreevna
+
+scala> println ("Guten tag Scala! This is Tenkacheva Daria Andreevna")
+Guten tag Scala! This is Tenkacheva Daria Andreevna
+
+scala> println ("Hello Scala! This is avehcakneT airaD anveerdnA")
+Hello Scala! This is avehcakneT airaD anveerdnA
