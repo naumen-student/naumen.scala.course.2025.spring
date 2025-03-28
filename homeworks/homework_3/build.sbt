@@ -2,7 +2,7 @@ name := "Lecture4"
 
 version := "0.1"
 
-scalaVersion := "2.12.10"
+scalaVersion := "2.12.20"
 
 libraryDependencies += "com.lihaoyi" %% "utest" % "0.5.3" % "test"
 
