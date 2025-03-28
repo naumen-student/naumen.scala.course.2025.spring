@@ -23,7 +23,11 @@ object Exercises {
     }
 
     def findSumFunctional(items: List[Int], sumValue: Int) = {
-        (-1, -1)
+        items.zipWithIndex
+          .combinations(2)
+          .find(l => l(0)._1 + l(1)._1 == sumValue)
+          .map(l => (l(0)._2, l(1)._2).swap)
+          .getOrElse((-1, -1))
     }
 
 
@@ -49,7 +53,19 @@ object Exercises {
     }
 
     def tailRecRecursion(items: List[Int]): Int = {
-        1
+        @tailrec
+        def loop(items: List[Int], index: Int, result: Int): Int = {
+            items match {
+                case head :: tail =>
+                    if (head % 2 == 0) {
+                        loop(tail, index - 1, head * result +index)
+                    } else {
+                        loop(tail, index - 1, index - head * result)
+                    }
+                case _ => result
+            }
+        }
+        loop(items.reverse, items.length, 1)
     }
 
     /**
@@ -60,7 +76,27 @@ object Exercises {
      */
 
     def functionalBinarySearch(items: List[Int], value: Int): Option[Int] = {
-        None
+        @tailrec
+        def search(low: Int, high: Int): Option[Int] = {
+            if (low > high) {
+                None
+            } else {
+                val mid = (low + high) / 2
+                items.lift(mid) match {
+                    case Some(midValue) =>
+                        if (midValue == value) {
+                            Some(mid)
+                        } else if (midValue > value) {
+                            search(low, mid - 1)
+                        } else {
+                            search(mid + 1, high)
+                        }
+                    case None => None
+                }
+            }
+        }
+
+        search(0, items.length - 1)
     }
 
     /**
@@ -72,8 +108,8 @@ object Exercises {
      */
 
     def generateNames(namesСount: Int): List[String] = {
-        if (namesСount < 0) throw new Throwable("Invalid namesCount")
-        Nil
+        require(namesСount >= 0, "Invalid namesCount")
+        List.tabulate(namesСount)(_ => Random.alphanumeric.filter(_.isLetter).take(Random.nextInt(10) + 2).mkString.toLowerCase.capitalize)
     }
 
 }
@@ -111,14 +147,45 @@ object SideEffectExercise {
 
 
     class PhoneServiceSafety(unsafePhoneService: SimplePhoneService) {
-        def findPhoneNumberSafe(num: String) = ???
+        def findPhoneNumberSafe(num: String): Option[String] = {
+            Option(unsafePhoneService.findPhoneNumber(num))
 
-        def addPhoneToBaseSafe(phone: String) = ???
+        def addPhoneToBaseSafe(phone: String): Either[String, String] = {
+            try {
+                unsafePhoneService.addPhoneToBase(phone)
+                Right("Phone added successfully")
+            } catch {
+                case e: Exception => Left(s"Failed to add phone: ${e.getMessage}")
+            }
 
-        def deletePhone(phone: String) = ???
+        def deletePhone(phone: String): Either[String, String] = {
+            try {
+                unsafePhoneService.deletePhone(phone)
+                Right("Phone deleted successfully")
+            } catch {
+                case e: Exception => Left(s"Failed to delete phone: ${e.getMessage}")
+            }
+        }
     }
 
     class ChangePhoneServiceSafe(phoneServiceSafety: PhoneServiceSafety) extends ChangePhoneService {
-        override def changePhone(oldPhone: String, newPhone: String): String = ???
+        override def changePhone(oldPhone: String, newPhone: String): String = {
+            phoneServiceSafety.findPhoneNumberSafe(oldPhone) match {
+                case Some(oldPhoneRecord) =>
+                    phoneServiceSafety.deletePhoneSafe(oldPhoneRecord) match {
+                        case Right(_) =>
+                            phoneServiceSafety.addPhoneToBaseSafe(newPhone) match {
+                                case Right(_) => "ok"
+                                case Left(error) => s"Failed to add new phone: $error"
+                            }
+                        case Left(error) => s"Failed to delete old phone: $error"
+                    }
+                case None =>
+                    phoneServiceSafety.addPhoneToBaseSafe(newPhone) match {
+                        case Right(_) => "ok"
+                        case Left(error) => s"Failed to add new phone: $error"
+                    }
+            }
+        }
     }
 }
