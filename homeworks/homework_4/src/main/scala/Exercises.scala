@@ -1,124 +1,107 @@
+import scala.annotation.tailrec
+import scala.util.Random
 
 object Exercises {
+  // Задание 1: Поиск двух чисел
+  def findSumImperative(items: List[Int], sumValue: Int): (Int, Int) = {
+    for (i <- items.indices) {
+      for (j <- i + 1 until items.length) {
+        if (items(i) + items(j) == sumValue) return (i, j)
+      }
+    }
+    (-1, -1)
+  }
 
-    /**
-     * Задание №1
-     * Дана императивная функция findSumImperative.
-     * Напишите ее аналог (findSumFunctional) в функциональном стиле.
-     *
-     * ПОДСКАЗКА
-     * Стоит воспользоваться методами, которые предоставляет объект List или рекурсией.
-     * Страница с полезностями List: https://alvinalexander.com/scala/list-class-methods-examples-syntax/
-     */
-    def findSumImperative(items: List[Int], sumValue: Int): (Int, Int) = {
-        var result: (Int, Int) = (-1, -1)
-        for (i <- 0 until items.length) {
-            for (j <- 0 until items.length) {
-                if (items(i) + items(j) == sumValue && i != j) {
-                    result = (i, j)
-                }
-            }
+  def findSumFunctional(items: List[Int], sumValue: Int): (Int, Int) = {
+    items.zipWithIndex
+      .flatMap { case (x, i) =>
+        items.zipWithIndex.find { case (y, j) => i < j && x + y == sumValue }
+          .map { case (_, j) => (i, j) }
+      }
+      .headOption.getOrElse((-1, -1))
+  }
+
+  // Задание 2: Рекурсия
+  def simpleRecursion(items: List[Int], index: Int = 1): Int = items match {
+    case Nil => 1
+    case head :: tail =>
+      val res = simpleRecursion(tail, index + 1)
+      if (head % 2 == 0) head * res + index else -1 * head * res + index
+  }
+
+  def tailRecRecursion(items: List[Int]): Int = {
+    @tailrec
+    def helper(rem: List[Int], idx: Int, acc: Int): Int = rem match {
+      case Nil => acc
+      case h :: t =>
+        val newAcc = if (h % 2 == 0) h * acc + idx else -1 * h * acc + idx
+        helper(t, idx - 1, newAcc)
+    }
+    helper(items.reverse, items.length, 1)
+  }
+
+  // Задание 3: Бинарный поиск
+  def functionalBinarySearch(items: List[Int], value: Int): Option[Int] = {
+    @tailrec
+    def search(low: Int, high: Int): Option[Int] = {
+      if (low > high) None else {
+        val mid = low + (high - low) / 2
+        items(mid) match {
+          case m if m == value => Some(mid)
+          case m if m < value  => search(mid + 1, high)
+          case _               => search(low, mid - 1)
         }
-        result
+      }
     }
+    if (items.isEmpty) None else search(0, items.length - 1)
+  }
 
-    def findSumFunctional(items: List[Int], sumValue: Int) = {
-        (-1, -1)
+  // Задание 4: Генерация имен
+  def generateNames(namesCount: Int): List[String] = {
+    if (namesCount < 0) throw new IllegalArgumentException("Invalid namesCount")
+    val rnd = new Random
+    def randomName: String = {
+      val length = rnd.nextInt(8) + 3
+      val firstChar = (rnd.nextInt(26) + 65).toChar
+      val rest = (1 until length).map(_ => (rnd.nextInt(26) + 97).toChar).mkString
+      firstChar + rest
     }
-
-
-    /**
-     * Задание №2
-     *
-     * Дана рекурсивная функция simpleRecursion.
-     * Перепишите ее так, чтобы получилась хвостовая рекурсивная функция.
-     *
-     * Для прохождения теста на большое количество элементов в списке
-     * используйте анотацию @tailrec к вашей функции.
-     */
-    def simpleRecursion(items: List[Int], index: Int = 1): Int = {
-        items match {
-            case head :: tail =>
-                if (head % 2 == 0) {
-                    head * simpleRecursion(tail, index + 1) + index
-                } else {
-                    -1 * head * simpleRecursion(tail, index + 1) + index
-                }
-            case _ => 1
-        }
-    }
-
-    def tailRecRecursion(items: List[Int]): Int = {
-        1
-    }
-
-    /**
-     * Задание №3
-     * Реализуйте алгоритм бинарного поиска, который соответсвует всем правилам функционального программирования.
-     * Необходимо возвращать индекс соответствующего элемента в массиве
-     * Если ответ найден, то возвращается Some(index), если нет, то None
-     */
-
-    def functionalBinarySearch(items: List[Int], value: Int): Option[Int] = {
-        None
-    }
-
-    /**
-     * Задание №4
-     * Реализуйте функцию, которая генерирует список заданной длинны c именами.
-     * Функция должна соответствовать всем правилам функционального программирования.
-     *
-     * Именем является строка, не содержащая иных символов, кроме буквенных, а также начинающаяся с заглавной буквы.
-     */
-
-    def generateNames(namesСount: Int): List[String] = {
-        if (namesСount < 0) throw new Throwable("Invalid namesCount")
-        Nil
-    }
-
+    Stream.continually(randomName).distinct.take(namesCount).toList
+  }
 }
 
-/**
- * Задание №5
- *
- * Дана реализация сервиса по смене номера SimpleChangePhoneService с методом changePhone
- * Необходимо написать реализацию этого сервиса с учетом правил работы со сторонними эффектами (SideEffects).
- *
- * Для этого необходимо сначала реализовать собственный сервис работы с телефонными номерами (PhoneServiceSafety),
- * используя при этом методы из unsafePhoneService.
- * Методы должны быть безопасными, поэтому тип возвращаемых значений необходимо определить самостоятельно.
- * Рекомендуется воспользоваться стандартными типами Scala (например Option или Either).
- *
- * Затем, с использованием нового сервиса, необходимо реализовать "безопасную" версию функции changePhone.
- * Функция должна возвращать ok в случае успешного завершения или текст ошибки.
- *
- * Изменять методы внутри SimplePhoneService не разрешается.
- */
+// Задание 5: Интерфейсы и реализация
+trait SimplePhoneService {
+  def findPhoneNumber(num: String): String
+  def addPhoneToBase(phone: String): Unit
+  def deletePhone(phone: String): Unit
+}
+
+trait ChangePhoneService {
+  def changePhone(oldPhone: String, newPhone: String): String
+}
 
 object SideEffectExercise {
-    import Utils._
+  class PhoneServiceSafety(unsafeService: SimplePhoneService) {
+    def findPhoneNumberSafe(num: String): Option[String] =
+      Option(unsafeService.findPhoneNumber(num))
 
-    class SimpleChangePhoneService(phoneService: SimplePhoneService) extends ChangePhoneService {
-        override def changePhone(oldPhone: String, newPhone: String): String = {
-            val oldPhoneRecord = phoneService.findPhoneNumber(oldPhone)
-            if (oldPhoneRecord != null) {
-                phoneService.deletePhone(oldPhoneRecord)
-            }
-            phoneService.addPhoneToBase(newPhone)
-            "ok"
-        }
+    def addPhoneToBaseSafe(phone: String): Either[String, Unit] =
+      try { unsafeService.addPhoneToBase(phone); Right(()) }
+      catch { case e: Exception => Left(e.getMessage) }
+
+    def deletePhone(phone: String): Either[String, Unit] =
+      try { unsafeService.deletePhone(phone); Right(()) }
+      catch { case e: Exception => Left(e.getMessage) }
+  }
+
+  class ChangePhoneServiceSafe(safeService: PhoneServiceSafety) extends ChangePhoneService {
+    override def changePhone(oldPhone: String, newPhone: String): String = {
+      (for {
+        _ <- safeService.findPhoneNumberSafe(oldPhone).toRight("Old phone not found")
+        _ <- safeService.deletePhone(oldPhone)
+        _ <- safeService.addPhoneToBaseSafe(newPhone)
+      } yield "ok").merge
     }
-
-
-    class PhoneServiceSafety(unsafePhoneService: SimplePhoneService) {
-        def findPhoneNumberSafe(num: String) = ???
-
-        def addPhoneToBaseSafe(phone: String) = ???
-
-        def deletePhone(phone: String) = ???
-    }
-
-    class ChangePhoneServiceSafe(phoneServiceSafety: PhoneServiceSafety) extends ChangePhoneService {
-        override def changePhone(oldPhone: String, newPhone: String): String = ???
-    }
+  }
 }
