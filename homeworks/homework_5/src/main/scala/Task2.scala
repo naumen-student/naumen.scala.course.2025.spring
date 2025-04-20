@@ -1,6 +1,8 @@
 import cats._
 import cats.implicits._
 
+import java.awt.image.Raster
+
 /*
   Задание №2
   Всё просто, для каждого кейс класса необходимо описать логику его сложения.
@@ -11,17 +13,40 @@ import cats.implicits._
 object Task2 extends App {
   case class RadiusVector(x: Int, y: Int)
   object RadiusVector {
-    implicit val monoid: Monoid[RadiusVector] = ???
+    implicit val monoid: Monoid[RadiusVector] = new Monoid[RadiusVector]{
+      override def empty: RadiusVector = RadiusVector(0, 0)
+      override def combine(x: RadiusVector, y: RadiusVector): RadiusVector = RadiusVector(x.x + y.x, x.y + y.y)
+    }
   }
   case class DegreeAngle(angel: Double)
   object DegreeAngle {
-    implicit val monoid: Monoid[DegreeAngle] = ???
+    implicit val monoid: Monoid[DegreeAngle] = new Monoid[DegreeAngle]{
+      override def empty: DegreeAngle = DegreeAngle(0)
+      override def combine(angel1: DegreeAngle, angel2: DegreeAngle): DegreeAngle = {
+        val angle = (angel1.angel + angel2.angel) % 360
+        if (angle < 0) {
+          DegreeAngle(angle + 360)
+        }
+        DegreeAngle(angle)
+      }
+    }
   }
 
   case class SquareMatrix[A : Monoid](values: ((A, A, A), (A, A, A), (A, A, A)))
   object SquareMatrix {
-    implicit def monoid[A: Monoid]: Monoid[SquareMatrix[A]] = ???
+    implicit def monoid[A: Monoid]: Monoid[SquareMatrix[A]] = new Monoid[SquareMatrix[A]] {
+      override def empty: SquareMatrix[A] = {
+        val items = (Monoid[A].empty, Monoid[A].empty, Monoid[A].empty)
+        SquareMatrix(items, items, items)
+      }
+      override def combine(x: SquareMatrix[A], y: SquareMatrix[A]): SquareMatrix[A] = {
+        (x.values, y.values) match {
+          case (xValues, yValues) => SquareMatrix[A](xValues.combine(yValues))
+        }
+      }
+    }
   }
+
 
   val radiusVectors = Vector(RadiusVector(0, 0), RadiusVector(0, 1), RadiusVector(-1, 1))
   Monoid[RadiusVector].combineAll(radiusVectors) // RadiusVector(-1, 2)
