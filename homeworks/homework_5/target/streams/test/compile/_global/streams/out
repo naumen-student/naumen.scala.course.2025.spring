@@ -1,0 +1,4 @@
+[0m[[0m[31merror[0m] [0m[0mD:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_5\src\test\scala\Test3.scala:18:49: value count is not a member of scala.concurrent.Future[Task3.WordsCount][0m
+[0m[[0m[31merror[0m] [0m[0m      expected.count.foreach(x => assert(result.count.contains(x)))[0m
+[0m[[0m[31merror[0m] [0m[0m                                                ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m

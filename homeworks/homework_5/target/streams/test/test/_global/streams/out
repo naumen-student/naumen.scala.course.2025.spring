@@ -1,0 +1,12 @@
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(Test3, utest.runner.Fingerprint$@13f97849, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(Test5, utest.runner.Fingerprint$@13f97849, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(Test4, utest.runner.Fingerprint$@13f97849, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(Test2, utest.runner.Fingerprint$@13f97849, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(Test1, utest.runner.Fingerprint$@13f97849, false, [SuiteSelector])[0m
+[0m[[0m[0minfo[0m] [0m[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0mPassed tests:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test3[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test5[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test1[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test4[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test2[0m
