@@ -21,12 +21,9 @@ object Task5 extends App {
     case class Left[E](error: E) extends MyEither[E, Nothing] {
       def isError: Boolean = true
     }
-    def apply[A](value: A): MyEither[Nothing, A] =
-      Right(value)
-    def error[E, A](error: E): MyEither[E, A] =
-      Left(error)
-    def possibleError[A](f: => A): MyEither[Throwable, A] =
-      Try(f).fold(Left(_), Right(_))
+    def apply[A](value: A): MyEither[Nothing, A] = Right(value)
+    def error[E, A](error: E): MyEither[E, A] = Left(error)
+    def possibleError[A](f: => A): MyEither[Throwable, A] = Try(f).fold(Left(_), Right(_))
 
     implicit def myEitherMonad[E]: MonadError[MyEither, E] = new MonadError[MyEither, E] {
       def pure[A](value: A): MyEither[E, A] = Right(value)

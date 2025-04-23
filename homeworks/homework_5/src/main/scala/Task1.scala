@@ -56,9 +56,10 @@ object Task1 extends App {
     }
 
     implicit def boxShow[A](implicit showA: Show[A]): Show[Box[A]] = new Show[Box[A]] {
-      def show(box: Box[A]): String = box match {
-        case BoxWith(value) => s"${showA.show(value)} в коробке"
-        case EmptyBox => "пустая коробка"
+      def show(box: Box[A]): String =
+        box match {
+          case BoxWith(value) => s"${showA.show(value)} в коробке"
+          case EmptyBox => "пустая коробка"
       }
     }
   }

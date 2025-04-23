@@ -33,8 +33,7 @@ object Task2 extends App {
     implicit def monoid[A: Monoid]: Monoid[SquareMatrix[A]] = new Monoid[SquareMatrix[A]] {
       def empty: SquareMatrix[A] = SquareMatrix(Monoid[((A, A, A), (A, A, A), (A, A, A))].empty)
 
-      def combine(x: SquareMatrix[A], y: SquareMatrix[A]): SquareMatrix[A] =
-        SquareMatrix(x.values |+| y.values)
+      def combine(x: SquareMatrix[A], y: SquareMatrix[A]): SquareMatrix[A] = SquareMatrix(x.values |+| y.values)
     }
   }
 

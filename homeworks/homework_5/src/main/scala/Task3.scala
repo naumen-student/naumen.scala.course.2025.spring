@@ -48,7 +48,6 @@ object Task3 extends App {
             .mapValues(_.length)
             .map { case (word, cnt) => Count(word, cnt) }
             .toSeq
-        )},
-      1.second)
+        )}, 1.second)
   }
 }

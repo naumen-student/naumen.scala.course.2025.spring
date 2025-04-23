@@ -29,8 +29,7 @@ object Task4 extends App {
 
     def error[E, A](error: E): EIO[E, A] = EIO[E, A](Left(error))
 
-    def possibleError[A](f: => A): EIO[Throwable, A] =
-      Try(f).fold(error(_), apply(_))
+    def possibleError[A](f: => A): EIO[Throwable, A] = Try(f).fold(error(_), apply(_))
 
     implicit def monad[E]: MonadError[EIO, E] =
       new MonadError[EIO, E] {
