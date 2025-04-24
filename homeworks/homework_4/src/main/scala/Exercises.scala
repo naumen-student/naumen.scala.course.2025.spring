@@ -1,4 +1,4 @@
-
+import scala.annotation.tailrec
 object Exercises {
 
     /**
@@ -22,8 +22,14 @@ object Exercises {
         result
     }
 
-    def findSumFunctional(items: List[Int], sumValue: Int) = {
-        (-1, -1)
+    def findSumFunctional(items: List[Int], sumValue: Int): (Int, Int) = {
+    // Перебираем все пары индексов (i, j), где i != j, затем выбираем те, что удовлетворяют условию,
+    // и возвращаем последний найденный результат (или (-1,-1), если пара не найдена).
+    items.indices
+      .flatMap(i => items.indices.filter(_ != i).map(j => (i, j)))
+      .filter { case (i, j) => items(i) + items(j) == sumValue }
+      .lastOption
+      .getOrElse((-1, -1))
     }
 
 
@@ -49,8 +55,19 @@ object Exercises {
     }
 
     def tailRecRecursion(items: List[Int]): Int = {
-        1
+      @tailrec
+      def loop(i: Int, acc: Int): Int = {
+        if (i < 0) acc
+        else {
+         val index = i + 1
+         val head = items(i)
+         val newAcc = (if (head % 2 == 0) head * acc else -head * acc) + index
+         loop(i - 1, newAcc)
+       }
+      }
+      loop(items.length - 1, 1)
     }
+
 
     /**
      * Задание №3
@@ -60,7 +77,17 @@ object Exercises {
      */
 
     def functionalBinarySearch(items: List[Int], value: Int): Option[Int] = {
-        None
+    @tailrec
+    def loop(low: Int, high: Int): Option[Int] = {
+      if (low > high) None
+      else {
+        val mid = low + (high - low) / 2
+        if (items(mid) == value) Some(mid)
+        else if (items(mid) < value) loop(mid + 1, high)
+        else loop(low, mid - 1)
+      }
+    }
+    if (items.isEmpty) None else loop(0, items.length - 1)
     }
 
     /**
@@ -71,11 +98,24 @@ object Exercises {
      * Именем является строка, не содержащая иных символов, кроме буквенных, а также начинающаяся с заглавной буквы.
      */
 
-    def generateNames(namesСount: Int): List[String] = {
-        if (namesСount < 0) throw new Throwable("Invalid namesCount")
-        Nil
+  def generateNames(namesCount: Int): List[String] = {
+    if (namesCount < 0) throw new Throwable("Invalid namesCount")
+
+    def toName(n: Int): String = {
+      // Функция для преобразования числа в список цифр в системе счисления с основанием 26.
+      // Для n < 26 возвращает одно число, для n >= 26 – вычисляет "разряды".
+      def convert(x: Int): List[Int] = {
+        if (x < 26) List(x)
+        else convert(x / 26 - 1) :+ (x % 26)
+      }
+      val digits = convert(n)
+      val first = ('A' + digits.head).toChar.toString
+      val rest = digits.tail.map(d => ('a' + d).toChar).mkString
+      first + rest
     }
 
+    (0 until namesCount).toList.map(toName)
+  }
 }
 
 /**
@@ -96,29 +136,66 @@ object Exercises {
  */
 
 object SideEffectExercise {
-    import Utils._
+  import Utils._
 
-    class SimpleChangePhoneService(phoneService: SimplePhoneService) extends ChangePhoneService {
-        override def changePhone(oldPhone: String, newPhone: String): String = {
-            val oldPhoneRecord = phoneService.findPhoneNumber(oldPhone)
-            if (oldPhoneRecord != null) {
-                phoneService.deletePhone(oldPhoneRecord)
-            }
-            phoneService.addPhoneToBase(newPhone)
-            "ok"
-        }
+  class SimpleChangePhoneService(phoneService: SimplePhoneService) extends ChangePhoneService {
+    override def changePhone(oldPhone: String, newPhone: String): String = {
+      val oldPhoneRecord = phoneService.findPhoneNumber(oldPhone)
+      if (oldPhoneRecord != null) {
+        phoneService.deletePhone(oldPhoneRecord)
+      }
+      phoneService.addPhoneToBase(newPhone)
+      "ok"
+    }
+  }
+
+  // Безопасный сервис для работы с телефонными номерами.
+  class PhoneServiceSafety(unsafePhoneService: SimplePhoneService) {
+
+    // Если метод findPhoneNumber вернёт null, то возвращается None, иначе Some(phone)
+    def findPhoneNumberSafe(num: String): Option[String] =
+      Option(unsafePhoneService.findPhoneNumber(num))
+
+    // Безопасное добавление номера: в случае успешного добавления возвращается Right(()),
+    // а в случае возникновения исключения – Left с текстом ошибки.
+    def addPhoneToBaseSafe(phone: String): Either[String, Unit] = {
+      try {
+        unsafePhoneService.addPhoneToBase(phone)
+        Right(())
+      } catch {
+        case e: Exception => Left(e.getMessage)
+      }
     }
 
-
-    class PhoneServiceSafety(unsafePhoneService: SimplePhoneService) {
-        def findPhoneNumberSafe(num: String) = ???
-
-        def addPhoneToBaseSafe(phone: String) = ???
-
-        def deletePhone(phone: String) = ???
+    // Безопасное удаление номера: возвращает Right(()) при успехе или Left с текстом ошибки
+    def deletePhoneSafe(phone: String): Either[String, Unit] = {
+      try {
+        unsafePhoneService.deletePhone(phone)
+        Right(())
+      } catch {
+        case e: Exception => Left(e.getMessage)
+      }
     }
+  }
 
-    class ChangePhoneServiceSafe(phoneServiceSafety: PhoneServiceSafety) extends ChangePhoneService {
-        override def changePhone(oldPhone: String, newPhone: String): String = ???
+  // Безопасная версия сервиса смены номера, использующая PhoneServiceSafety.
+  class ChangePhoneServiceSafe(phoneServiceSafety: PhoneServiceSafety) extends ChangePhoneService {
+    override def changePhone(oldPhone: String, newPhone: String): String = {
+      // Пытаемся найти старый номер, если найден – безопасно удаляем
+      val deletionResult: Either[String, Unit] = phoneServiceSafety.findPhoneNumberSafe(oldPhone) match {
+        case Some(existingPhone) => phoneServiceSafety.deletePhoneSafe(existingPhone)
+        case None                => Right(()) // Если старый номер не найден, ничего удалять не нужно
+      }
+
+      deletionResult match {
+        case Left(error) => error  // Если при удалении произошла ошибка – возвращаем её
+        case Right(_) =>
+          // Пытаемся добавить новый номер
+          phoneServiceSafety.addPhoneToBaseSafe(newPhone) match {
+            case Left(error) => error
+            case Right(_)    => "ok"
+          }
+      }
     }
+  }
 }
