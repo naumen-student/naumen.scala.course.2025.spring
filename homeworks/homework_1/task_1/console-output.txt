@@ -1,0 +1,56 @@
+C:\Users\nceyden>scala
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.jline.terminal.impl.exec.ExecTerminalProvider$ReflectionRedirectPipeCreator (file:/C:/Users/nceyden/AppData/Local/Coursier/cache/arc/https/github.com/scala/scala3/releases/download/3.6.3/scala3-3.6.3-x86_64-pc-win32.zip/scala3-3.6.3-x86_64-pc-win32/maven2/org/jline/jline-terminal/3.27.1/jline-terminal-3.27.1.jar) to constructor java.lang.ProcessBuilder$RedirectPipeImpl()
+WARNING: Please consider reporting this to the maintainers of org.jline.terminal.impl.exec.ExecTerminalProvider$ReflectionRedirectPipeCreator
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+Welcome to Scala 3.6.3 (11.0.26, Java OpenJDK 64-Bit Server VM).
+Type in expressions for evaluation. Or try :help.
+
+scala> val name = "Голиков Денис"
+val name: String = Голиков Денис
+
+scala> val greeting = s"Hello Scala! This is $name"
+val greeting: String = Hello Scala! This is Голиков Денис
+
+scala> println(greeting)
+Hello Scala! This is Голиков Денис
+
+scala> val greeting1 = "Hola Scala! This is Голиков Денис"
+val graeeting1: String = Hola Scala! This is Голиков Денис
+
+scala> val greeting2 = "Guten tag Scala! This is Голиков Денис"
+val greeting2: String = Guten tag Scala! This is Голиков Денис
+
+scala> val greeting3 = "Bonjur Scala! This is Голиков Денис"
+val greeting3: String = Bonjur Scala! This is Голиков Денис
+
+scala> println(greeting1)
+Hola Scala! This is Голиков Денис
+
+scala> println(greeting2)
+Guten tag Scala! This is Голиков Денис
+
+scala> println(greeting3)
+Bonjur Scala! This is Голиков Денис
+
+scala> val reversedName = "Голиков Денис".reverse
+val reversedName: String = синеД вокилоГ
+
+scala> val newGreeting1 = s"Hola Scala! This is $reversedName"
+val newGreeting1: String = Hola Scala! This is синеД вокилоГ
+
+scala> val newGreeting2 = s"Guten tag Scala! This is $reversedName"
+val newGreeting2: String = Guten tag Scala! This is синеД вокилоГ
+
+scala> val newGreeting3 = s"Bonjur Scala! This is $reversedName"
+val newGreeting3: String = Bonjur Scala! This is синеД вокилоГ
+
+scala> println(newGreeting1)
+Hola Scala! This is синеД вокилоГ
+
+scala> println(newGreeting2)
+Guten tag Scala! This is синеД вокилоГ
+
+scala> println(newGreeting3)
+Bonjur Scala! This is синеД вокилоГ
