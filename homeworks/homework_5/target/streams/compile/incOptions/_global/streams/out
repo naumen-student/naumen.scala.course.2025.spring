@@ -1,0 +1,64 @@
+[debug] Created transactional ClassFileManager with tempDir = C:\Users\Test\Desktop\naumen.scala.course.2025.spring-master-5\homeworks\homework_5\target\scala-2.12\classes.bak
+[debug] About to delete class files:
+[debug] We backup class files:
+[debug] Registering generated classes:
+[debug] 	Task1$Cat.class
+[debug] 	Task2$RadiusVector$$anon$1.class
+[debug] 	Task2$DegreeAngle$.class
+[debug] 	Task5$MyEitherSyntax$.class
+[debug] 	Task1$.class
+[debug] 	Task1$NormalCat.class
+[debug] 	Task1$BigCat$.class
+[debug] 	Task5$MyRight$.class
+[debug] 	Task4.class
+[debug] 	Task3.class
+[debug] 	Task5$MyEither.class
+[debug] 	Task2$SquareMatrix$.class
+[debug] 	Task4$EIO.class
+[debug] 	Task1$BigCat.class
+[debug] 	Task5$MyRight.class
+[debug] 	Task3$.class
+[debug] 	Task1$ShowSyntax$ShowOps.class
+[debug] 	Task3$WordsCount$.class
+[debug] 	Task1$NormalCat$.class
+[debug] 	Task5.class
+[debug] 	Task1$VeryBigCat.class
+[debug] 	Task1$Show.class
+[debug] 	Task2$RadiusVector.class
+[debug] 	Task2$.class
+[debug] 	Task2$RadiusVector$.class
+[debug] 	Task4$EIO$.class
+[debug] 	Task3$WordsCount.class
+[debug] 	Task1$VeryLittleCat$.class
+[debug] 	Task3$Count$.class
+[debug] 	Task1$ShowSyntax$.class
+[debug] 	Task1$BoxWith$.class
+[debug] 	Task4$EIO$$anon$1.class
+[debug] 	Task5$MyEitherSyntax$MyEitherOps.class
+[debug] 	Task1$VeryLittleCat.class
+[debug] 	Task1$BoxWith.class
+[debug] 	Task5$MyEither$.class
+[debug] 	Task1$LittleCat.class
+[debug] 	Task1$LittleCat$.class
+[debug] 	Task5$MyLeft.class
+[debug] 	Task2$SquareMatrix$$anon$3.class
+[debug] 	Task2$DegreeAngle$$anon$2.class
+[debug] 	Task3$Count.class
+[debug] 	Task4$EIOSyntax$EIOOps.class
+[debug] 	Task1$EmptyBox$.class
+[debug] 	Task2.class
+[debug] 	Task4$EIOSyntax$.class
+[debug] 	Task1.class
+[debug] 	Task3$WordsCount$$anon$1.class
+[debug] 	Task4$.class
+[debug] 	Task1$VeryBigCat$.class
+[debug] 	Task1$ShowInstance$.class
+[debug] 	Task5$MyLeft$.class
+[debug] 	Task2$SquareMatrix.class
+[debug] 	Task1$Box.class
+[debug] 	Task5$MyEither$$anon$1.class
+[debug] 	Task2$delayedInit$body.class
+[debug] 	Task5$.class
+[debug] 	Task2$DegreeAngle.class
+[debug] 	Task4$MonadError.class
+[debug] Removing the temporary directory used for backing up class files: C:\Users\Test\Desktop\naumen.scala.course.2025.spring-master-5\homeworks\homework_5\target\scala-2.12\classes.bak

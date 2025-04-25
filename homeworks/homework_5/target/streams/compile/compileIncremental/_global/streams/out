@@ -1,0 +1,20 @@
+[debug] [zinc] IncrementalCompile -----------
+[debug] IncrementalCompile.incrementalCompile
+[debug] previous = Stamps for: 0 products, 0 sources, 0 libraries
+[debug] current source = Set(${BASE}/src/main/scala/Task5.scala, ${BASE}/src/main/scala/Task1.scala, ${BASE}/src/main/scala/Task3.scala, ${BASE}/src/main/scala/Task4.scala, ${BASE}/src/main/scala/Task2.scala)
+[debug] > initialChanges = InitialChanges(Changes(added = Set(${BASE}/src/main/scala/Task3.scala, ${BASE}/src/main/scala/Task5.scala, ${BASE}/src/main/scala/Task1.scala, ${BASE}/src/main/scala/Task2.scala, ${BASE}/src/main/scala/Task4.scala), removed = Set(), changed = Set(), unmodified = ...),Set(),Set(),API Changes: Set())
+[debug] Full compilation, no sources in previous analysis.
+[debug] all 5 sources are invalidated
+[debug] Initial set of included nodes: 
+[debug] Recompiling all sources: number of invalidated sources > 50.0 percent of all sources
+[debug] compilation cycle 1
+[info] compiling 5 Scala sources to C:\Users\Test\Desktop\naumen.scala.course.2025.spring-master-5\homeworks\homework_5\target\scala-2.12\classes ...
+[debug] Getting org.scala-sbt:compiler-bridge_2.12:1.9.5:compile for Scala 2.12.10
+[debug] [zinc] Running cached compiler 2342977c for Scala compiler version 2.12.10
+[debug] [zinc] The Scala compiler is invoked with:
+[debug] 	-bootclasspath
+[debug] 	C:\Users\Test\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar
+[debug] 	-classpath
+[debug] 	C:\Users\Test\Desktop\naumen.scala.course.2025.spring-master-5\homeworks\homework_5\target\scala-2.12\classes;C:\Users\Test\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\typelevel\cats-core_2.12\2.10.0\cats-core_2.12-2.10.0.jar;C:\Users\Test\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\typelevel\cats-kernel_2.12\2.10.0\cats-kernel_2.12-2.10.0.jar
+[debug] Scala compilation took 6.5576371 s
+[info] done compiling

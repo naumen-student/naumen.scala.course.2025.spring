@@ -1,0 +1,20 @@
+[debug] [zinc] IncrementalCompile -----------
+[debug] IncrementalCompile.incrementalCompile
+[debug] previous = Stamps for: 0 products, 0 sources, 0 libraries
+[debug] current source = Set(${BASE}/src/test/scala/Test2.scala, ${BASE}/src/test/scala/Test5.scala, ${BASE}/src/test/scala/Test3.scala, ${BASE}/src/test/scala/Test4.scala, ${BASE}/src/test/scala/Test1.scala)
+[debug] > initialChanges = InitialChanges(Changes(added = Set(${BASE}/src/test/scala/Test3.scala, ${BASE}/src/test/scala/Test4.scala, ${BASE}/src/test/scala/Test1.scala, ${BASE}/src/test/scala/Test2.scala, ${BASE}/src/test/scala/Test5.scala), removed = Set(), changed = Set(), unmodified = ...),Set(),Set(),API Changes: Set())
+[debug] Full compilation, no sources in previous analysis.
+[debug] all 5 sources are invalidated
+[debug] Initial set of included nodes: 
+[debug] Recompiling all sources: number of invalidated sources > 50.0 percent of all sources
+[debug] compilation cycle 1
+[info] compiling 5 Scala sources to C:\Users\Test\Desktop\naumen.scala.course.2025.spring-master-5\homeworks\homework_5\target\scala-2.12\test-classes ...
+[debug] Getting org.scala-sbt:compiler-bridge_2.12:1.9.5:compile for Scala 2.12.10
+[debug] [zinc] Running cached compiler bba05a8 for Scala compiler version 2.12.10
+[debug] [zinc] The Scala compiler is invoked with:
+[debug] 	-bootclasspath
+[debug] 	C:\Users\Test\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar
+[debug] 	-classpath
+[debug] 	C:\Users\Test\Desktop\naumen.scala.course.2025.spring-master-5\homeworks\homework_5\target\scala-2.12\test-classes;C:\Users\Test\Desktop\naumen.scala.course.2025.spring-master-5\homeworks\homework_5\target\scala-2.12\classes;C:\Users\Test\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\com\lihaoyi\utest_2.12\0.5.3\utest_2.12-0.5.3.jar;C:\Users\Test\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\typelevel\cats-core_2.12\2.10.0\cats-core_2.12-2.10.0.jar;C:\Users\Test\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala-reflect\2.12.10\scala-reflect-2.12.10.jar;C:\Users\Test\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-sbt\test-interface\1.0\test-interface-1.0.jar;C:\Users\Test\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\typelevel\cats-kernel_2.12\2.10.0\cats-kernel_2.12-2.10.0.jar
+[debug] Scala compilation took 2.4604714 s
+[info] done compiling
