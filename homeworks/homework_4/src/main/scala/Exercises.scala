@@ -1,3 +1,5 @@
+import scala.annotation.tailrec
+import scala.util.Random
 
 object Exercises {
 
@@ -22,10 +24,12 @@ object Exercises {
         result
     }
 
-    def findSumFunctional(items: List[Int], sumValue: Int) = {
-        (-1, -1)
-    }
-
+  def findSumFunctional(items: List[Int], sumValue: Int): (Int, Int) = {
+    items.indices
+      .flatMap(i => items.indices.collect { case j if i != j && items(i) + items(j) == sumValue => (i, j) })
+      .lastOption
+      .getOrElse((-1, -1))
+  }
 
     /**
      * Задание №2
@@ -48,9 +52,22 @@ object Exercises {
         }
     }
 
-    def tailRecRecursion(items: List[Int]): Int = {
-        1
+  def tailRecRecursion(items: List[Int]): Int = {
+    def getIndex(head: Int, acc: Int, index: Int): Int = {
+      head * acc + index
     }
+
+    @tailrec
+    def sum(sumItems: List[Int], index: Int, acc: Int): Int = sumItems match {
+      case Nil => acc
+      case head :: tail => sum(
+        tail,
+        index - 1,
+        if (head % 2 == 0) getIndex(head, acc, index) else getIndex(-1 * head, acc, index))
+    }
+
+    sum(items.reverse, items.length, 1)
+  }
 
     /**
      * Задание №3
@@ -59,9 +76,24 @@ object Exercises {
      * Если ответ найден, то возвращается Some(index), если нет, то None
      */
 
-    def functionalBinarySearch(items: List[Int], value: Int): Option[Int] = {
+  def functionalBinarySearch(items: List[Int], value: Int): Option[Int] = {
+    @tailrec
+    def search(left: Int, right: Int, searchValue: Int): Option[Int] = {
+      if (left > right) {
         None
+      }
+      else {
+        val mid = (left + right) / 2
+        items(mid) match {
+          case x if x == searchValue => Some(mid)
+          case x if x < searchValue => search(mid + 1, right, searchValue)
+          case _ => search(left, mid - 1, searchValue)
+        }
+      }
     }
+
+    search(0, items.length - 1, value)
+  }
 
     /**
      * Задание №4
@@ -71,11 +103,17 @@ object Exercises {
      * Именем является строка, не содержащая иных символов, кроме буквенных, а также начинающаяся с заглавной буквы.
      */
 
-    def generateNames(namesСount: Int): List[String] = {
-        if (namesСount < 0) throw new Throwable("Invalid namesCount")
-        Nil
-    }
+    def generateNames(namesCount: Int): List[String] = {
+      require(namesCount >= 0, "Invalid namesCount")
 
+      val alphabet = ('a' to 'z').toList
+
+      def generateName: String = {
+        Random.shuffle(alphabet).take(Random.between(3, 10)).mkString.capitalize
+      }
+
+      List.fill(namesCount)(generateName)
+    }
 }
 
 /**
@@ -96,29 +134,48 @@ object Exercises {
  */
 
 object SideEffectExercise {
-    import Utils._
 
-    class SimpleChangePhoneService(phoneService: SimplePhoneService) extends ChangePhoneService {
-        override def changePhone(oldPhone: String, newPhone: String): String = {
-            val oldPhoneRecord = phoneService.findPhoneNumber(oldPhone)
-            if (oldPhoneRecord != null) {
-                phoneService.deletePhone(oldPhoneRecord)
-            }
-            phoneService.addPhoneToBase(newPhone)
-            "ok"
-        }
+  import Utils._
+
+  class SimpleChangePhoneService(phoneService: SimplePhoneService) extends ChangePhoneService {
+    override def changePhone(oldPhone: String, newPhone: String): String = {
+      val oldPhoneRecord = phoneService.findPhoneNumber(oldPhone)
+      if (oldPhoneRecord != null) {
+        phoneService.deletePhone(oldPhoneRecord)
+      }
+      phoneService.addPhoneToBase(newPhone)
+      "ok"
     }
+  }
 
+  private class PhoneServiceSafety(unsafePhoneService: SimplePhoneService) {
+    def findPhoneNumberSafe(num: String): Option[String] =
+      Option(unsafePhoneService.findPhoneNumber(num))
 
-    class PhoneServiceSafety(unsafePhoneService: SimplePhoneService) {
-        def findPhoneNumberSafe(num: String) = ???
+    def addPhoneToBaseSafe(phone: String): Either[String, String] =
+      try {
+        unsafePhoneService.addPhoneToBase(phone)
+        Right("ok")
+      } catch {
+        case ex: Exception => Left(s"Failed to add phone: ${ex.getMessage}")
+      }
 
-        def addPhoneToBaseSafe(phone: String) = ???
+    def deletePhoneSafe(phone: String): Either[String, String] =
+      try {
+        unsafePhoneService.deletePhone(phone)
+        Right("ok")
+      } catch {
+        case ex: Exception => Left(s"Failed to delete phone: ${ex.getMessage}")
+      }
+  }
 
-        def deletePhone(phone: String) = ???
+  class ChangePhoneServiceSafe(phoneServiceSafety: PhoneServiceSafety) extends ChangePhoneService {
+    override def changePhone(oldPhone: String, newPhone: String): String = {
+      phoneServiceSafety.findPhoneNumberSafe(oldPhone)
+        .map(_ => phoneServiceSafety.deletePhoneSafe(oldPhone))
+        .getOrElse(Right("ok"))
+        .flatMap(_ => phoneServiceSafety.addPhoneToBaseSafe(newPhone))
+        .merge
     }
-
-    class ChangePhoneServiceSafe(phoneServiceSafety: PhoneServiceSafety) extends ChangePhoneService {
-        override def changePhone(oldPhone: String, newPhone: String): String = ???
-    }
+  }
 }
