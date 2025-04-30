@@ -1,0 +1,32 @@
+moos@mooshost:~$ scala
+Welcome to Scala 3.6.3 (23.0.2, Java OpenJDK 64-Bit Server VM).
+Type in expressions for evaluation. Or try :help.
+
+scala> val name = "moos"
+val name: String = moos
+
+scala> val greeting = f"Hello Scala! This is ${name}"
+val greeting: String = Hello Scala! This is moos
+
+scala> println(greeting)
+Hello Scala! This is moos
+
+scala> println(greeting.replace("Hello", "Hola"))
+Hola Scala! This is moos
+
+scala> println(greeting.replace("Hello", "Guten tag"))
+Guten tag Scala! This is moos
+
+scala> val reversedGreeting = f"Hello Scala! This is ${name.reverse}"
+val reversedGreeting: String = Hello Scala! This is soom
+
+scala> println(reversedGreeting)
+Hello Scala! This is soom
+
+scala> println(reversedGreeting.replace("Hello", "Hola"))
+Hola Scala! This is soom
+
+scala> println(reversedGreeting.replace("Hello", "Guten tag"))
+Guten tag Scala! This is soom
+
+scala>
