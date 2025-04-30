@@ -1,0 +1,22 @@
+~/UrFU/naumen.scala.course.2025.spring/homeworks/homework_1/task_1 (master ✗) scala
+Welcome to Scala 2.13.16 (OpenJDK 64-Bit Server VM, Java 11.0.26).
+Type in expressions for evaluation. Or try :help.
+
+scala> val name = "Евгений"
+val name: String = Евгений
+
+scala> println(s"Hello Scala! This is $name")
+Hello Scala! This is Евгений
+
+scala> println(s"Hello Scala! This is $name".replace("Hello", "Guten tag"))
+Guten tag Scala! This is Евгений
+
+scala> List("Hello", "Hola", "Guten tag").map(g => s"$g Scala! This is $name")
+val res2: List[String] = List(Hello Scala! This is Евгений, Hola Scala! This is Евгений, Guten tag Scala! This is Евгений)
+
+scala> res2.
+     |   map(_.replace(name, name.reverse)).
+     |   foreach(println)
+Hello Scala! This is йинегвЕ
+Hola Scala! This is йинегвЕ
+Guten tag Scala! This is йинегвЕ
