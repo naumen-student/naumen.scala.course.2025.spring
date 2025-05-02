@@ -1,4 +1,5 @@
-
+import scala.annotation.tailrec
+import scala.util.Random
 object Exercises {
 
     /**
@@ -22,8 +23,11 @@ object Exercises {
         result
     }
 
-    def findSumFunctional(items: List[Int], sumValue: Int) = {
-        (-1, -1)
+    def findSumFunctional(items: List[Int], sumValue: Int): (Int, Int) = {
+        items.indices
+            .flatMap(i => items.indices.map(j => (i, j)))
+            .find { case (i, j) => i != j && items(i) + items(j) == sumValue }
+            .getOrElse((-1, -1))
     }
 
 
@@ -49,7 +53,17 @@ object Exercises {
     }
 
     def tailRecRecursion(items: List[Int]): Int = {
-        1
+        @tailrec
+        def helper(list: List[Int], acc: Int, index: Int): Int = {
+            list match {
+                case head :: tail =>
+                    val newAcc = if (head % 2 == 0) head * acc + index else -1 * head * acc + index
+                    helper(tail, newAcc, index + 1)
+                case Nil => acc
+            }
+        }
+
+        helper(items, 1, 1)
     }
 
     /**
@@ -60,8 +74,22 @@ object Exercises {
      */
 
     def functionalBinarySearch(items: List[Int], value: Int): Option[Int] = {
-        None
+    @tailrec
+    def binarySearch(low: Int, high: Int): Option[Int] = {
+        if (low > high) None
+        else {
+            val mid = (low + high) / 2
+            items(mid) match {
+                case v if v == value => Some(mid)
+                case v if v > value  => binarySearch(low, mid - 1)
+                case _               => binarySearch(mid + 1, high)
+            }
+        }
     }
+
+    binarySearch(0, items.length - 1)
+}
+
 
     /**
      * Задание №4
@@ -71,9 +99,19 @@ object Exercises {
      * Именем является строка, не содержащая иных символов, кроме буквенных, а также начинающаяся с заглавной буквы.
      */
 
-    def generateNames(namesСount: Int): List[String] = {
-        if (namesСount < 0) throw new Throwable("Invalid namesCount")
-        Nil
+    def generateNames(namesCount: Int): List[String] = {
+        val rand = new scala.util.Random
+
+        def randomName(): String = {
+            val length = rand.nextInt(5) + 3 // длина от 3 до 7
+            val first = rand.nextPrintableChar().toUpper
+            val rest = (1 until length)
+                .map(_ => (rand.nextInt(26) + 'a').toChar)
+                .mkString
+            s"$first$rest"
+        }
+
+        List.fill(namesCount)(randomName()).filter(_.forall(_.isLetter))
     }
 
 }
@@ -111,14 +149,48 @@ object SideEffectExercise {
 
 
     class PhoneServiceSafety(unsafePhoneService: SimplePhoneService) {
-        def findPhoneNumberSafe(num: String) = ???
+    def findPhoneNumberSafe(num: String): Option[String] = {
+        Option(unsafePhoneService.findPhoneNumber(num))
+    }
 
-        def addPhoneToBaseSafe(phone: String) = ???
+    def addPhoneToBaseSafe(phone: String): Either[String, Unit] = {
+        try {
+            unsafePhoneService.addPhoneToBase(phone)
+            Right(())
+        } catch {
+            case e: Exception => Left(e.getMessage)
+        }
+    }
 
-        def deletePhone(phone: String) = ???
+    def deletePhone(phone: String): Either[String, Unit] = {
+        try {
+            unsafePhoneService.deletePhone(phone)
+            Right(())
+        } catch {
+            case e: Exception => Left(e.getMessage)
+        }
+    }
     }
 
     class ChangePhoneServiceSafe(phoneServiceSafety: PhoneServiceSafety) extends ChangePhoneService {
-        override def changePhone(oldPhone: String, newPhone: String): String = ???
+        override def changePhone(oldPhone: String, newPhone: String): String = {
+            phoneServiceSafety.findPhoneNumberSafe(oldPhone) match {
+                case Some(phoneRecord) =>
+                    phoneServiceSafety.deletePhone(phoneRecord) match {
+                        case Right(_) =>
+                            phoneServiceSafety.addPhoneToBaseSafe(newPhone) match {
+                                case Right(_) => "ok"
+                                case Left(err) => s"Ошибка при добавлении нового номера: $err"
+                            }
+                        case Left(err) => s"Ошибка при удалении номера: $err"
+                    }
+                case None =>
+                    phoneServiceSafety.addPhoneToBaseSafe(newPhone) match {
+                        case Right(_) => "ok"
+                        case Left(err) => s"Ошибка при добавлении нового номера: $err"
+                    }
+            }
+        }
     }
+
 }
