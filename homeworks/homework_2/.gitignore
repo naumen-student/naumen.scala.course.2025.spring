@@ -5,7 +5,7 @@ project/target
 *.iml
 *.ipr
 *.iws
-/target/
+/target/Ы
 project/target/
 project/project/
 project/*.class
