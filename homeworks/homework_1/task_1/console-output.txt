@@ -1,0 +1,23 @@
+PS D:\Programs\REPL\bin> scala
+Welcome to Scala 2.12.10 (OpenJDK 64-Bit Server VM, Java 11.0.26).
+Type in expressions for evaluation. Or try :help.
+
+scala> val n = "Anton Novikov"
+n: String = Anton Novikov
+
+scala> print("Hello Scala! This is $n")
+Hello Scala! This is $n
+scala> val greetings = List("Hello", "Halo", "Привет")
+greetings: List[String] = List(Hello, Halo, Привет)
+
+scala> for (g <- greetings) {
+     | println(s"$g Scala! This is $n") }
+Hello Scala! This is Anton Novikov
+Halo Scala! This is Anton Novikov
+Привет Scala! This is Anton Novikov
+
+scala> for (g <- greetings) {
+     | println(s"$g Scala! This is ${n.reverse}") }
+Hello Scala! This is vokivoN notnA
+Halo Scala! This is vokivoN notnA
+Привет Scala! This is vokivoN notnA
