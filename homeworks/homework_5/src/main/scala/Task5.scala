@@ -14,12 +14,46 @@ object Task5 extends App {
   sealed trait MyEither[+E, +A] {
     def isError: Boolean
   }
+  
+  case class MySuccess[+A](value: A) extends MyEither[Nothing, A] {
+    def isError: Boolean = false
+  }
+  
+  case class MyFailure[+E](error: E) extends MyEither[E, Nothing] {
+    def isError: Boolean = true
+  }
+  
   object MyEither {
-    def apply[A](value: A): MyEither[Nothing, A] = ???
-    def error[E, A](error: E): MyEither[E, A] = ???
-    def possibleError[A](f: => A): MyEither[Throwable, A] = ???
+    def apply[A](value: A): MyEither[Nothing, A] = MySuccess(value)
+    
+    def error[E, A](error: E): MyEither[E, A] = MyFailure(error)
+    
+    def possibleError[A](f: => A): MyEither[Throwable, A] = {
+      try {
+        MySuccess(f)
+      } catch {
+        case e: Throwable => MyFailure(e)
+      }
+    }
 
-    implicit def myEitherMonad[E]: MonadError[MyEither, E] = ???
+    implicit def myEitherMonad[E]: MonadError[MyEither, E] = new MonadError[MyEither, E] {
+      def pure[A](value: A): MyEither[E, A] = MySuccess(value)
+      
+      def flatMap[A, B](fa: MyEither[E, A])(f: A => MyEither[E, B]): MyEither[E, B] = 
+        fa match {
+          case MySuccess(value) => f(value)
+          case failure: MyFailure[E] => failure
+        }
+      
+      def raiseError[A](fa: MyEither[E, A])(error: => E): MyEither[E, A] = 
+        MyFailure(error)
+      
+      def handleError[A](fa: MyEither[E, A])(handle: E => A): MyEither[E, A] = 
+        fa match {
+          case MySuccess(_) => fa
+          case MyFailure(e) => MySuccess(handle(e))
+        }
+    }
   }
 
   object MyEitherSyntax {
