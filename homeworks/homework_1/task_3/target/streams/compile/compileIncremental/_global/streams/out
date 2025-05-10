@@ -1,0 +1,18 @@
+[debug] [zinc] IncrementalCompile -----------
+[debug] IncrementalCompile.incrementalCompile
+[debug] previous = Stamps for: 0 products, 0 sources, 0 libraries
+[debug] current source = Set(${BASE}/src/main/scala/sbthw/Main.scala)
+[debug] > initialChanges = InitialChanges(Changes(added = Set(${BASE}/src/main/scala/sbthw/Main.scala), removed = Set(), changed = Set(), unmodified = ...),Set(),Set(),API Changes: Set())
+[debug] Full compilation, no sources in previous analysis.
+[debug] all 1 sources are invalidated
+[debug] Initial set of included nodes: 
+[debug] Recompiling all sources: number of invalidated sources > 50.0 percent of all sources
+[debug] compilation cycle 1
+[info] compiling 1 Scala source to C:\Users\HappyGoga\Desktop\SbtExampleHW\target\scala-2.13\classes ...
+[debug] Returning already retrieved and compiled bridge: C:\Users\HappyGoga\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala2-sbt-bridge\2.13.16\scala2-sbt-bridge-2.13.16.jar.
+[debug] [zinc] Running cached compiler 6edb7cdc for Scala compiler version 2.13.16
+[debug] [zinc] The Scala compiler is invoked with:
+[debug] 	-classpath
+[debug] 	C:\Users\HappyGoga\Desktop\SbtExampleHW\target\scala-2.13\classes;C:\Users\HappyGoga\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala-library\2.13.16\scala-library-2.13.16.jar
+[debug] Scala compilation took 2.8570376 s
+[info] done compiling
