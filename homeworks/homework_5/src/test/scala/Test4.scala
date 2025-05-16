@@ -7,19 +7,19 @@ object Test4 extends TestSuite {
     import Task4._
     import Task4.EIOSyntax._
 
-    'leftIdentityLow - {
+    test("leftIdentityLow") {
       assert(EIO(0).flatMap(x => EIO(x + 1)) == EIO(1))
     }
-    'rightIdentityLow - {
+    test("rightIdentityLow") {
       assert(EIO(0).flatMap(x => EIO.apply(x)) == EIO(0))
     }
-    'associativityLow - {
+    test("associativityLow") {
       val f: Int => EIO[Nothing, Int] = x => EIO(x + 1)
       val g: Int => EIO[Nothing, Int] = x => EIO(x * 10)
       assert(EIO(0).flatMap(f).flatMap(g) == EIO(0).flatMap(x => f(x).flatMap(g)))
     }
-    'usage - {
-      'simpleUsage - {
+    test("usage") {
+      test("simpleUsage") {
         val (x, y, z) = (Random.nextInt(), Random.nextInt(), Random.nextInt())
         val p = for {
           a <- EIO(x)
@@ -28,21 +28,21 @@ object Test4 extends TestSuite {
         } yield a + c + d
         assert(p == EIO(Right(x + y + z)))
       }
-      'errorUsage - {
+      test("errorUsage"){
         val p = for {
           a <- EIO(0)
           _ <- EIO.error[String, Int]("Error")
         } yield a
         assert(p == EIO(Left("Error")))
       }
-      'possibleErrorUsage - {
+      test("possibleErrorUsage") {
         val p = for {
           a <- EIO(12)
           b <- EIO.possibleError(12 / 0)
         } yield a + b
         assert(p.value.isLeft)
       }
-      'recoverErrorUsage - {
+      test("recoverErrorUsage") {
         val (x, y, z) = (Random.nextInt(), Random.nextInt(), Random.nextInt())
         val p = for {
           a <- EIO(x)
@@ -52,7 +52,7 @@ object Test4 extends TestSuite {
 
         assert(p == EIO(Right(x + y + z)))
       }
-      'skippingErrorStopsEvaluation - {
+      test("skippingErrorStopsEvaluation") {
         val p = for {
           a <- EIO(0)
           v <- EIO.possibleError(12 / 0)

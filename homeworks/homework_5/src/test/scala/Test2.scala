@@ -7,19 +7,21 @@ object Test2 extends TestSuite {
   override def tests: Tests = Tests {
     import Task2._
 
-    'vectorsMustSum - (1 to 5).foreach { _ =>
+    test("vectorsMustSum") - (1 to 5).foreach { _ =>
       val xs = Vector.fill(50)(Random.nextInt)
       val ys = Vector.fill(50)(Random.nextInt)
       val vectors = xs.zip(ys).map { case (x, y) => RadiusVector(x, y) }
       val resultVector = RadiusVector(xs.sum, ys.sum)
       assert(vectors.combineAll == resultVector)
     }
-    'angleMustSum - (1 to 5).foreach { _ =>
+    test("angleMustSum") - (1 to 5).foreach { _ =>
       val angles = Vector.fill(50)(DegreeAngle(Random.nextInt))
-      val result = angles.map(_.angel).sum % 360
-      assert(angles.combineAll == DegreeAngle(result))
+      val result = angles.map(_.angle).sum % 360
+      val anglesResult = angles.combineAll
+      val degreeAnglesResult = DegreeAngle(result)
+      assert(anglesResult == degreeAnglesResult)
     }
-    'matrixMustSum - (1 to 5).foreach { _ =>
+    test("matrixMustSum") - (1 to 5).foreach { _ =>
       val firstRow = List.fill(50)(List.fill(3)(Random.nextInt))
       val secondRow = List.fill(50)(List.fill(3)(Random.nextInt))
       val thirdRow = List.fill(50)(List.fill(3)(Random.nextInt))
