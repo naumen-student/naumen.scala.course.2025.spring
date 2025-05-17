@@ -1,0 +1,4 @@
+[0m[[0m[31merror[0m] [0m[0mD:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_6\src\main\scala\Exercises.scala:67:62: value getOrThrow is not a member of zio.IO[utils.Utils.GenerationError,utils.Utils.Picture][0m
+[0m[[0m[31merror[0m] [0m[0m            zio.Runtime.default.run(Exercises.task4((2, 2))).getOrThrow()[0m
+[0m[[0m[31merror[0m] [0m[0m                                                             ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m
