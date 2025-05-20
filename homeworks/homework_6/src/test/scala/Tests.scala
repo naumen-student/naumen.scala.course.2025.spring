@@ -1,4 +1,5 @@
 import Mocks.{ColorServiceMock, GeneratePictureServiceMock}
+import homework_6.Exercises
 import utils.Utils.{GenerationError, Picture}
 import utils.{ColorService, PictureGenerationService}
 import zio.mock.Expectation
