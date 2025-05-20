@@ -26,32 +26,32 @@ object Tests extends ZIOSpecDefault {
 
     override def spec: Spec[TestEnvironment with Scope, Any] = suite("tests") (
         test("firstTask test good") {
-            Exercises.task1(1, 1, 2)
+            Exercises6.task1(1, 1, 2)
                 .provideLayer(fullLayer)
                 .map(res => assertTrue(res.contains(new Color(1, 1, 2))))
         },
         test("firstTask test fail") {
-            Exercises.task1(535, 2424, 24)
+            Exercises6.task1(535, 2424, 24)
                 .provideLayer(fullLayer)
                 .map(res => assertTrue(res.isEmpty))
         },
         test("second task test") {
-            Exercises.task2((4, 4))
+            Exercises6.task2((4, 4))
                 .provideLayer(fullLayer)
                 .map(res => assertTrue(res.matches(raw"((\d+\s){3}\d+\n){3}((\d+\s){3}\d+\n?)")))
         },
         test("third task test1") {
-            Exercises.task3((4, 4))
+            Exercises6.task3((4, 4))
                 .fold(err => assertTrue(err.getMessage == "Не удалось создать цвет"), _ => assertTrue(false))
                 .provideLayer(layerWithFailedRandomColor)
         },
         test("third task test2") {
-            Exercises.task3((4, 4))
+            Exercises6.task3((4, 4))
                 .fold(err => assertTrue(err.getMessage == "Ошибка генерации изображения"), _ => assertTrue(false))
                 .provideLayer(layerWithFailedGeneratePicture)
         },
         test("third task test3") {
-            Exercises.task3((4, 4))
+            Exercises6.task3((4, 4))
                 .fold(err => assertTrue(err.getMessage == "Возникли проблемы при заливке изображения"), _ => assertTrue(false))
                 .provideLayer(layerWithFailedFillPicture)
         }
