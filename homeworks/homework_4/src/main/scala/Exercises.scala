@@ -133,46 +133,48 @@ object Exercises {
      * Изменять методы внутри SimplePhoneService не разрешается.
      */
 
-    import Utils._
+    object SideEffectExercise {
 
-    class SimpleChangePhoneService(phoneService: SimplePhoneService) extends ChangePhoneService {
-        override def changePhone(oldPhone: String, newPhone: String): String = {
-            val oldPhoneRecord = phoneService.findPhoneNumber(oldPhone)
-            if (oldPhoneRecord != null) {
-                phoneService.deletePhone(oldPhoneRecord)
-            }
-            phoneService.addPhoneToBase(newPhone)
-            "ok"
-        }
-    }
+        import Utils._
 
-    class PhoneServiceSafety(unsafePhoneService: SimplePhoneService) {
-        def findPhoneNumberSafe(num: String): Option[String] = {
-            Option(unsafePhoneService.findPhoneNumber(num)).filter(_ != null)
-        }
-
-        def addPhoneToBaseSafe(phone: String): Option[Unit] = {
-            if (checkPhoneNumber(phone)) {
-                unsafePhoneService.addPhoneToBase(phone)
-                Some(())
-            } else {
-                None
+        class SimpleChangePhoneService(phoneService: SimplePhoneService) extends ChangePhoneService {
+            override def changePhone(oldPhone: String, newPhone: String): String = {
+                val oldPhoneRecord = phoneService.findPhoneNumber(oldPhone)
+                if (oldPhoneRecord != null) {
+                    phoneService.deletePhone(oldPhoneRecord)
+                }
+                phoneService.addPhoneToBase(newPhone)
+                "ok"
             }
         }
 
-        def deletePhoneSafe(phone: String): Option[Unit] = {
-            Option(phone).filter(_ != null).map(_ => unsafePhoneService.deletePhone(phone))
+        class PhoneServiceSafety(unsafePhoneService: SimplePhoneService) {
+            def findPhoneNumberSafe(num: String): Option[String] = {
+                Option(unsafePhoneService.findPhoneNumber(num)).filter(_ != null)
+            }
+
+            def addPhoneToBaseSafe(phone: String): Option[Unit] = {
+                if (checkPhoneNumber(phone)) {
+                    unsafePhoneService.addPhoneToBase(phone)
+                    Some(())
+                } else {
+                    None
+                }
+            }
+
+            def deletePhoneSafe(phone: String): Option[Unit] = {
+                Option(phone).filter(_ != null).map(_ => unsafePhoneService.deletePhone(phone))
+            }
+        }
+
+        class ChangePhoneServiceSafe(phoneServiceSafety: PhoneServiceSafety) extends ChangePhoneService {
+            override def changePhone(oldPhone: String, newPhone: String): String = {
+                (for {
+                    _ <- phoneServiceSafety.findPhoneNumberSafe(oldPhone)
+                    _ <- phoneServiceSafety.deletePhoneSafe(oldPhone)
+                    _ <- phoneServiceSafety.addPhoneToBaseSafe(newPhone)
+                } yield "ok").getOrElse("Error")
+            }
         }
     }
-
-    class ChangePhoneServiceSafe(phoneServiceSafety: PhoneServiceSafety) extends ChangePhoneService {
-        override def changePhone(oldPhone: String, newPhone: String): String = {
-            (for {
-                _ <- phoneServiceSafety.findPhoneNumberSafe(oldPhone)
-                _ <- phoneServiceSafety.deletePhoneSafe(oldPhone)
-                _ <- phoneServiceSafety.addPhoneToBaseSafe(newPhone)
-            } yield "ok").getOrElse("Error")
-        }
-    }
-
 }
