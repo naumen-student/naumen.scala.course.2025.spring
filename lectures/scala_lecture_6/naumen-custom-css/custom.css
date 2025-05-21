@@ -1,0 +1,35 @@
+.reveal .footer {
+    font-size: 22pt;
+    color: black;
+
+    position: fixed;
+    left: 50%;
+    bottom: 20px;
+    transform: translate(-50%, -50%);
+    margin: 0 auto;
+    bottom: 0.5em;
+}
+.corp-name {
+    color: orangered;
+    font-family: "Circe", sans-serif;;
+} 
+
+/* styles.css */
+.flex-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-item {
+    text-align: center;
+}
+
+.flex-item img {
+    max-width: 100%;
+    height: auto;
+}
+
+.flex-item p {
+    margin-top: 10px;
+}
