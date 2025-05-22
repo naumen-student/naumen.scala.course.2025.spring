@@ -1,41 +1,60 @@
 package ru.dru
 
-import zio.CanFail.canFailAmbiguous1
-import zio.{Duration, Exit, Fiber, Scope, ZIO, ZIOApp, ZIOAppArgs, ZIOAppDefault, durationInt}
-
+import zio.{Duration, Fiber, Scope, UIO, ZIO, ZIOAppArgs, ZIOAppDefault, durationInt}
 import java.time.LocalDateTime
-import scala.concurrent.TimeoutException
 
-case class SaladInfoTime(tomatoTime: Duration, cucumberTime: Duration)
-
+case class SaladInfoTime(cucumberTime: Duration, tomatoTime: Duration)
 
 object Breakfast extends ZIOAppDefault {
 
-  /**
-   * Функция должна эмулировать приготовление завтрака. Продолжительные операции необходимо эмулировать через ZIO.sleep.
-   * Правила приготовления следующие:
-   *  1. Нобходимо вскипятить воду (время кипячения waterBoilingTime)
-   *  2. Параллельно с этим нужно жарить яичницу eggsFiringTime
-   *  3. Параллельно с этим готовим салат:
-   *    * сначала режим  огурцы
-   *    * после этого режим помидоры
-   *    * после этого добавляем в салат сметану
-   *  4. После того, как закипит вода необходимо заварить чай, время заваривания чая teaBrewingTime
-   *  5. После того, как всё готово, можно завтракать
-   *
-   * @param eggsFiringTime время жарки яичницы
-   * @param waterBoilingTime время кипячения воды
-   * @param saladInfoTime информация о времени для приготовления салата
-   * @param teaBrewingTime время заваривания чая
-   * @return Мапу с информацией о том, когда завершился очередной этап (eggs, water, saladWithSourCream, tea)
-   */
-  def makeBreakfast(eggsFiringTime: Duration,
-                    waterBoilingTime: Duration,
-                    saladInfoTime: SaladInfoTime,
-                    teaBrewingTime: Duration): ZIO[Any, Throwable, Map[String, LocalDateTime]] = ???
+  private def currentTime: UIO[LocalDateTime] = ZIO.succeed(LocalDateTime.now())
 
+  private def boilWater(waterBoilingTime: Duration): UIO[LocalDateTime] =
+    ZIO.sleep(waterBoilingTime) *> currentTime
 
+  private def fryEggs(eggsFiringTime: Duration): UIO[LocalDateTime] =
+    ZIO.sleep(eggsFiringTime) *> currentTime
 
-  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = ZIO.succeed(println("Done"))
+  private def prepareSalad(saladInfoTime: SaladInfoTime): UIO[LocalDateTime] =
+    ZIO.sleep(saladInfoTime.cucumberTime) *>
+      ZIO.sleep(saladInfoTime.tomatoTime) *>
+      currentTime
 
+  private def brewTea(teaBrewingTime: Duration): UIO[LocalDateTime] =
+    ZIO.sleep(teaBrewingTime) *> currentTime
+
+  def makeBreakfast(
+                     eggsFiringTime: Duration,
+                     waterBoilingTime: Duration,
+                     saladInfoTime: SaladInfoTime,
+                     teaBrewingTime: Duration
+                   ): ZIO[Any, Nothing, Map[String, LocalDateTime]] = {
+    for {
+      waterFiber  <- boilWater(waterBoilingTime).fork
+      eggsFiber   <- fryEggs(eggsFiringTime).fork
+      saladFiber  <- prepareSalad(saladInfoTime).fork
+
+      waterTime   <- waterFiber.join
+      teaFiber    <- brewTea(teaBrewingTime).fork
+
+      eggsTime    <- eggsFiber.join
+      saladTime   <- saladFiber.join
+      teaTime     <- teaFiber.join
+    } yield Map(
+      "eggs" -> eggsTime,
+      "water" -> waterTime,
+      "saladWithSourCream" -> saladTime,
+      "tea" -> teaTime
+    )
+  }
+
+  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = {
+    val eggsTime = 5.seconds
+    val waterTime = 10.seconds
+    val saladTime = SaladInfoTime(3.seconds, 4.seconds)
+    val teaTime = 2.seconds
+
+    makeBreakfast(eggsTime, waterTime, saladTime, teaTime)
+      .flatMap(result => ZIO.succeed(println(result)))
+  }
 }
