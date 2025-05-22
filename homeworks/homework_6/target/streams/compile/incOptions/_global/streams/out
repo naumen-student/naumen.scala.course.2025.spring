@@ -1,0 +1,23 @@
+[debug] Created transactional ClassFileManager with tempDir = C:\Users\HappyGoga\Desktop\naumen.scala.course.2025.spring-full\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes.bak
+[debug] About to delete class files:
+[debug] We backup class files:
+[debug] Created transactional ClassFileManager with tempDir = C:\Users\HappyGoga\Desktop\naumen.scala.course.2025.spring-full\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes.bak
+[debug] About to delete class files:
+[debug] We backup class files:
+[debug] Registering generated classes:
+[debug] 	PictureGenerationService$ServiceImpl.class
+[debug] 	Utils$Picture$.class
+[debug] 	Exercises$.class
+[debug] 	Utils.class
+[debug] 	PictureGenerationService.class
+[debug] 	PictureGenerationService$Service.class
+[debug] 	Utils$.class
+[debug] 	ColorService$.class
+[debug] 	ColorService$Service.class
+[debug] 	PictureGenerationService$.class
+[debug] 	ColorService$ServiceImpl.class
+[debug] 	Utils$GenerationError.class
+[debug] 	Utils$Picture.class
+[debug] 	ColorService.class
+[debug] 	Exercises.class
+[debug] Removing the temporary directory used for backing up class files: C:\Users\HappyGoga\Desktop\naumen.scala.course.2025.spring-full\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes.bak
