@@ -1,0 +1,53 @@
+{
+  "results": [
+    {
+       "name" : "test_case_-1325554558/tests/second task test",
+       "status" : "Success",
+       "durationMillis" : "79",
+       "annotations" : "",
+       "fullyQualifiedClassName" : "test_case_-1325554558",
+       "labels" : ["tests", "second task test"]
+    },
+    {
+       "name" : "test_case_-1325554558/tests/third task test1",
+       "status" : "Success",
+       "durationMillis" : "79",
+       "annotations" : "",
+       "fullyQualifiedClassName" : "test_case_-1325554558",
+       "labels" : ["tests", "third task test1"]
+    },
+    {
+       "name" : "test_case_-1325554558/tests/firstTask test good",
+       "status" : "Success",
+       "durationMillis" : "78",
+       "annotations" : "",
+       "fullyQualifiedClassName" : "test_case_-1325554558",
+       "labels" : ["tests", "firstTask test good"]
+    },
+    {
+       "name" : "test_case_-1325554558/tests/firstTask test fail",
+       "status" : "Success",
+       "durationMillis" : "79",
+       "annotations" : "",
+       "fullyQualifiedClassName" : "test_case_-1325554558",
+       "labels" : ["tests", "firstTask test fail"]
+    },
+    {
+       "name" : "test_case_-1325554558/tests/third task test2",
+       "status" : "Success",
+       "durationMillis" : "26",
+       "annotations" : "",
+       "fullyQualifiedClassName" : "test_case_-1325554558",
+       "labels" : ["tests", "third task test2"]
+    },
+    {
+       "name" : "test_case_-1325554558/tests/third task test3",
+       "status" : "Success",
+       "durationMillis" : "28",
+       "annotations" : "",
+       "fullyQualifiedClassName" : "test_case_-1325554558",
+       "labels" : ["tests", "third task test3"]
+    }
+
+  ]
+}
