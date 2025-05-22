@@ -1,0 +1,12 @@
+[debug] Running TaskDef(Test2, utest.runner.Fingerprint$@2e54b18b, false, [SuiteSelector])
+[debug] Running TaskDef(Test5, utest.runner.Fingerprint$@2e54b18b, false, [SuiteSelector])
+[debug] Running TaskDef(Test1, utest.runner.Fingerprint$@2e54b18b, false, [SuiteSelector])
+[debug] Running TaskDef(Test3, utest.runner.Fingerprint$@2e54b18b, false, [SuiteSelector])
+[debug] Running TaskDef(Test4, utest.runner.Fingerprint$@2e54b18b, false, [SuiteSelector])
+[info] 
+[debug] Passed tests:
+[debug] 	Test3
+[debug] 	Test5
+[debug] 	Test1
+[debug] 	Test4
+[debug] 	Test2
