@@ -29,11 +29,40 @@ object Breakfast extends ZIOAppDefault {
    * @param teaBrewingTime время заваривания чая
    * @return Мапу с информацией о том, когда завершился очередной этап (eggs, water, saladWithSourCream, tea)
    */
-  def makeBreakfast(eggsFiringTime: Duration,
-                    waterBoilingTime: Duration,
-                    saladInfoTime: SaladInfoTime,
-                    teaBrewingTime: Duration): ZIO[Any, Throwable, Map[String, LocalDateTime]] = ???
+  def makeBreakfast(
+                     eggsFiringTime: Duration,
+                     waterBoilingTime: Duration,
+                     saladInfoTime: SaladInfoTime,
+                     teaBrewingTime: Duration
+                   ): ZIO[Any, Throwable, Map[String, LocalDateTime]] = {
+    for {
+      now <- Clock.currentDateTime
+      // 1. Кипятим воду и параллельно жарим яичницу
+      waterFiber <- ZIO.sleep(waterBoilingTime).fork
+      eggsFiber  <- ZIO.sleep(eggsFiringTime).fork
 
+      // 2. Готовим салат последовательно
+      _          <- ZIO.sleep(saladInfoTime.cucumberTime)
+      _          <- ZIO.sleep(saladInfoTime.tomatoTime)
+      saladTime  <- Clock.currentDateTime // время добавления сметаны
+
+      // 3. Ждём кипячения воды и завариваем чай
+      _          <- waterFiber.join
+      teaTime    <- Clock.currentDateTime.map(_.plusSeconds(teaBrewingTime.getSeconds))
+
+      // 4. Ждём готовности яичницы
+      _          <- eggsFiber.join
+      eggsTime   <- Clock.currentDateTime
+
+      // 5. Собираем результаты
+      result = Map(
+        "eggs"               -> eggsTime,
+        "water"             -> now.plusSeconds(waterBoilingTime.getSeconds),
+        "saladWithSourCream" -> saladTime,
+        "tea"               -> teaTime
+      )
+    } yield result
+  }
 
 
   override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = ZIO.succeed(println("Done"))
