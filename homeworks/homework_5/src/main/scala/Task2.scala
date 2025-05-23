@@ -11,16 +11,41 @@ import cats.implicits._
 object Task2 extends App {
   case class RadiusVector(x: Int, y: Int)
   object RadiusVector {
-    implicit val monoid: Monoid[RadiusVector] = ???
+    implicit val monoid: Monoid[RadiusVector] = new Monoid[RadiusVector] {
+      def empty: RadiusVector = RadiusVector(0, 0)
+      def combine(a: RadiusVector, b: RadiusVector): RadiusVector =
+        RadiusVector(a.x + b.x, a.y + b.y)
+    }
   }
   case class DegreeAngle(angel: Double)
   object DegreeAngle {
-    implicit val monoid: Monoid[DegreeAngle] = ???
+    implicit val monoid: Monoid[DegreeAngle] = new Monoid[DegreeAngle] {
+      def empty: DegreeAngle = DegreeAngle(0.0)
+      def combine(a: DegreeAngle, b: DegreeAngle): DegreeAngle =
+        DegreeAngle((a.angel + b.angel) % 360)
+    }
   }
 
   case class SquareMatrix[A : Monoid](values: ((A, A, A), (A, A, A), (A, A, A)))
   object SquareMatrix {
-    implicit def monoid[A: Monoid]: Monoid[SquareMatrix[A]] = ???
+    implicit def monoid[A: Monoid]: Monoid[SquareMatrix[A]] = new Monoid[SquareMatrix[A]] {
+      private def plus(a: A, b: A): A = Monoid[A].combine(a, b)
+
+      def empty: SquareMatrix[A] = {
+        val z = Monoid[A].empty
+        SquareMatrix(((z, z, z), (z, z, z), (z, z, z)))
+      }
+
+      def combine(m1: SquareMatrix[A], m2: SquareMatrix[A]): SquareMatrix[A] = {
+        val ((a11,a12,a13),(a21,a22,a23),(a31,a32,a33)) = m1.values
+        val ((b11,b12,b13),(b21,b22,b23),(b31,b32,b33)) = m2.values
+        SquareMatrix((
+          (plus(a11,b11), plus(a12,b12), plus(a13,b13)),
+          (plus(a21,b21), plus(a22,b22), plus(a23,b23)),
+          (plus(a31,b31), plus(a32,b32), plus(a33,b33))
+        ))
+      }
+    }  
   }
 
   val radiusVectors = Vector(RadiusVector(0, 0), RadiusVector(0, 1), RadiusVector(-1, 1))
