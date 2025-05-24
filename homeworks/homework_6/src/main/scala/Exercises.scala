@@ -2,7 +2,7 @@ import utils.{ColorService, PictureGenerationService}
 import utils.ColorService.ColorService
 import utils.PictureGenerationService.PictureGenerationService
 import utils.Utils._
-import zio.{IO, Random, URIO, ZIO, ZLayer}
+import zio.{IO, URIO, ZIO}
 
 import java.awt.Color
 
