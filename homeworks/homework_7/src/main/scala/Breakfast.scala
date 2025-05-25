@@ -1,16 +1,12 @@
 package ru.dru
-
 import zio.CanFail.canFailAmbiguous1
 import zio.{Duration, Exit, Fiber, Scope, ZIO, ZIOApp, ZIOAppArgs, ZIOAppDefault, durationInt}
-
 import java.time.LocalDateTime
 import scala.concurrent.TimeoutException
 
 case class SaladInfoTime(tomatoTime: Duration, cucumberTime: Duration)
 
-
 object Breakfast extends ZIOAppDefault {
-
   /**
    * Функция должна эмулировать приготовление завтрака. Продолжительные операции необходимо эмулировать через ZIO.sleep.
    * Правила приготовления следующие:
@@ -32,10 +28,37 @@ object Breakfast extends ZIOAppDefault {
   def makeBreakfast(eggsFiringTime: Duration,
                     waterBoilingTime: Duration,
                     saladInfoTime: SaladInfoTime,
-                    teaBrewingTime: Duration): ZIO[Any, Throwable, Map[String, LocalDateTime]] = ???
-
-
+                    teaBrewingTime: Duration): ZIO[Any, Throwable, Map[String, LocalDateTime]] = {
+    
+    val cookEggs = ZIO.sleep(eggsFiringTime) *> ZIO.succeed(LocalDateTime.now())
+    
+    val boilWater = ZIO.sleep(waterBoilingTime) *> ZIO.succeed(LocalDateTime.now())
+    
+    val prepareSalad = for {
+      _ <- ZIO.sleep(saladInfoTime.cucumberTime)
+      _ <- ZIO.sleep(saladInfoTime.tomatoTime) 
+      finishTime <- ZIO.succeed(LocalDateTime.now())
+    } yield finishTime
+    
+    for {
+      eggsFiber <- cookEggs.fork
+      waterFiber <- boilWater.fork
+      saladFiber <- prepareSalad.fork
+      
+      waterResult <- waterFiber.join
+      teaFiber <- (ZIO.sleep(teaBrewingTime) *> ZIO.succeed(LocalDateTime.now())).fork
+      
+      eggsResult <- eggsFiber.join
+      saladResult <- saladFiber.join
+      teaResult <- teaFiber.join
+      
+    } yield Map(
+      "eggs" -> eggsResult,
+      "water" -> waterResult,
+      "saladWithSourCream" -> saladResult,
+      "tea" -> teaResult
+    )
+  }
 
   override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = ZIO.succeed(println("Done"))
-
 }
