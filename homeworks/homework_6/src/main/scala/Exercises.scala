@@ -1,10 +1,3 @@
-import utils.ColorService.ColorService
-import utils.PictureGenerationService.PictureGenerationService
-import utils.Utils._
-import zio.{IO, Random, URIO, ZIO}
-
-import java.awt.Color
-
 object Exercises {
 
     /**
@@ -13,6 +6,7 @@ object Exercises {
      */
     def task1(r: Int, g: Int, b: Int): URIO[ColorService, Option[Color]] =
         ZIO.serviceWithZIO[ColorService](_.getColor(r, g, b))
+        ZIO.serviceWithZIO[ColorService](_.getColor(r, g, b)).option
 
 
     /**
@@ -24,6 +18,11 @@ object Exercises {
     def task2(size: (Int, Int)): ZIO[PictureGenerationService, GenerationError, String] =
         ZIO.serviceWithZIO[PictureGenerationService](_.generatePicture(size))
 
+        ZIO.serviceWithZIO[PictureGenerationService](_.generatePicture(size)).map(
+            p => {p.lines.map(
+                l => l.map(el => -el.getRGB()).mkString(" ")
+            ).mkString("\n")}
+        )
 
     /**
      * В задаче необходимо поработать с ошибками
@@ -40,6 +39,9 @@ object Exercises {
             color <- colorServ.generateRandomColor()
             picture <- pictureServ.generatePicture(size)
             filledPicture <- pictureServ.fillPicture(picture, color)
+            color <- colorServ.generateRandomColor().mapError(_ => new GenerationError("Не удалось создать цвет"))
+            picture <- pictureServ.generatePicture(size).mapError(_ => new GenerationError("Ошибка генерации изображения"))
+            filledPicture <- pictureServ.fillPicture(picture, color).mapError(_ => new GenerationError("Возникли проблемы при заливке изображения"))
         } yield filledPicture
 
     /**
@@ -48,4 +50,7 @@ object Exercises {
     def task4(size: (Int, Int)): IO[GenerationError, Picture] =
         task3(size)
 
+    def task4(size: (Int, Int)): IO[GenerationError, Picture] = {
+        task3(size).provideSomeLayer(PictureGenerationService.live).provideLayer(ColorService.live)
+    }
 }
