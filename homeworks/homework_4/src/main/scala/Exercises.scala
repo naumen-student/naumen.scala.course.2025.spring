@@ -1,3 +1,5 @@
+import scala.annotation.tailrec
+import scala.util.{Random, Try}
 
 object Exercises {
 
@@ -22,8 +24,12 @@ object Exercises {
         result
     }
 
-    def findSumFunctional(items: List[Int], sumValue: Int) = {
-        (-1, -1)
+    def findSumFunctional(items: List[Int], sumValue: Int): (Int, Int) = {
+        items.indices
+          .flatMap(i => items.indices.collect(
+              { case j if i != j && items(i) + items(j) == sumValue => (i, j) }))
+          .lastOption
+          .getOrElse((-1, -1))
     }
 
 
@@ -49,7 +55,17 @@ object Exercises {
     }
 
     def tailRecRecursion(items: List[Int]): Int = {
-        1
+        doTailRec(items.reverse, 1, items.length)
+    }
+
+    @tailrec
+    private def doTailRec(items: List[Int], acc: Int, index: Int): Int = {
+        items match {
+            case head :: tail =>
+                if (head % 2 == 0) doTailRec(tail, head * acc + index, index - 1)
+                else doTailRec(tail, -1 * head * acc + index, index -1)
+            case Nil => acc
+        }
     }
 
     /**
@@ -60,7 +76,22 @@ object Exercises {
      */
 
     def functionalBinarySearch(items: List[Int], value: Int): Option[Int] = {
-        None
+        search(items, 0, items.length - 1, value)
+    }
+
+    @tailrec
+    private def search(items: List[Int], low: Int, high: Int, value: Int): Option[Int] = {
+        if (low > high) None
+        else {
+            val mid = low + (high - low) / 2
+            items.lift(mid) match {
+                case Some(midValue) =>
+                    if (midValue == value) Some(mid)
+                    else if (midValue > value) search(items, low, mid - 1, value)
+                    else search(items, mid + 1, high, value)
+                case None => None
+            }
+        }
     }
 
     /**
@@ -71,9 +102,10 @@ object Exercises {
      * Именем является строка, не содержащая иных символов, кроме буквенных, а также начинающаяся с заглавной буквы.
      */
 
-    def generateNames(namesСount: Int): List[String] = {
-        if (namesСount < 0) throw new Throwable("Invalid namesCount")
-        Nil
+    def generateNames(namesCount: Int): List[String] = {
+        if (namesCount < 0) throw new Throwable("Invalid namesCount")
+        val letters = ('a' to 'z').toList
+        List.fill(namesCount)(Random.shuffle(letters).take(3 + Random.nextInt(8)).mkString.capitalize)
     }
 
 }
@@ -111,14 +143,36 @@ object SideEffectExercise {
 
 
     class PhoneServiceSafety(unsafePhoneService: SimplePhoneService) {
-        def findPhoneNumberSafe(num: String) = ???
+        def findPhoneNumberSafe(num: String): Option[String] = Option(unsafePhoneService.findPhoneNumber(num))
 
-        def addPhoneToBaseSafe(phone: String) = ???
+        def addPhoneToBaseSafe(phone: String): Either[String, Unit] =
+            Try(unsafePhoneService.addPhoneToBase(phone)).toEither.left.map(_.getMessage)
 
-        def deletePhone(phone: String) = ???
+        def deletePhone(phone: String): Either[String, Unit] =
+            Try(unsafePhoneService.deletePhone(phone)).toEither.left.map(_.getMessage)
     }
 
     class ChangePhoneServiceSafe(phoneServiceSafety: PhoneServiceSafety) extends ChangePhoneService {
-        override def changePhone(oldPhone: String, newPhone: String): String = ???
+        override def changePhone(oldPhone: String, newPhone: String): String = {
+            val old = phoneServiceSafety.findPhoneNumberSafe(oldPhone)
+            old match {
+                case Some(phone) =>
+                    val oldDeleted = phoneServiceSafety.deletePhone(phone)
+                    oldDeleted match {
+                        case Left(error) => error
+                        case Right(_) =>
+                            savePhone(newPhone)
+                    }
+                case None => savePhone(newPhone)
+            }
+        }
+
+        private def savePhone(newPhone: String) = {
+            val saved = phoneServiceSafety.addPhoneToBaseSafe(newPhone)
+            saved match {
+                case Left(error) => error
+                case Right(_) => "ok"
+            }
+        }
     }
 }
