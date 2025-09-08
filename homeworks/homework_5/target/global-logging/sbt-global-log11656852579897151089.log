@@ -1,0 +1,26 @@
+[debug] > Exec(~test, None, None)
+[info] sbt server started at local:sbt-server-ec4b6b653e9b53a56b44
+[debug] Writing bsp connection file
+[info] started sbt server
+[debug] > Exec(__runWatch console0, None, None)
+[debug] > Exec(sbtStashOnFailure, None, None)
+[debug] > Exec(__preWatch console0, None, None)
+[debug] > Exec(test, None, None)
+[debug] Evaluating tasks: Test / test
+[debug] Running task... Cancel: Signal, check cycles: false, forcegc: true
+[info] compiling 5 Scala sources to C:\Users\Test\Desktop\naumen.scala.course.2025.spring-master-5\homeworks\homework_5\target\scala-2.12\classes ...
+[info] done compiling
+[info] compiling 5 Scala sources to C:\Users\Test\Desktop\naumen.scala.course.2025.spring-master-5\homeworks\homework_5\target\scala-2.12\test-classes ...
+[warn] C:\Users\Test\Desktop\naumen.scala.course.2025.spring-master-5\homeworks\homework_5\src\test\scala\Test2.scala:26:63: match may not be exhaustive.
+[warn] It would fail on the following inputs: (List(_), _), (List(_, _), _), (List(_, _, _), _), (List(_, _, _, _), _)
+[warn]       val matrixs = firstRow.zip(secondRow.zip(thirdRow)).map {
+[warn]                                                               ^
+[warn] there was one unchecked warning; re-run with -unchecked for details
+[warn] two warnings found
+[info] done compiling
+[info] 
+[success] Total time: 11 s, completed 25 апр. 2025 г., 17:43:20
+[debug] > Exec(resumeFromFailure, None, None)
+[debug] > Exec(sbtPopOnFailure, None, None)
+[debug] > Exec(__postWatch console0, None, None)
+[debug] > Exec(__waitWatch console0, None, None)
