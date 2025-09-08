@@ -45,9 +45,18 @@ object Task1 extends App {
   }
 
   object ShowInstance {
-    implicit val catShow: Show[Cat] = ???
+    implicit val catShow: Show[Cat] = {
+      case VeryBigCat(name) => "очень большой кот %s".format(name)
+      case BigCat(name) => "большой кот %s".format(name)
+      case NormalCat(name) => "кот %s".format(name)
+      case LittleCat(name) => "маленький кот %s".format(name)
+      case VeryLittleCat(name) => "очень маленький кот %s".format(name)
+    }
 
-    implicit def boxShow[A: Show]: Show[Box[A]] = ???
+    implicit def boxShow[A: Show]: Show[Box[A]] =
+      (box: Box[A]) => implicitly[Show[A]].show(box.value) + " в коробке"
+
+    implicit def boxShowNothing: Show[Box[Nothing]] = (_: Box[Nothing]) => "пустая коробка"
   }
 
   object ShowSyntax {
