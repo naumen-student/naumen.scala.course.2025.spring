@@ -32,7 +32,37 @@ object Breakfast extends ZIOAppDefault {
   def makeBreakfast(eggsFiringTime: Duration,
                     waterBoilingTime: Duration,
                     saladInfoTime: SaladInfoTime,
-                    teaBrewingTime: Duration): ZIO[Any, Throwable, Map[String, LocalDateTime]] = ???
+                    teaBrewingTime: Duration): ZIO[Any, Nothing, Map[String, LocalDateTime]] = {
+
+    def getLocalTime: ZIO[Any, Nothing, LocalDateTime] =
+      ZIO.clockWith(_.currentDateTime.map(_.toLocalDateTime))
+
+    val boilWater = ZIO.sleep(waterBoilingTime) *> getLocalTime.map("water" -> _)
+    val fryEggs = ZIO.sleep(eggsFiringTime) *> getLocalTime.map("eggs" -> _)
+    val prepareSalad =
+      ZIO.sleep(saladInfoTime.cucumberTime) *>
+        ZIO.sleep(saladInfoTime.tomatoTime) *>
+        getLocalTime.map("saladWithSourCream" -> _)
+    val makeTea = ZIO.sleep(teaBrewingTime) *> getLocalTime.map("tea" -> _)
+
+    (for {
+      waterFiber <- boilWater.fork
+      eggsFiber <- fryEggs.fork
+      saladFiber <- prepareSalad.fork
+
+      waterTime <- waterFiber.join
+      teaFiber <- makeTea.fork
+
+      eggsTime <- eggsFiber.join
+      saladTime <- saladFiber.join
+      teaTime <- teaFiber.join
+    } yield Map(
+      waterTime,
+      eggsTime,
+      saladTime,
+      teaTime
+    )).mapError(e => new Throwable()).orDie
+  }
 
 
 
