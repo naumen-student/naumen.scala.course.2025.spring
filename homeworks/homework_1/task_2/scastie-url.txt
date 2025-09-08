@@ -1,0 +1,13 @@
+val name = "Maxim Finadeev"
+val greetings = List("Hello", "Hola", "Guten tag")
+
+def printGreetings(name: String): Unit = {
+  greetings.foreach(g => println(s"$g Scala! This is $name"))
+}
+
+println("Original name:")
+printGreetings(name)
+
+val reversedName = name.reverse
+println("\nReversed name:")
+printGreetings(reversedName)
