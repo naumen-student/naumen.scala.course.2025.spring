@@ -8,7 +8,6 @@ import scala.concurrent.TimeoutException
 
 case class SaladInfoTime(tomatoTime: Duration, cucumberTime: Duration)
 
-
 object Breakfast extends ZIOAppDefault {
 
   /**
@@ -29,13 +28,55 @@ object Breakfast extends ZIOAppDefault {
    * @param teaBrewingTime время заваривания чая
    * @return Мапу с информацией о том, когда завершился очередной этап (eggs, water, saladWithSourCream, tea)
    */
-  def makeBreakfast(eggsFiringTime: Duration,
-                    waterBoilingTime: Duration,
-                    saladInfoTime: SaladInfoTime,
-                    teaBrewingTime: Duration): ZIO[Any, Throwable, Map[String, LocalDateTime]] = ???
+  def makeBreakfast(
+                     eggsFiringTime: Duration,
+                     waterBoilingTime: Duration,
+                     saladInfoTime: SaladInfoTime,
+                     teaBrewingTime: Duration
+                   ): ZIO[Any, Throwable, Map[String, LocalDateTime]] = {
 
+    def logCompletion(stage: String): ZIO[Any, Nothing, LocalDateTime] =
+      ZIO.succeed(LocalDateTime.now())
 
+    val fryEggs = for {
+      _       <- ZIO.sleep(eggsFiringTime)
+      doneAt  <- logCompletion("eggs")
+    } yield "eggs" -> doneAt
 
-  override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = ZIO.succeed(println("Done"))
+    val boilWaterAndBrewTea = for {
+      _         <- ZIO.sleep(waterBoilingTime)
+      waterDone <- logCompletion("water")
+      _         <- ZIO.sleep(teaBrewingTime)
+      teaDone   <- logCompletion("tea")
+    } yield List("water" -> waterDone, "tea" -> teaDone)
 
+    val makeSalad = for {
+      _       <- ZIO.sleep(saladInfoTime.cucumberTime)
+      _       <- ZIO.sleep(saladInfoTime.tomatoTime)
+      doneAt  <- logCompletion("saladWithSourCream")
+    } yield "saladWithSourCream" -> doneAt
+
+    for {
+      fiberEggs    <- fryEggs.fork
+      fiberWaterTea <- boilWaterAndBrewTea.fork
+      fiberSalad   <- makeSalad.fork
+
+      eggsResult   <- fiberEggs.join
+      waterTeaResult <- fiberWaterTea.join
+      saladResult  <- fiberSalad.join
+    } yield Map(eggsResult, saladResult) ++ waterTeaResult.toMap
+  }
+
+  override def run: ZIO[Any, Throwable, Int] = {
+    val eggsTime   = 3.seconds
+    val waterTime  = 5.seconds
+    val teaTime    = 4.seconds
+    val saladTimes = SaladInfoTime(cucumberTime = 2.seconds, tomatoTime = 2.seconds)
+
+    makeBreakfast(eggsTime, waterTime, saladTimes, teaTime).flatMap { result =>
+      ZIO.foreach(result.toList) { case (stage, time) =>
+        ZIO.succeed(println(s"$stage completed at: $time"))
+      }.as(0)
+    }
+  }
 }
