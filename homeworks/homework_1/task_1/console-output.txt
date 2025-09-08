@@ -1,0 +1,33 @@
+Microsoft Windows [Version 10.0.19045.5487]
+(c) Корпорация Майкрософт (Microsoft Corporation). Все права защищены.
+
+C:\Users\Антон>scala
+Welcome to Scala 2.12.10 (OpenJDK 64-Bit Server VM, Java 11.0.0.2).
+Type in expressions for evaluation. Or try :help.
+
+scala> val text = "Hello Scala! This is Anton"
+text: String = Hello Scala! This is Anton
+
+scala> println(text)
+Hello Scala! This is Anton
+
+scala> val name = "Chechulin Anton"
+name: String = Chechulin Anton
+
+scala> val reversedName = name.reverse
+reversedName: String = notnA niluhcehC
+
+scala> val greetingWords = List("Hola", "Guten tag", "Salut")
+greetingWords: List[String] = List(Hola, Guten tag, Salut)
+
+scala> greetingWords.foreach(g => println(s"$g Scala! This is $name"))
+Hola Scala! This is Chechulin Anton
+Guten tag Scala! This is Chechulin Anton
+Salut Scala! This is Chechulin Anton
+
+scala> greetingWords.foreach(g => println(s"$g Scala! This is $reversedName"))
+Hola Scala! This is notnA niluhcehC
+Guten tag Scala! This is notnA niluhcehC
+Salut Scala! This is notnA niluhcehC
+
+scala>
