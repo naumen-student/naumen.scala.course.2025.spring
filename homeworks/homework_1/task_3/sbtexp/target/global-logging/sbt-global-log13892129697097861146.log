@@ -1,0 +1,10 @@
+[debug] > Exec(__stopWatch console0, None, None)
+[warn] build source files have changed
+[warn] modified files: 
+[warn]   D:\My\untitled\build.sbt
+[warn] Apply these changes by running `reload`.
+[warn] Automatically reload the build when source changes are detected by setting `Global / onChangedBuildSource := ReloadOnSourceChanges`.
+[warn] Disable this warning by setting `Global / onChangedBuildSource := IgnoreSourceChanges`.
+[debug] > Exec(resumeFromFailure, None, None)
+[debug] > Exec(__waitWatch console0, None, None)
+[debug] > Exec(idea-shell, None, None)
