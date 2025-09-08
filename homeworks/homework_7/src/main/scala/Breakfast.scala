@@ -1,9 +1,10 @@
 package ru.dru
 
 import zio.CanFail.canFailAmbiguous1
-import zio.{Duration, Exit, Fiber, Scope, ZIO, ZIOApp, ZIOAppArgs, ZIOAppDefault, durationInt}
+import zio.{Clock, Duration, Exit, Fiber, Scope, ZIO, ZIOApp, ZIOAppArgs, ZIOAppDefault, durationInt}
 
 import java.time.LocalDateTime
+import java.time.LocalDateTime.now
 import scala.concurrent.TimeoutException
 
 case class SaladInfoTime(tomatoTime: Duration, cucumberTime: Duration)
@@ -32,7 +33,36 @@ object Breakfast extends ZIOAppDefault {
   def makeBreakfast(eggsFiringTime: Duration,
                     waterBoilingTime: Duration,
                     saladInfoTime: SaladInfoTime,
-                    teaBrewingTime: Duration): ZIO[Any, Throwable, Map[String, LocalDateTime]] = ???
+                    teaBrewingTime: Duration): ZIO[Any, Throwable, Map[String, LocalDateTime]] =
+    for {
+      waterFiber <- boilWater(waterBoilingTime).fork
+      eggsFiber <- fryEggs(eggsFiringTime).fork
+      saladFiber <- cookSalad(saladInfoTime).fork
+      teaFiber <- waterFiber.await.zip(brewTea(teaBrewingTime)).fork
+
+      _ <- teaFiber.zip(eggsFiber).zip(saladFiber).await
+
+      waterTime <- waterFiber.join
+      eggsTime <- eggsFiber.join
+      saladTime <- saladFiber.join
+      teaTime <- teaFiber.join
+
+      _ <- eggsFiber.zip(saladFiber).zip(teaFiber).await
+    } yield Map(eggsTime, waterTime, saladTime, teaTime._2)
+
+  private def boilWater(dur: Duration): ZIO[Any, Throwable, (String, LocalDateTime)] =
+    ZIO.sleep(dur).as("water" -> now())
+
+  private def fryEggs(dur: Duration): ZIO[Any, Throwable, (String, LocalDateTime)] =
+    ZIO.sleep(dur).map(_ => "eggs" -> now())
+
+  private def cookSalad(timeInfo: SaladInfoTime): ZIO[Any, Throwable, (String, LocalDateTime)] = {
+    val cookingTime = timeInfo.tomatoTime.plusSeconds(timeInfo.cucumberTime.toSeconds)
+    ZIO.sleep(cookingTime).map(_ => "saladWithSourCream" -> now())
+  }
+
+  private def brewTea(dur: Duration): ZIO[Any, Throwable, (String, LocalDateTime)] =
+    ZIO.sleep(dur).map(_ => "tea" -> now())
 
 
 
