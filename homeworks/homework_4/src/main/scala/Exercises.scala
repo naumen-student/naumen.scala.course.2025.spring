@@ -1,3 +1,5 @@
+import scala.annotation.tailrec
+import scala.util.{Failure, Random, Success, Try}
 
 object Exercises {
 
@@ -23,7 +25,11 @@ object Exercises {
     }
 
     def findSumFunctional(items: List[Int], sumValue: Int) = {
-        (-1, -1)
+        items.indices.flatMap {
+            i => items.indices.filter {
+                j => i != j && items(i) + items(j) == sumValue
+            }.map(j => (i, j))
+        }.lastOption.getOrElse((-1, -1))
     }
 
 
@@ -49,7 +55,19 @@ object Exercises {
     }
 
     def tailRecRecursion(items: List[Int]): Int = {
-        1
+        @tailrec
+        def recursiveTraversal(items: List[Int], index: Int, result: Int): Int =
+            items match {
+                case head :: tail =>
+                    if (head % 2 == 0) {
+                        recursiveTraversal(tail, index - 1, index + head * result)
+                    } else {
+                        recursiveTraversal(tail, index - 1, index - head * result)
+                    }
+                case _ => result
+            }
+
+        recursiveTraversal(items.reverse, items.length, 1)
     }
 
     /**
@@ -60,7 +78,17 @@ object Exercises {
      */
 
     def functionalBinarySearch(items: List[Int], value: Int): Option[Int] = {
-        None
+        @tailrec
+        def binarySearch(left: Int, right: Int): Option[Int] =
+            Some((left + right) / 2).filter(_ => left <= right) match {
+                case None => None
+                case Some(middle) =>
+                    if (items(middle) == value) Some(middle)
+                    else if (items(middle) > value) binarySearch(left, middle - 1)
+                    else binarySearch(middle + 1, right)
+            }
+
+        binarySearch(0, items.length - 1)
     }
 
     /**
@@ -73,7 +101,15 @@ object Exercises {
 
     def generateNames(namesСount: Int): List[String] = {
         if (namesСount < 0) throw new Throwable("Invalid namesCount")
-        Nil
+        else
+            List.tabulate(namesСount)(
+                _ => Random.alphanumeric
+                  .filter(_.isLetter)
+                  .take(5 + Random.nextInt(7))
+                  .mkString
+                  .toLowerCase
+                  .capitalize
+        )
     }
 
 }
@@ -111,14 +147,30 @@ object SideEffectExercise {
 
 
     class PhoneServiceSafety(unsafePhoneService: SimplePhoneService) {
-        def findPhoneNumberSafe(num: String) = ???
+        def findPhoneNumberSafe(num: String): Option[String] = Option(unsafePhoneService.findPhoneNumber(num))
 
-        def addPhoneToBaseSafe(phone: String) = ???
+        def addPhoneToBaseSafe(phone: String): Either[String, Unit] = {
+            Try(unsafePhoneService.addPhoneToBase(phone)) match {
+                case Success(ok) => Right(ok)
+                case Failure(exception) => Left(exception.getMessage)
+            }
+        }
 
-        def deletePhone(phone: String) = ???
+        def deletePhone(phone: String): Either[String, Unit] = {
+            Try(unsafePhoneService.deletePhone(phone)) match {
+                case Success(ok) => Right(ok)
+                case Failure(exception) => Left(exception.getMessage)
+            }
+        }
     }
 
     class ChangePhoneServiceSafe(phoneServiceSafety: PhoneServiceSafety) extends ChangePhoneService {
-        override def changePhone(oldPhone: String, newPhone: String): String = ???
+        override def changePhone(oldPhone: String, newPhone: String): String = {
+            phoneServiceSafety.findPhoneNumberSafe(oldPhone).map(phoneServiceSafety.deletePhone)
+            phoneServiceSafety.addPhoneToBaseSafe(newPhone) match {
+                case Right(_) => "ok"
+                case Left(errMessage) => errMessage
+            }
+        }
     }
 }
