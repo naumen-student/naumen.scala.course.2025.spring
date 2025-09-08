@@ -17,12 +17,6 @@
   В тестах можно всегда более точно посмотреть фразы.
  */
 object Task1 extends App {
-  // Обратите внимание, что здесь type class параматрезирован контрвариантно
-  // благодаря этому инстанс Show[Cat] мы можем применить, например, к BigCat.
-  // Однако, это может быть неудобно, так как нам для каждого нового наследника придётся менять
-  // реализацию Show[Cat]. Из-за этого практически все библиотеки, которые предоставляют свои
-  // тайп классы для их использования пользователем, делают тайп классы инвариантными по параметру.
-  // Можете написать две реализации (при -А и А) и сравнить их.
   trait Show[-A] {
     def show(a: A): String
   }
@@ -45,9 +39,18 @@ object Task1 extends App {
   }
 
   object ShowInstance {
-    implicit val catShow: Show[Cat] = ???
+    implicit val catShow: Show[Cat] = {
+      case VeryLittleCat(name) => s"очень маленький кот $name"
+      case LittleCat(name)     => s"маленький кот $name"
+      case NormalCat(name)     => s"кот $name"
+      case BigCat(name)        => s"большой кот $name"
+      case VeryBigCat(name)    => s"очень большой кот $name"
+    }
 
-    implicit def boxShow[A: Show]: Show[Box[A]] = ???
+    implicit def boxShow[A](implicit showA: Show[A]): Show[Box[A]] = {
+      case BoxWith(a) => s"${showA.show(a)} в коробке"
+      case EmptyBox   => "пустая коробка"
+    }
   }
 
   object ShowSyntax {
