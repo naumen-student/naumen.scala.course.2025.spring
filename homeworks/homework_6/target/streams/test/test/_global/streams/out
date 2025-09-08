@@ -1,0 +1,4 @@
+[debug] Running TaskDef(Tests, zio.test.sbt.ZioSpecFingerprint$@6557cea5, false, [SuiteSelector])
+[info] Completed tests
+[debug] Passed tests:
+[debug] 	Tests
