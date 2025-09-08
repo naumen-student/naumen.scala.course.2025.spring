@@ -17,12 +17,6 @@
   В тестах можно всегда более точно посмотреть фразы.
  */
 object Task1 extends App {
-  // Обратите внимание, что здесь type class параматрезирован контрвариантно
-  // благодаря этому инстанс Show[Cat] мы можем применить, например, к BigCat.
-  // Однако, это может быть неудобно, так как нам для каждого нового наследника придётся менять
-  // реализацию Show[Cat]. Из-за этого практически все библиотеки, которые предоставляют свои
-  // тайп классы для их использования пользователем, делают тайп классы инвариантными по параметру.
-  // Можете написать две реализации (при -А и А) и сравнить их.
   trait Show[-A] {
     def show(a: A): String
   }
@@ -45,9 +39,18 @@ object Task1 extends App {
   }
 
   object ShowInstance {
-    implicit val catShow: Show[Cat] = ???
+    implicit val catShow: Show[Cat] = {
+      case veryLittleCat: VeryLittleCat => s"очень маленький кот ${veryLittleCat.name}"
+      case littleCat: LittleCat => s"маленький кот ${littleCat.name}"
+      case normalCat: NormalCat => s"кот ${normalCat.name}"
+      case bigCat: BigCat => s"большой кот ${bigCat.name}"
+      case veryBigCat: VeryBigCat => s"очень большой кот ${veryBigCat.name}"
+    }
 
-    implicit def boxShow[A: Show]: Show[Box[A]] = ???
+    implicit def boxShow[A](implicit showA: Show[A]): Show[Box[A]] = {
+      case BoxWith(value) => s"${showA.show(value)} в коробке"
+      case EmptyBox => "пустая коробка"
+    }
   }
 
   object ShowSyntax {
@@ -55,4 +58,16 @@ object Task1 extends App {
       def show(implicit show: Show[A]): String = show.show(a)
     }
   }
+
+  import ShowInstance._
+  import ShowSyntax._
+
+  println(VeryLittleCat("Мурзик").show) // очень маленький кот Мурзик
+  println(LittleCat("Мурзик").show) // маленький кот Мурзик
+  println(NormalCat("Мурзик").show) // кот Мурзик
+  println(BigCat("Мурзик").show) // большой кот Мурзик
+  println(VeryBigCat("Мурзик").show) // очень большой кот Мурзик
+
+  println(BoxWith(VeryLittleCat("Мурзик")).show) // очень маленький кот Мурзик в коробке
+  println(EmptyBox.show) // пустая коробка
 }

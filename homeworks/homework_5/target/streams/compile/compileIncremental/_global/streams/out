@@ -1,0 +1,82 @@
+[0m[[0m[0mdebug[0m] [0m[0m[zinc] IncrementalCompile -----------[0m
+[0m[[0m[0mdebug[0m] [0m[0mIncrementalCompile.incrementalCompile[0m
+[0m[[0m[0mdebug[0m] [0m[0mprevious = Stamps for: 54 products, 5 sources, 3 libraries[0m
+[0m[[0m[0mdebug[0m] [0m[0mcurrent source = Set(${BASE}/src/main/scala/Task5.scala, ${BASE}/src/main/scala/Task1.scala, ${BASE}/src/main/scala/Task3.scala, ${BASE}/src/main/scala/Task4.scala, ${BASE}/src/main/scala/Task2.scala)[0m
+[0m[[0m[0mdebug[0m] [0m[0m> initialChanges = InitialChanges(Changes(added = Set(), removed = Set(), changed = Set(${BASE}/src/main/scala/Task5.scala), unmodified = ...),Set(),Set(),API Changes: Set())[0m
+[0m[[0m[0mdebug[0m] [0m[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0mInitial source changes:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	removed: Set()[0m
+[0m[[0m[0mdebug[0m] [0m[0m	added: Set()[0m
+[0m[[0m[0mdebug[0m] [0m[0m	modified: Set(${BASE}/src/main/scala/Task5.scala)[0m
+[0m[[0m[0mdebug[0m] [0m[0mInvalidated products: Set()[0m
+[0m[[0m[0mdebug[0m] [0m[0mExternal API changes: API Changes: Set()[0m
+[0m[[0m[0mdebug[0m] [0m[0mModified binary dependencies: Set()[0m
+[0m[[0m[0mdebug[0m] [0m[0mInitial directly invalidated classes: Set(Task5.MyEitherSyntax, Task5.MyEither, Task5, Task5.MyEitherSyntax.MyEitherOps)[0m
+[0m[[0m[0mdebug[0m] [0m[0mSources indirectly invalidated by:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	product: Set()[0m
+[0m[[0m[0mdebug[0m] [0m[0m	binary dep: Set()[0m
+[0m[[0m[0mdebug[0m] [0m[0m	external source: Set()[0m
+[0m[[0m[0mdebug[0m] [0m[0mAll initially invalidated classes: Set(Task5.MyEitherSyntax, Task5.MyEither, Task5, Task5.MyEitherSyntax.MyEitherOps)[0m
+[0m[[0m[0mdebug[0m] [0m[0mAll initially invalidated sources:Set(${BASE}/src/main/scala/Task5.scala)[0m
+[0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: Task5.MyEitherSyntax, Task5.MyEither, Task5, Task5.MyEitherSyntax.MyEitherOps[0m
+[0m[[0m[0mdebug[0m] [0m[0mcompilation cycle 1[0m
+[0m[[0m[0minfo[0m] [0m[0mcompiling 1 Scala source to D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_5\target\scala-2.12\classes ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mGetting org.scala-sbt:compiler-bridge_2.12:1.10.7:compile for Scala 2.12.10[0m
+[0m[[0m[0mdebug[0m] [0m[0m[zinc] Running cached compiler 780421f5 for Scala compiler version 2.12.10[0m
+[0m[[0m[0mdebug[0m] [0m[0m[zinc] The Scala compiler is invoked with:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	-bootclasspath[0m
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Program Files\Java\jre1.8.0_431\lib\resources.jar;C:\Program Files\Java\jre1.8.0_431\lib\rt.jar;C:\Program Files\Java\jre1.8.0_431\lib\jsse.jar;C:\Program Files\Java\jre1.8.0_431\lib\jce.jar;C:\Program Files\Java\jre1.8.0_431\lib\charsets.jar;C:\Program Files\Java\jre1.8.0_431\lib\jfr.jar;C:\Program Files\Java\jre1.8.0_431\classes;C:\Users\Dima\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala-library\2.12.10\scala-library-2.12.10.jar[0m
+[0m[[0m[0mdebug[0m] [0m[0m	-classpath[0m
+[0m[[0m[0mdebug[0m] [0m[0m	D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_5\target\scala-2.12\classes;C:\Users\Dima\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\typelevel\cats-core_2.12\2.10.0\cats-core_2.12-2.10.0.jar;C:\Users\Dima\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\typelevel\cats-kernel_2.12\2.10.0\cats-kernel_2.12-2.10.0.jar[0m
+[0m[[0m[0mdebug[0m] [0m[0mScala compilation took 2.2186193 s[0m
+[0m[[0m[0mdebug[0m] [0m[0mdone compiling[0m
+[0m[[0m[0mdebug[0m] [0m[0mInvalidating (transitively) by inheritance from Task5.MyRight...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: Task5.MyRight[0m
+[0m[[0m[0mdebug[0m] [0m[0mInvalidated by transitive inheritance dependency: Set(Task5.MyRight)[0m
+[0m[[0m[0mdebug[0m] [0m[0mChange NamesChange(Task5.MyRight,ModifiedNames(changes = UsedName(ne,[Default]), UsedName(MyRight,[Default]), UsedName(hashCode,[Default]), UsedName(apply,[Default]), UsedName(##,[Default]), UsedName(productIterator,[Default]), UsedName(copy$default$1,[Default]), UsedName(wait,[Default]), UsedName(!=,[Default]), UsedName(toString,[Default]), UsedName(eq,[Default]), UsedName($asInstanceOf,[Default]), UsedName(isInstanceOf,[Default]), UsedName(productArity,[Default]), UsedName(productElement,[Default]), UsedName(equals,[Default]), UsedName(Task5;MyRight;init;,[Default]), UsedName(finalize,[Default]), UsedName(copy,[Default]), UsedName(unapply,[Default]), UsedName(clone,[Default]), UsedName(value,[Default]), UsedName(asInstanceOf,[Default]), UsedName(productPrefix,[Default]), UsedName(notify,[Default]), UsedName($isInstanceOf,[Default]), UsedName(synchronized,[Default]), UsedName(isError,[Default]), UsedName(==,[Default]), UsedName(canEqual,[Default]), UsedName(getClass,[Default]), UsedName(notifyAll,[Default]), UsedName($init$,[Default]))) invalidates 1 classes due to The Task5.MyRight has the following regular definitions changed:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	UsedName(ne,[Default]), UsedName(MyRight,[Default]), UsedName(hashCode,[Default]), UsedName(apply,[Default]), UsedName(##,[Default]), UsedName(productIterator,[Default]), UsedName(copy$default$1,[Default]), UsedName(wait,[Default]), UsedName(!=,[Default]), UsedName(toString,[Default]), UsedName(eq,[Default]), UsedName($asInstanceOf,[Default]), UsedName(isInstanceOf,[Default]), UsedName(productArity,[Default]), UsedName(productElement,[Default]), UsedName(equals,[Default]), UsedName(Task5;MyRight;init;,[Default]), UsedName(finalize,[Default]), UsedName(copy,[Default]), UsedName(unapply,[Default]), UsedName(clone,[Default]), UsedName(value,[Default]), UsedName(asInstanceOf,[Default]), UsedName(productPrefix,[Default]), UsedName(notify,[Default]), UsedName($isInstanceOf,[Default]), UsedName(synchronized,[Default]), UsedName(isError,[Default]), UsedName(==,[Default]), UsedName(canEqual,[Default]), UsedName(getClass,[Default]), UsedName(notifyAll,[Default]), UsedName($init$,[Default]).[0m
+[0m[[0m[0mdebug[0m] [0m[0m  > by transitive inheritance: Set(Task5.MyRight)[0m
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m
+[0m[[0m[0mdebug[0m] [0m[0m        [0m
+[0m[[0m[0mdebug[0m] [0m[0mInvalidating (transitively) by inheritance from Task5.MyLeft...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: Task5.MyLeft[0m
+[0m[[0m[0mdebug[0m] [0m[0mInvalidated by transitive inheritance dependency: Set(Task5.MyLeft)[0m
+[0m[[0m[0mdebug[0m] [0m[0mChange NamesChange(Task5.MyLeft,ModifiedNames(changes = UsedName(ne,[Default]), UsedName(hashCode,[Default]), UsedName(apply,[Default]), UsedName(##,[Default]), UsedName(productIterator,[Default]), UsedName(copy$default$1,[Default]), UsedName(wait,[Default]), UsedName(!=,[Default]), UsedName(toString,[Default]), UsedName(eq,[Default]), UsedName($asInstanceOf,[Default]), UsedName(isInstanceOf,[Default]), UsedName(productArity,[Default]), UsedName(productElement,[Default]), UsedName(Task5;MyLeft;init;,[Default]), UsedName(equals,[Default]), UsedName(finalize,[Default]), UsedName(copy,[Default]), UsedName(unapply,[Default]), UsedName(clone,[Default]), UsedName(asInstanceOf,[Default]), UsedName(productPrefix,[Default]), UsedName(notify,[Default]), UsedName(MyLeft,[Default]), UsedName($isInstanceOf,[Default]), UsedName(error,[Default]), UsedName(synchronized,[Default]), UsedName(isError,[Default]), UsedName(==,[Default]), UsedName(canEqual,[Default]), UsedName(getClass,[Default]), UsedName(notifyAll,[Default]), UsedName($init$,[Default]))) invalidates 1 classes due to The Task5.MyLeft has the following regular definitions changed:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	UsedName(ne,[Default]), UsedName(hashCode,[Default]), UsedName(apply,[Default]), UsedName(##,[Default]), UsedName(productIterator,[Default]), UsedName(copy$default$1,[Default]), UsedName(wait,[Default]), UsedName(!=,[Default]), UsedName(toString,[Default]), UsedName(eq,[Default]), UsedName($asInstanceOf,[Default]), UsedName(isInstanceOf,[Default]), UsedName(productArity,[Default]), UsedName(productElement,[Default]), UsedName(Task5;MyLeft;init;,[Default]), UsedName(equals,[Default]), UsedName(finalize,[Default]), UsedName(copy,[Default]), UsedName(unapply,[Default]), UsedName(clone,[Default]), UsedName(asInstanceOf,[Default]), UsedName(productPrefix,[Default]), UsedName(notify,[Default]), UsedName(MyLeft,[Default]), UsedName($isInstanceOf,[Default]), UsedName(error,[Default]), UsedName(synchronized,[Default]), UsedName(isError,[Default]), UsedName(==,[Default]), UsedName(canEqual,[Default]), UsedName(getClass,[Default]), UsedName(notifyAll,[Default]), UsedName($init$,[Default]).[0m
+[0m[[0m[0mdebug[0m] [0m[0m  > by transitive inheritance: Set(Task5.MyLeft)[0m
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m
+[0m[[0m[0mdebug[0m] [0m[0m        [0m
+[0m[[0m[0mdebug[0m] [0m[0mInvalidating (transitively) by inheritance from Task5.MyEither...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: Task5.MyEither[0m
+[0m[[0m[0mdebug[0m] [0m[0mIncluding Task5.MyRight by Task5.MyEither[0m
+[0m[[0m[0mdebug[0m] [0m[0mIncluding Task5.MyLeft by Task5.MyEither[0m
+[0m[[0m[0mdebug[0m] [0m[0mInvalidated by transitive inheritance dependency: Set(Task5.MyEither, Task5.MyLeft, Task5.MyRight)[0m
+[0m[[0m[0mdebug[0m] [0m[0mChange NamesChange(Task5.MyEither,ModifiedNames(changes = UsedName(MyEither,[Default]))) invalidates 3 classes due to The Task5.MyEither has the following regular definitions changed:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	UsedName(MyEither,[Default]).[0m
+[0m[[0m[0mdebug[0m] [0m[0m  > by transitive inheritance: Set(Task5.MyEither, Task5.MyLeft, Task5.MyRight)[0m
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m
+[0m[[0m[0mdebug[0m] [0m[0m        [0m
+[0m[[0m[0mdebug[0m] [0m[0mInvalidating (transitively) by inheritance from Task5...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: Task5[0m
+[0m[[0m[0mdebug[0m] [0m[0mInvalidated by transitive inheritance dependency: Set(Task5)[0m
+[0m[[0m[0mdebug[0m] [0m[0mChange NamesChange(Task5,ModifiedNames(changes = UsedName(MyLeft,[Default]), UsedName(MyRight,[Default]))) invalidates 1 classes due to The Task5 has the following regular definitions changed:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	UsedName(MyLeft,[Default]), UsedName(MyRight,[Default]).[0m
+[0m[[0m[0mdebug[0m] [0m[0m  > by transitive inheritance: Set(Task5)[0m
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m
+[0m[[0m[0mdebug[0m] [0m[0m        [0m
+[0m[[0m[0mdebug[0m] [0m[0mNew invalidations:[0m
+[0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: [0m
+[0m[[0m[0mdebug[0m] [0m[0mPreviously invalidated, but (transitively) depend on new invalidations:[0m
+[0m[[0m[0mdebug[0m] [0m[0mFinal step, transitive dependencies:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Set()[0m
+[0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: Task5.MyRight, Task5.MyEitherSyntax, Task5.MyEither, Task5, Task5.MyLeft, Task5.MyEitherSyntax.MyEitherOps[0m
+[0m[[0m[0mdebug[0m] [0m[0mInvalidated macros due to upstream dependencies change: Set()[0m
+[0m[[0m[0mdebug[0m] [0m[0mNo classes were invalidated.[0m
