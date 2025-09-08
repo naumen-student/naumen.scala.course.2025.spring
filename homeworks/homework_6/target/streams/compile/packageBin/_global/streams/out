@@ -1,0 +1,35 @@
+[0m[[0m[0mdebug[0m] [0m[0mPackaging D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\homework_6_2.13-0.1.0-SNAPSHOT.jar ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Exercises$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes\Exercises$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Exercises.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes\Exercises.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	utils[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes\utils[0m
+[0m[[0m[0mdebug[0m] [0m[0m	utils\ColorService$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes\utils\ColorService$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	utils\ColorService$Service.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes\utils\ColorService$Service.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	utils\ColorService$ServiceImpl.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes\utils\ColorService$ServiceImpl.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	utils\ColorService.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes\utils\ColorService.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	utils\PictureGenerationService$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes\utils\PictureGenerationService$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	utils\PictureGenerationService$Service.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes\utils\PictureGenerationService$Service.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	utils\PictureGenerationService$ServiceImpl.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes\utils\PictureGenerationService$ServiceImpl.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	utils\PictureGenerationService.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes\utils\PictureGenerationService.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	utils\Utils$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes\utils\Utils$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	utils\Utils$GenerationError.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes\utils\Utils$GenerationError.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	utils\Utils$Picture$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes\utils\Utils$Picture$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	utils\Utils$Picture.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes\utils\Utils$Picture.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	utils\Utils.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  D:\My\Scala\naumen.scala.course.2025.spring\homeworks\homework_6\target\scala-2.13\classes\utils\Utils.class[0m
+[0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m
