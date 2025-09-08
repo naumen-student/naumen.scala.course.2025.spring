@@ -1,0 +1,9 @@
+[debug] Packaging C:\Users\HappyGoga\Desktop\SbtExampleHW\target\scala-2.13\sbtexamplehw_2.13-0.1.0-SNAPSHOT.jar ...
+[debug] Input file mappings:
+[debug] 	Main$.class
+[debug] 	  C:\Users\HappyGoga\Desktop\SbtExampleHW\target\scala-2.13\classes\Main$.class
+[debug] 	Main$delayedInit$body.class
+[debug] 	  C:\Users\HappyGoga\Desktop\SbtExampleHW\target\scala-2.13\classes\Main$delayedInit$body.class
+[debug] 	Main.class
+[debug] 	  C:\Users\HappyGoga\Desktop\SbtExampleHW\target\scala-2.13\classes\Main.class
+[debug] Done packaging.
