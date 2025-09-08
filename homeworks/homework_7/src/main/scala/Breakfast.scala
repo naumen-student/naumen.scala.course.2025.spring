@@ -32,9 +32,40 @@ object Breakfast extends ZIOAppDefault {
   def makeBreakfast(eggsFiringTime: Duration,
                     waterBoilingTime: Duration,
                     saladInfoTime: SaladInfoTime,
-                    teaBrewingTime: Duration): ZIO[Any, Throwable, Map[String, LocalDateTime]] = ???
-
-
+                    teaBrewingTime: Duration): ZIO[Any, Throwable, Map[String, LocalDateTime]] = {
+    
+    val eggsProcess = for {
+      _ <- ZIO.sleep(eggsFiringTime)
+      eggsFinishTime <- ZIO.succeed(LocalDateTime.now())
+    } yield ("eggs", eggsFinishTime)
+    
+    val waterAndTeaProcess = for {
+      _ <- ZIO.sleep(waterBoilingTime)
+      waterFinishTime <- ZIO.succeed(LocalDateTime.now())
+      _ <- ZIO.sleep(teaBrewingTime)
+      teaFinishTime <- ZIO.succeed(LocalDateTime.now())
+    } yield List(("water", waterFinishTime), ("tea", teaFinishTime))
+    
+    val saladProcess = for {
+      _ <- ZIO.sleep(saladInfoTime.cucumberTime)
+      _ <- ZIO.sleep(saladInfoTime.tomatoTime)
+      saladFinishTime <- ZIO.succeed(LocalDateTime.now())
+    } yield ("saladWithSourCream", saladFinishTime)
+    
+    for {
+      eggs <- eggsProcess.fork
+      waterAndTea <- waterAndTeaProcess.fork
+      salad <- saladProcess.fork
+      
+      eggsResult <- eggs.join
+      waterAndTeaResult <- waterAndTea.join
+      saladResult <- salad.join
+      
+    } yield Map(
+      eggsResult,
+      saladResult
+    ) ++ waterAndTeaResult.toMap
+  }
 
   override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = ZIO.succeed(println("Done"))
 
