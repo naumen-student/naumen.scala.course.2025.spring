@@ -1,6 +1,6 @@
 package ru.dru
 
-import zio.CanFail.canFailAmbiguous1
+import zio.CanFail.canFail
 import zio.{Duration, Exit, Fiber, Scope, ZIO, ZIOApp, ZIOAppArgs, ZIOAppDefault, durationInt}
 
 import java.time.LocalDateTime
@@ -32,8 +32,31 @@ object Breakfast extends ZIOAppDefault {
   def makeBreakfast(eggsFiringTime: Duration,
                     waterBoilingTime: Duration,
                     saladInfoTime: SaladInfoTime,
-                    teaBrewingTime: Duration): ZIO[Any, Throwable, Map[String, LocalDateTime]] = ???
+                    teaBrewingTime: Duration): ZIO[Any, Throwable, Map[String, LocalDateTime]] = {
+    for {
+      startTime <- ZIO.succeed(LocalDateTime.now)
 
+      waterFiber <- (ZIO.sleep(waterBoilingTime) *> ZIO.succeed(LocalDateTime.now)).fork
+      eggsFiber <- (ZIO.sleep(eggsFiringTime) *> ZIO.succeed(LocalDateTime.now)).fork
+      saladFiber <- (for {
+        _ <- ZIO.sleep(saladInfoTime.cucumberTime)
+        _ <- ZIO.sleep(saladInfoTime.tomatoTime)
+        saladDone <- ZIO.succeed(LocalDateTime.now)
+      } yield saladDone).fork
+      teaFiber <- (waterFiber.join *> ZIO.sleep(teaBrewingTime) *> ZIO.succeed(LocalDateTime.now)).fork
+
+      eggsDone <- eggsFiber.join
+      waterDone <- waterFiber.join
+      saladWithSourCreamDone <- saladFiber.join
+      teaDone <- teaFiber.join
+
+    } yield Map(
+      "eggs" -> eggsDone,
+      "water" -> waterDone,
+      "saladWithSourCream" -> saladWithSourCreamDone,
+      "tea" -> teaDone
+    )
+  }
 
 
   override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] = ZIO.succeed(println("Done"))
