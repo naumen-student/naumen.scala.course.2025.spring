@@ -12,7 +12,7 @@ object Exercises {
      * вернулся None, а в случае упеха Some
      */
     def task1(r: Int, g: Int, b: Int): URIO[ColorService, Option[Color]] =
-        ZIO.serviceWithZIO[ColorService](_.getColor(r, g, b))
+        ZIO.serviceWithZIO[ColorService](_.getColor(r, g, b)).option
 
 
     /**
@@ -22,7 +22,9 @@ object Exercises {
      * где элементы - числовые значения объекта Color (можно получить через getRGB)
      */
     def task2(size: (Int, Int)): ZIO[PictureGenerationService, GenerationError, String] =
-        ZIO.serviceWithZIO[PictureGenerationService](_.generatePicture(size))
+        ZIO.serviceWithZIO[PictureGenerationService](_.generatePicture(size)).map { picture =>
+            picture.lines.map(_.map(_.getRGB).mkString(" ")).mkString("\n")
+        }
 
 
     /**
@@ -34,18 +36,18 @@ object Exercises {
      *  - при заполнении картинки -> Возникли проблемы при заливке изображения
      */
     def task3(size: (Int, Int)): ZIO[PictureGenerationService with ColorService, GenerationError, Picture] =
-        for {
+        (for {
             colorServ <- ZIO.service[ColorService]
             pictureServ <- ZIO.service[PictureGenerationService]
-            color <- colorServ.generateRandomColor()
-            picture <- pictureServ.generatePicture(size)
-            filledPicture <- pictureServ.fillPicture(picture, color)
-        } yield filledPicture
+            color <- colorServ.generateRandomColor().mapError(e => new GenerationError("Не удалось создать цвет"))
+            picture <- pictureServ.generatePicture(size).mapError(e => new GenerationError("Ошибка генерации изображения"))
+            filledPicture <- pictureServ.fillPicture(picture, color).mapError(e => new GenerationError("Возникли проблемы при заливке изображения"))
+        } yield filledPicture)
 
     /**
      * Необходимо предоставить объекту ZIO все необходимые зависимости
      */
     def task4(size: (Int, Int)): IO[GenerationError, Picture] =
-        task3(size)
+        task3(size).provide(ColorService.live, PictureGenerationService.live)
 
 }
