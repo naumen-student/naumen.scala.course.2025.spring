@@ -21,21 +21,21 @@ object Test1 extends TestSuite {
       }
     }
 
-    'showCats - {
-      'veryLittleCat - check(VeryLittleCat, veryLittleCat)
-      'littleCat - check(LittleCat, littleCat)
-      'normalCat - check(NormalCat, normalCat)
-      'bigCat - check(BigCat, bigCat)
-      'veryBigCat - check(VeryBigCat, veryBigCat)
+    test("showCats") {
+      test("veryLittleCat") - check(VeryLittleCat.apply, veryLittleCat) 
+      test("littleCat") - check(LittleCat.apply, littleCat)
+      test("normalCat") - check(NormalCat.apply, normalCat)
+      test("bigCat") - check(BigCat.apply, bigCat)
+      test("veryBigCat") - check(VeryBigCat.apply, veryBigCat)
     }
-    'showBox - {
-      'emptyBox - assert(EmptyBox.show == "пустая коробка")
-      'catInBox - {
-        'veryLittleCat - check(name => BoxWith(VeryLittleCat(name)), veryLittleCat, true)
-        'littleCat - check(name => BoxWith(LittleCat(name)), littleCat, true)
-        'normalCat - check(name => BoxWith(NormalCat(name)), normalCat, true)
-        'bigCat - check(name => BoxWith(BigCat(name)), bigCat, true)
-        'veryBigCat - check(name => BoxWith(VeryBigCat(name)), veryBigCat, true)
+    test("showBox") {
+      test("emptyBox") - assert(EmptyBox.show == "пустая коробка")
+      test("catInBox") - {
+        test("veryLittleCat") - check(name => BoxWith(VeryLittleCat(name)), veryLittleCat, true)
+        test("littleCat") - check(name => BoxWith(LittleCat(name)), littleCat, true)
+        test("normalCat") - check(name => BoxWith(NormalCat(name)), normalCat, true)
+        test("bigCat") - check(name => BoxWith(BigCat(name)), bigCat, true)
+        test("veryBigCat") - check(name => BoxWith(VeryBigCat(name)), veryBigCat, true)
       }
     }
   }

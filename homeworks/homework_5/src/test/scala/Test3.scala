@@ -6,7 +6,7 @@ object Test3 extends TestSuite {
   override def tests: Tests = Tests {
     import Task3._
 
-    'wordsMustBeCounted - (1 to 5).foreach { _ =>
+    test("wordsMustBeCounted") - (1 to 5).foreach { _ =>
       val words = Vector.fill(100)(java.util.UUID.randomUUID().toString.replace("-", ""))
       val counts = Vector.fill(100)(Random.nextInt(200)).map(_ + 1) // исключаем 0
       val expected = WordsCount(words.zip(counts).map { case (w, c) => Count(w, c) })

@@ -7,19 +7,19 @@ object Test5 extends TestSuite {
     import Task5._
     import Task5.MyEitherSyntax._
 
-    'leftIdentityLow - {
+    test("leftIdentityLow") {
       assert(MyEither(0).flatMap(x => MyEither(x + 1)) == MyEither(1))
     }
-    'rightIdentityLow - {
+    test("rightIdentityLow") {
       assert(MyEither(0).flatMap(x => MyEither.apply(x)) == MyEither(0))
     }
-    'associativityLow - {
+    test("associativityLow") {
       val f: Int => MyEither[Nothing, Int] = x => MyEither(x + 1)
       val g: Int => MyEither[Nothing, Int] = x => MyEither(x * 10)
       assert(MyEither(0).flatMap(f).flatMap(g) == MyEither(0).flatMap(x => f(x).flatMap(g)))
     }
-    'usage - {
-      'simpleUsage - {
+    test("usage") {
+      test("simpleUsage") {
         val (x, y, z) = (Random.nextInt(), Random.nextInt(), Random.nextInt())
         val p = for {
           a <- MyEither(x)
@@ -28,21 +28,21 @@ object Test5 extends TestSuite {
         } yield a + c + d
         assert(p == MyEither(x + y + z))
       }
-      'errorUsage - {
+      test("errorUsage") {
         val p = for {
           a <- MyEither(0)
           _ <- MyEither.error[String, Int]("Error")
         } yield a
         assert(p.isError)
       }
-      'possibleErrorUsage - {
+      test("possibleErrorUsage") {
         val p = for {
           a <- MyEither(12)
           b <- MyEither.possibleError(12 / 0)
         } yield a + b
         assert(p.isError)
       }
-      'recoverErrorUsage - {
+      test("recoverErrorUsage") {
         val (x, y, z) = (Random.nextInt(), Random.nextInt(), Random.nextInt())
         val p = for {
           a <- MyEither(x)
@@ -52,7 +52,7 @@ object Test5 extends TestSuite {
 
         assert(p == MyEither(x + y + z))
       }
-      'skippingErrorStopsEvaluation - {
+      test("skippingErrorStopsEvaluation") {
         val p = for {
           a <- MyEither(0)
           v <- MyEither.possibleError(12 / 0)
