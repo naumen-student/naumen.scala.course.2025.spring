@@ -1,0 +1,57 @@
+C:\Users\Gleb>scala
+Welcome to Scala 3.3.5 (23, Java Java HotSpot(TM) 64-Bit Server VM).
+Type in expressions for evaluation. Or try :help.
+
+scala> val a:String = "Hello Scala! This is Shkurevskikh Gleb"
+val a: String = Hello Scala! This is Alchin Ivan
+
+scala> println(a)
+Hello Scala! This is Shkurevskikh Gleb
+
+scala> val name:String = "Shkurevskikh Gleb"
+val name: String = Shkurevskikh Gleb
+
+scala> val reversedName = name.reverse
+val reversedName: String = belG hkiksverukhS
+
+scala> var greetings:String = "Hello"
+var greetings: String = Hello
+
+scala> val constStringPart:String = " Scala! This is "
+val constStringPart: String = " Scala! This is "
+
+
+scala> println(greetings + constStringPart + name)
+Hello Scala! This is Shkurevskikh Gleb
+
+scala> greetings = "Hola"
+greetings: String = Hola
+
+scala> println(greetings + constStringPart + name)
+Hola Scala! This is Shkurevskikh Gleb
+
+scala> greetings = "Guten tag"
+greetings: String = Guten tag
+
+scala> println(greetings + constStringPart + name)
+Guten tag Scala! This is Shkurevskikh Gleb
+
+scala> greetings = "Hello"
+greetings: String = Hello
+
+scala> println(greetings + constStringPart + reversedName)
+Hello Scala! This is navI nihclA
+
+scala> greetings = "Hola"
+greetings: String = Hola
+
+scala> println(greetings + constStringPart + reversedName)
+Hola Scala! This is belG hkiksverukhS
+
+scala> greetings = "Guten tag"
+greetings: String = Guten tag
+
+scala> println(greetings + constStringPart + reversedName)
+Guten tag Scala! This is belG hkiksverukhS
+
+scala>
