@@ -1,0 +1,35 @@
+Welcome to Scala 2.12.10 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_441).
+Type in expressions for evaluation. Or try :help.
+
+scala> val a = "Hello Scala! This is Rashad Aliev"
+a: String = Hello Scala! This is Rashad Aliev
+
+scala> println(a)
+Hello Scala! This is Rashad Aliev
+
+scala> val spanishGreeting = "Hola "
+spanishGreeting: String = "Hola "
+
+scala> val azerbaijanianGreeting = "Salam "
+azerbaijanianGreeting: String = "Salam "
+
+scala> val main = "Scala! This is"
+main: String = Scala! This is
+
+scala> val name = " Rashad Aliev"
+name: String = " Rashad Aliev"
+
+scala> println(spanishGreeting + main + name)
+Hola Scala! This is Rashad Aliev
+
+scala> println(azerbaijanianGreeting + main + name)
+Salam Scala! This is Rashad Aliev
+
+scala> println(spanishGreeting + main + name.reverse)
+Hola Scala! This isveilA dahsaR
+
+scala> println(azerbaijanianGreeting + main + name.reverse)
+Salam Scala! This isveilA dahsaR
+
+scala> println("Hello " + main + name.reverse)
+Hello Scala! This isveilA dahsaR
