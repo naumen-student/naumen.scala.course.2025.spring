@@ -1,4 +1,3 @@
-
 object Exercises {
 
     /**
@@ -23,7 +22,11 @@ object Exercises {
     }
 
     def findSumFunctional(items: List[Int], sumValue: Int) = {
-        (-1, -1)
+        items.zipWithIndex
+          .combinations(2)
+          .find { case List((_, idx1), (_, idx2)) => items(idx1) + items(idx2) == sumValue }
+          .map { case List((_, idx1), (_, idx2)) => (idx1, idx2).swap }
+          .getOrElse((-1, -1))
     }
 
 
@@ -49,7 +52,17 @@ object Exercises {
     }
 
     def tailRecRecursion(items: List[Int]): Int = {
-        1
+        @tailrec
+        def rec(items: List[Int], index: Int = 1, sum: Int = 1): Int = {
+            items match {
+                case head :: tail =>
+                    if (head % 2 == 0) {
+                        rec(tail, index - 1, index + (head * sum))
+                    } else {
+                        rec(tail, index - 1, index - (head * sum))
+                    }
+                case _ => sum
+            }
     }
 
     /**
@@ -60,7 +73,19 @@ object Exercises {
      */
 
     def functionalBinarySearch(items: List[Int], value: Int): Option[Int] = {
-        None
+        def search(left: Int, right: Int): Option[Int] = {
+            if (left > right) None
+            else {
+                val mid = left + (right - left) / 2
+                items(mid) match {
+                    case midValue if midValue == value => Some(mid)
+                    case midValue if midValue > value => search(left, mid - 1)
+                    case _ => search(mid + 1, right)
+                }
+            }
+        }
+
+        search(0, items.length - 1)
     }
 
     /**
@@ -71,9 +96,19 @@ object Exercises {
      * Именем является строка, не содержащая иных символов, кроме буквенных, а также начинающаяся с заглавной буквы.
      */
 
-    def generateNames(namesСount: Int): List[String] = {
-        if (namesСount < 0) throw new Throwable("Invalid namesCount")
-        Nil
+    def generateNames(namesCount: Int): List[String] = {
+        if (namesCount < 0) throw new IllegalArgumentException("Invalid namesCount")
+
+        val random = new scala.util.Random()
+
+        def generateName: String = {
+            val nameLength = random.nextInt(5) + 3
+            val name = (1 to nameLength).map(_ => ('a' + random.nextInt(26)).toChar).mkString
+            name.capitalize
+        }
+
+        (1 to namesCount).map(_ => generateName).toList
+
     }
 
 }
@@ -111,14 +146,34 @@ object SideEffectExercise {
 
 
     class PhoneServiceSafety(unsafePhoneService: SimplePhoneService) {
-        def findPhoneNumberSafe(num: String) = ???
+        def findPhoneNumberSafe(num: String) = {
+            val phoneRecord = unsafePhoneService.findPhoneNumber(num)
+            Option(phoneRecord)
+        }
 
-        def addPhoneToBaseSafe(phone: String) = ???
+        def addPhoneToBaseSafe(phone: String) = {
+            if (phone.matches("\\d{10}")) {
+                unsafePhoneService.addPhoneToBase(phone)
+                Right(())
+            } else {
+                Left("Invalid phone number format")
+            }
+        }
 
-        def deletePhone(phone: String) = ???
+        def deletePhone(phone: String): Unit = unsafePhoneService.deletePhone(phone)
     }
 
     class ChangePhoneServiceSafe(phoneServiceSafety: PhoneServiceSafety) extends ChangePhoneService {
-        override def changePhone(oldPhone: String, newPhone: String): String = ???
+        override def changePhone(oldPhone: String, newPhone: String): String = {
+            phoneServiceSafety.findPhoneNumberSafe(oldPhone) match {
+                case Some(_) =>
+                    phoneServiceSafety.deletePhone(oldPhone)
+                    phoneServiceSafety.addPhoneToBaseSafe(newPhone) match {
+                        case Right(_) => "ok"
+                        case Left(error) => error
+                    }
+                case None => "Phone number not found"
+            }
+        }
     }
 }
