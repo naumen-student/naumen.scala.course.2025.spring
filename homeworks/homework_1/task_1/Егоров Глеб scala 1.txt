@@ -1,0 +1,41 @@
+Microsoft Windows [Version 10.0.22631.4460]
+(c) Корпорация Майкрософт (Microsoft Corporation). Все права защищены.
+
+C:\Users\starlet>scala
+Welcome to Scala 2.12.10 (OpenJDK 64-Bit Server VM, Java 11.0.26).
+Type in expressions for evaluation. Or try :help.
+
+scala> val name = "Gleb Egorov"
+name: String = Gleb Egorov
+
+scala> val greeting = s"Hello Scala! This is $name"
+greeting: String = Hello Scala! This is Gleb Egorov
+
+scala> println(greeting)
+Hello Scala! This is Gleb Egorov
+
+scala> val greetings = List("Hola", "Guten tag")
+greetings: List[String] = List(Hola, Guten tag)
+
+scala> val newGreetings = greetings.map(g=> s"$g Scala! Thins is $name)
+<console>:1: error: unclosed string literal
+       val newGreetings = greetings.map(g=> s"$g Scala! Thins is $name)
+                                                                      ^
+
+scala> newGreegings.foreach(println)
+<console>:12: error: not found: value newGreegings
+       newGreegings.foreach(println)
+       ^
+
+scala> val reversedName=name.reverse
+reversedName: String = vorogE belG
+
+scala> val reversedGreetings = greetings.map(g=>s"$g Scala! This is $reversedName")
+reversedGreetings: List[String] = List(Hola Scala! This is vorogE belG, Guten tag Scala! This is vorogE belG)
+
+scala> reversedGreetings.foreach(println)
+Hola Scala! This is vorogE belG
+Guten tag Scala! This is vorogE belG
+
+scala>
+
