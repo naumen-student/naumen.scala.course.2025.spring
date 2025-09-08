@@ -1,0 +1,32 @@
+PS C:\Users\wilga> scala
+Welcome to Scala 2.12.10 (OpenJDK 64-Bit Server VM, Java 11.0.26).
+Type in expressions for evaluation. Or try :help.
+
+scala> val name = "Marina Apkaeva"
+name: String = Marina Apkaeva
+
+scala> val message = "Hello Scala! This is "
+message: String = "Hello Scala! This is "
+
+scala> println(message + name)
+Hello Scala! This is Marina Apkaeva
+
+scala> val greetings = List("Hola", "Guten tag")
+greetings: List[String] = List(Hola, Guten tag)
+
+scala> for (item <- greetings) {
+     | println(s"$item Scala! This is $name")
+     | }
+Hola Scala! This is Marina Apkaeva
+Guten tag Scala! This is Marina Apkaeva
+
+scala> val revName = name.reverse
+revName: String = aveakpA aniraM
+
+scala> for (item <- greetings) {
+     |  println(s"$item Scala! This is $revName")
+     | }
+Hola Scala! This is aveakpA aniraM
+Guten tag Scala! This is aveakpA aniraM
+
+scala>
